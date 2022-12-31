@@ -159,7 +159,7 @@ export namespace ingredientController {
       req.body.name,
       req.body.consumable,
       req.body.unitOfMeasure,
-      req.body.shelfLife ?? -1,
+      req.body.shelfLife ?? undefined,
       req.body.freezable
     )
     .then((result: IUpdateOne) => {

@@ -69,11 +69,11 @@ export namespace baseIngredient {
     export async function updateIngredient(_id : string, name : string, consumable : boolean, unitOfMeasure : string, shelfLife : number, freezable : boolean) : Promise<IUpdateOne> {
         let elementToUpdate : any = { _id: _id };
     
-        if(name) elementToUpdate.name = name;
-        if(consumable) elementToUpdate.consumable = consumable;
-        if(unitOfMeasure) elementToUpdate.unitOfMeasure = unitOfMeasure;
-        if(shelfLife) elementToUpdate.shelfLife = shelfLife;
-        if(freezable) elementToUpdate.freezable = freezable;
+        if(name != undefined) elementToUpdate.name = name;
+        if(consumable != undefined) elementToUpdate.consumable = consumable;
+        if(unitOfMeasure != undefined) elementToUpdate.unitOfMeasure = unitOfMeasure;
+        if(shelfLife != undefined) elementToUpdate.shelfLife = shelfLife;
+        if(freezable != undefined) elementToUpdate.freezable = freezable;
     
         return Ingredient.updateOne({ _id: _id }, elementToUpdate);
     }
@@ -106,7 +106,7 @@ export namespace baseIngredient {
             imagePath: imagePath,
             consumable: consumable,
             unitOfMeasure: unitOfMeasure,
-            shelfLife: shelfLife ? shelfLife : undefined,
+            shelfLife: shelfLife ? shelfLife : null,
             freezable: freezable
         });
 
