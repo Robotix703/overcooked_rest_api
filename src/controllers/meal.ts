@@ -17,8 +17,7 @@ import { registerIngredientsOnTodo } from "../worker/registerIngredientsOnTodo";
 export namespace mealController{
   //POST
   export async function writeMeal(req : Request, res : Response) {
-
-    let registerResult = await baseMeal.register(req.body.recipeID, req.body.numberOfLunchPlanned)
+    const registerResult = await baseMeal.register(req.body.recipeID, req.body.numberOfLunchPlanned)
     .catch((error : Error) => {
       res.status(500).json({
         errorMessage: error
@@ -30,9 +29,13 @@ export namespace mealController{
     
     const ingredientsNeeded : IIngredientWithQuantity[] = await handleRecipe.getIngredientList(req.body.recipeID, req.body.numberOfLunchPlanned);
     
-    await registerIngredientsOnTodo.registerIngredients(ingredientsNeeded, recipe.title);
-
-    res.status(201).json(registerResult);
+    await registerIngredientsOnTodo.registerIngredients(ingredientsNeeded, recipe.title)
+    .then(() => {
+      res.status(201).json(registerResult);
+    })
+    .catch((error: Error) => {
+      res.status(500).json(error);
+    })
   }
   export async function consumeMeal(req : Request, res : Response) {
     if (req.body.mealID) {

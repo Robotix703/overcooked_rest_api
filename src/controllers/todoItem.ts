@@ -10,146 +10,133 @@ import { registerIngredientsOnTodo } from "../worker/registerIngredientsOnTodo";
 import { handleTodoItem } from "../compute/handleTodoItem";
 
 export namespace todoItemController {
-    export async function readTodoItems(req : Request, res : Response) {
-        let fetchedTodoItems : ITodoItem[] | void = await baseTodoItem.readTodoItems()
-        .catch((error : Error) => {
-            res.status(500).json({
-              errorMessage: error
-            });
-            return;
+  export async function readTodoItems(req: Request, res: Response) {
+    let fetchedTodoItems: ITodoItem[] | void = await baseTodoItem.readTodoItems()
+      .catch((error: Error) => {
+        res.status(500).json({
+          errorMessage: error
         });
+        return;
+      });
 
-        let count : number | void = await baseTodoItem.count()
-        .catch((error : Error) => {
-            res.status(500).json({
-              errorMessage: error
-            });
-            return;
+    let count: number | void = await baseTodoItem.count()
+      .catch((error: Error) => {
+        res.status(500).json({
+          errorMessage: error
         });
+        return;
+      });
 
-        let data = {
-            todoItems: fetchedTodoItems,
-            count: count
-        }
-        res.status(200).json(data);
+    let data = {
+      todoItems: fetchedTodoItems,
+      count: count
     }
-    
-    export async function writeTodoItem(req : Request, res : Response) {
-        registerIngredientsOnTodo.registerIngredient(
-            req.body.ingredientID,
-            req.body.name,
-            req.body.quantity,
-            "Extra")
-        .then(() => {
-            res.status(201).json({message: "Registered !"});
+    res.status(200).json(data);
+  }
+
+  export async function writeTodoItem(req: Request, res: Response) {
+    registerIngredientsOnTodo.registerIngredient(
+      req.body.ingredientID,
+      req.body.name,
+      req.body.quantity,
+      "Extra")
+      .then(() => {
+        res.status(201).json({ message: "Registered !" });
+      })
+      .catch((error: Error) => {
+        res.status(500).json({
+          errorMessage: error
         })
-        .catch((error : Error) => {
-            res.status(500).json({
-                errorMessage: error
-            })
-        });
-    }
-    export async function updateQuantity(req : Request, res : Response) {
-        if(req.params.id){
-            if(req.body.quantity){
-                let result : IUpdateOne = await handleTodoItem.updateQuantity(req.params.id, req.body.quantity);
+      });
+  }
+  export async function updateQuantity(req: Request, res: Response) {
+    if (req.params.id) {
+      if (req.body.quantity) {
+        let result: IUpdateOne = await handleTodoItem.updateQuantity(req.params.id, req.body.quantity);
 
-                if(result.modifiedCount > 0){
-                    res.status(200).json("OK");
-                }
-                else res.status(500).json(new BackendError(errorTypes.TodoItem, "Update didn't work").display())
-            }
-            else res.status(400).json(new BackendError(errorTypes.TodoItem, "Quantity not provided").display());
+        if (result.modifiedCount > 0) {
+          res.status(200).json("OK");
         }
-        else res.status(400).json(new BackendError(errorTypes.TodoItem, "ID not provided").display());
+        else res.status(500).json(new BackendError(errorTypes.TodoItem, "Update didn't work").display())
+      }
+      else res.status(400).json(new BackendError(errorTypes.TodoItem, "Quantity not provided").display());
     }
-    
-    export async function updateTodoItem(req : Request, res : Response) {
-        let updateResult : IUpdateOne | void = await baseTodoItem.updateTodoItem(
-            req.params.id, 
-            req.body.todoID, 
-            req.body.text, 
-            req.body.ingredientName, 
-            req.body.consumable,
-            req.body.underline,
-            req.body.priority
-        )
-        .catch((error : Error) => {
+    else res.status(400).json(new BackendError(errorTypes.TodoItem, "ID not provided").display());
+  }
+
+  export async function updateTodoItem(req: Request, res: Response) {
+    let updateResult: IUpdateOne | void = await baseTodoItem.updateTodoItem(
+      req.params.id,
+      req.body.todoID,
+      req.body.text,
+      req.body.ingredientName,
+      req.body.consumable,
+      req.body.underline,
+      req.body.priority
+    )
+      .catch((error: Error) => {
+        res.status(500).json({
+          errorMessage: error
+        });
+        return;
+      });
+
+    if (updateResult) {
+      if (updateResult.modifiedCount > 0) {
+        let result: boolean | void = await Todoist.updateItem(req.body.todoID, req.body.text)
+          .catch((error: Error) => {
             res.status(500).json({
-                errorMessage: error
+              errorMessage: error
             });
             return;
+          });
+
+        if (result) {
+          res.status(200).json({ status: "Ok" });
+        }
+        else {
+          res.status(500).json({ message: "Problem with todoist" });
+        }
+      } else {
+        res.status(401).json({ message: "Pas de modification" });
+      }
+    }
+    else {
+      res.status(500).json({
+        errorMessage: "Update failed"
+      });
+    }
+  }
+
+  export async function deleteTodoItem(req: Request, res: Response) {
+    const todoItem: ITodoItem | void = await baseTodoItem.getTodoItemByID(req.params.id)
+      .catch((error: Error | IBackendError) => {
+        if ("backendError" in error) res.status(500).json(error.display());
+        else res.status(500).json(new BackendError(errorTypes.TodoItem, error.message).display());
+        return;
+      });
+
+    if (todoItem) {
+      const deleteResult: IDeleteOne | void = await baseTodoItem.deleteTodoItemByID(req.params.id)
+        .catch((error: Error | IBackendError) => {
+          if ("backendError" in error) res.status(500).json(error.display());
+          else res.status(500).json(new BackendError(errorTypes.TodoItem, error.message).display());
+          return;
         });
 
-        if(updateResult)
-        {
-            if (updateResult.modifiedCount > 0) {
-                let result : boolean | void = await Todoist.updateItem(req.body.todoID, req.body.text)
-                .catch((error : Error) => {
-                    res.status(500).json({
-                        errorMessage: error
-                    });
-                    return;
-                });
-
-                if(result)
-                {
-                    res.status(200).json({status: "Ok"});
-                }
-                else
-                {
-                    res.status(500).json({ message: "Problem with todoist" });
-                }
-            } else {
-                res.status(401).json({ message: "Pas de modification" });
-            }
-        }
-        else
-        {
-            res.status(500).json({
-                errorMessage: "Update failed"
+      if (deleteResult) {
+        if (deleteResult.deletedCount > 0) {
+          const result: boolean | void = await Todoist.deleteItem(todoItem.todoID)
+            .catch((error: Error | IBackendError) => {
+              if ("backendError" in error) res.status(500).json(error.display());
+              else res.status(500).json(new BackendError(errorTypes.Todoist, error.message).display());
+              return;
             });
+          if (result) {
+            res.status(200).json({ status: "Ok" });
+          }
         }
-    }
-    
-    export async function deleteTodoItem(req : Request, res : Response) {
-        let todoItem : ITodoItem | void = await baseTodoItem.getTodoItemByID(req.params.id)
-        .catch((error : Error | IBackendError) => {
-            if("backendError" in error) res.status(500).json(error.display());
-            else res.status(500).json(new BackendError(errorTypes.TodoItem, error.message).display());
-            return;
-        });
-
-        if(todoItem)
-        {
-            let deleteResult : IDeleteOne | void = await baseTodoItem.deleteTodoItemByID(req.params.id)
-            .catch((error : Error | IBackendError) => {
-                if("backendError" in error) res.status(500).json(error.display());
-                else res.status(500).json(new BackendError(errorTypes.TodoItem, error.message).display());
-                return;
-            });
-
-            if(deleteResult)
-            {
-                if (deleteResult.deletedCount > 0) {
-
-                    let result : boolean | void = await Todoist.deleteItem(todoItem.todoID)
-                    .catch((error : Error | IBackendError) => {
-                        if("backendError" in error) res.status(500).json(error.display());
-                        else res.status(500).json(new BackendError(errorTypes.Todoist, error.message).display());
-                        return;
-                    });
-
-                    if(result)
-                    {
-                        res.status(200).json({ status: "Ok" });
-                    }
-                    else res.status(500).json({ errorMessage: "Error with todoist" });
-
-                } else res.status(400).json({ errorMessage: "No item deleted" });
-            }
-            else res.status(500).json({ errorMessage: "Error on delete" });
-        }
-        else res.status(500).json({ errorMessage: "TodoItem not found" });
-    }
+      }
+    } 
+  }
 }

@@ -33,7 +33,10 @@ export namespace Todoist {
         })
         if(!projectID) throw new Error("Project not found with name : " + name);
         
-        return api.getTasks({projectId: projectID});
+        return api.getTasks({projectId: projectID})
+        .catch((error : Error) => {
+            throw error;
+        });
     }
     
     export async function addItemsInProjectByName(projectName: string, itemText: string, description?: string, priority?: number): Promise<Task>{
@@ -51,7 +54,10 @@ export namespace Todoist {
         if(description) args.description = description;
         if(priority) args.priority = priority;
     
-        return api.addTask(args);
+        return api.addTask(args)
+        .catch((error : Error) => {
+            throw error;
+        });
     }
     
     export async function updateItem(itemID: string, content?: string, description?: string, priority?: number): Promise<boolean>{

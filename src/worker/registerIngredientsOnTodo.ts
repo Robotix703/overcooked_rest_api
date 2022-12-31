@@ -34,13 +34,19 @@ export async function updateTodoItem(existingIngredient : ITodoItem, newIngredie
 
   let newUnderline : string = handleUnderline(recipeName, underline);
 
-  await Todoist.updateItem(existingIngredient.todoID, ingredientText, newUnderline);
+  await Todoist.updateItem(existingIngredient.todoID.toString(), ingredientText, newUnderline)
+  .catch((error: Error) => {
+    throw error;
+  })
   await baseTodoItem.updateTodoItem(existingIngredient._id, existingIngredient.todoID, ingredientText, newIngredient.ingredient.name, existingIngredient.consumable, newUnderline);
 }
 
 export async function addTodoItem(ingredient : IIngredientWithQuantity, consumable : boolean, recipeName: string) : Promise<any> {
   const ingredientText : string = formatIngredient(ingredient.ingredient.name, ingredient.ingredient.unitOfMeasure, ingredient.quantity);
-  const todoItem : Task = await Todoist.addItemsInProjectByName(process.env.TODOPROJECT, ingredientText, recipeName);
+  const todoItem : Task = await Todoist.addItemsInProjectByName(process.env.TODOPROJECT, ingredientText, recipeName)
+  .catch((error: Error) => {
+    throw error;
+  })
   await baseTodoItem.registerTodoItem(
     todoItem.id.toString(), 
     ingredientText, 
@@ -52,14 +58,20 @@ export async function addTodoItem(ingredient : IIngredientWithQuantity, consumab
 export namespace registerIngredientsOnTodo {
   
   export async function registerIngredients(ingredientList : IIngredientWithQuantity[], recipeName: string) : Promise<void> {
-    for (let ingredient of ingredientList) {
-      let existingIngredient : ITodoItem | void = await handleTodoItem.checkIfIngredientIsAlreadyInTodo(ingredient.ingredient.name);
-      let consumable : boolean = await handleIngredient.getConsumable(ingredient.ingredient._id);
+    for (const ingredient of ingredientList) {
+      const existingIngredient : ITodoItem | void = await handleTodoItem.checkIfIngredientIsAlreadyInTodo(ingredient.ingredient.name);
+      const consumable : boolean = await handleIngredient.getConsumable(ingredient.ingredient._id);
   
       if(existingIngredient){
-        await updateTodoItem(existingIngredient, ingredient, recipeName);
+        await updateTodoItem(existingIngredient, ingredient, recipeName)
+        .catch((error: Error) => {
+          throw error;
+        });
       }else{
-        await addTodoItem(ingredient, consumable, recipeName);
+        await addTodoItem(ingredient, consumable, recipeName)
+        .catch((error: Error) => {
+          throw error;
+        });
       }
     }
   }
@@ -72,7 +84,10 @@ export namespace registerIngredientsOnTodo {
     if(existingIngredient){
       await updateTodoItem(existingIngredient, { ingredient: ingredient, quantity: quantity }, recipeName);
     }else{
-      await addTodoItem({ ingredient: ingredient, quantity: quantity }, consumable, recipeName);
+      await addTodoItem({ ingredient: ingredient, quantity: quantity }, consumable, recipeName)
+      .catch((error: Error) => {
+        throw error;
+      })
     }
   }
 }

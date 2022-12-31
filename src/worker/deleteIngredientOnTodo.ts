@@ -11,25 +11,25 @@ import { IDeleteOne, IUpdateOne } from "../models/mongoose";
 export namespace deleteIngredientsOnTodo {
     export async function deleteIngredient(ingredientWithQuantity: IIngredientWithQuantity) : Promise<void> {
         //TodoItem
-        let todoItem : ITodoItem | void = await baseTodoItem.getTodoItemByIngredientName(ingredientWithQuantity.ingredient.name);
+        const todoItem : ITodoItem | void = await baseTodoItem.getTodoItemByIngredientName(ingredientWithQuantity.ingredient.name);
         
         //TodoItem to update
         if(todoItem){
-            let parsedTodoItem : ITodoistText = parseItem(todoItem.text);
+            const parsedTodoItem : ITodoistText = parseItem(todoItem.text);
 
             if(parsedTodoItem.ingredientName != ingredientWithQuantity.ingredient.name) throw new Error("Wrong ingredient");
 
             //Delete todoItem
             if(parsedTodoItem.quantity == ingredientWithQuantity.quantity){
-                await Todoist.deleteItem(todoItem.todoID);
+                await Todoist.deleteItem(todoItem.todoID.toString());
 
-                let result : IDeleteOne = await baseTodoItem.deleteTodoItem(todoItem.todoID);
+                const result : IDeleteOne = await baseTodoItem.deleteTodoItem(todoItem.todoID);
                 if(result.deletedCount <= 0 || !result.ok) throw new Error("Error when deleting todoitem");
             } 
             //Update todoItem
             else if(parsedTodoItem.quantity > ingredientWithQuantity.quantity) {
-                let newQuantity : number = parsedTodoItem.quantity - ingredientWithQuantity.quantity;
-                let newContent : string = todoItem.text.replace(parsedTodoItem.quantity.toString(), newQuantity.toString());
+                const newQuantity : number = parsedTodoItem.quantity - ingredientWithQuantity.quantity;
+                const newContent : string = todoItem.text.replace(parsedTodoItem.quantity.toString(), newQuantity.toString());
 
                 await Todoist.updateItem(todoItem.todoID, newContent);
 
