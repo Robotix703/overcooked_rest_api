@@ -15,6 +15,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 export async function connectToDataBase(){
+    mongoose.set("strictQuery", false);
     return mongoose.connect(
         "mongodb://" + user + ":" + pwd + "@" + host + "/" + BDDname, 
         { useNewUrlParser: true, useUnifiedTopology: true }
