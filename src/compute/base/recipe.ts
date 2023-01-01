@@ -29,7 +29,7 @@ export namespace baseRecipe {
         return Recipe.find({ 'title': { "$regex": name, "$options": "i" } });
     }
 
-    export async function updateRecipe(_id : string, title : string, numberOfLunch : number, imagePath : string, category : string, duration : number, lastCooked : any) : Promise<IUpdateOne> {
+    export async function updateRecipe(_id : string, title : string, numberOfLunch : number, imagePath : string, category : string, duration : number, lastCooked : any, composition: string) : Promise<IUpdateOne> {
         let elementToUpdate : any = { _id: _id };
 
         if(title) elementToUpdate.title = title;
@@ -38,6 +38,7 @@ export namespace baseRecipe {
         if(category) elementToUpdate.category = category;
         if(duration) elementToUpdate.duration = duration;
         if(lastCooked) elementToUpdate.lastCooked = lastCooked;
+        if(composition) elementToUpdate.composition = composition;
 
         return Recipe.updateOne({ _id: _id }, elementToUpdate);
     }

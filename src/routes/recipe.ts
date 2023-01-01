@@ -14,9 +14,12 @@ recipeRoutes.get("/filter", recipeController.getFilteredRecipe);
 recipeRoutes.get("/byName", recipeController.getRecipeByName);
 recipeRoutes.get("/prettyRecipe", recipeController.getPrettyRecipe);
 recipeRoutes.get("/ingredientNeeded", recipeController.getIngredientsNeeded);
+recipeRoutes.get("/composition", recipeController.getComposition);
+recipeRoutes.get("/readComposition", recipeController.readComposition);
 
 //POST
 recipeRoutes.post("/", checkAuth, extractFile, recipeController.writeRecipe);
+recipeRoutes.post("/createComposition", recipeController.createComposition);
 
 //PUT
 recipeRoutes.put("/:id", checkAuth, recipeController.updateRecipe);
