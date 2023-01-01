@@ -5,6 +5,8 @@ import checkTodoList from "../worker/checkTodoList";
 import { resizeAll, resizeImage } from "../worker/tinypng";
 import { registerIngredientsOnTodo } from "../worker/registerIngredientsOnTodo";
 import { Todoist } from "../modules/todoist";
+import { baseRecipe } from "../compute/base/recipe";
+import { handleComposition } from "../compute/handleComposition";
 
 export const debugRoutes = express.Router();
 
@@ -107,4 +109,18 @@ debugRoutes.delete("/todoistDeleteItem", (req, res) => {
     .catch((error : Error) => {
         res.status(500).send(error.message);
     });
+});
+
+//Compute all recipe composition
+debugRoutes.get("/computeAllComposition", async (req, res) => {
+    const allRecipes = await baseRecipe.getAllRecipes();
+    const totalLength : number = allRecipes.length;
+    let current = 1;
+
+    for(let recipe of allRecipes){
+        console.log(current + "/" + totalLength + " : " + recipe.title);
+        await handleComposition.createComposition(recipe._id);
+        current++;
+    }
+    res.json(totalLength);
 });

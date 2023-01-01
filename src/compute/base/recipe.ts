@@ -7,6 +7,10 @@ export namespace baseRecipe {
         return Recipe.findById(recipeID);
     }
 
+    export async function getAllRecipes() : Promise<IRecipe[]> {
+        return Recipe.find();
+    }
+
     export async function updateLastCooked(recipeID : string) : Promise<IUpdateOne> {
         let recipeToUpdate : IRecipe = await Recipe.findById(recipeID);
         recipeToUpdate.lastCooked = new Date;
