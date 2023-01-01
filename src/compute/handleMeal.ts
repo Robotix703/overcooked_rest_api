@@ -5,7 +5,8 @@ import { baseMeal } from "./base/meal";
 import { baseRecipe } from "./base/recipe";
 
 import { IPantryInventory, PantryInventory } from "./pantryInventory";
-import { handleRecipe, IIngredientWithQuantity } from "./handleRecipe";
+import { IIngredientWithQuantity } from "./handleRecipe";
+import { handleComposition } from "./handleComposition";
 
 export interface IMealStatus {
     ingredientAvailable: IIngredientWithQuantity[],
@@ -63,7 +64,7 @@ export namespace handleMeal {
     export async function checkIfMealIsReady(mealID : string) : Promise<IMealStatus | void> {
         const meal : IMeal | void = await baseMeal.getMealByID(mealID);
         if(!meal) return;
-        const ingredientsNeeded : IIngredientWithQuantity[] = await handleRecipe.getIngredientList(meal.recipeID, meal.numberOfLunchPlanned);
+        const ingredientsNeeded : IIngredientWithQuantity[] = await handleComposition.readComposition(meal.recipeID);
     
         let ingredientAvailable = [];
         let ingredientUnavailable = [];

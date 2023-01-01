@@ -46,7 +46,7 @@ export namespace handleComposition {
         return baseRecipe.updateRecipe(recipeId, recipe.title, recipe.numberOfLunch, recipe.imagePath, recipe.category, recipe.duration, recipe.lastCooked, composition);
     }
 
-    export async function readComposition(recipeId: string) : Promise<object | null>{
+    export async function readComposition(recipeId: string) : Promise<IIngredientWithQuantity[] | null>{
         const recipe = await baseRecipe.getRecipeByID(recipeId);
         if(!recipe) return null;
 

@@ -4,8 +4,9 @@ import { IPantry } from "../models/pantry";
 import { baseMeal } from "./base/meal";
 import { basePantry } from "./base/pantry";
 import { baseRecipe } from "./base/recipe";
+import { handleComposition } from "./handleComposition";
 
-import { handleRecipe, IIngredientWithQuantity } from "./handleRecipe";
+import { IIngredientWithQuantity } from "./handleRecipe";
 
 export function comparePantriesByQuantity(x : IPantry, y : IPantry) : number {
     if(x.quantity > y.quantity) return 1;
@@ -59,7 +60,7 @@ export namespace updatePantryWhenMealIsDone {
 
         await baseRecipe.updateLastCooked(meal.recipeID);
     
-        const ingredientsNeeded : IIngredientWithQuantity[] = await handleRecipe.getIngredientList(meal.recipeID, meal.numberOfLunchPlanned);
+        const ingredientsNeeded : IIngredientWithQuantity[] = await handleComposition.readComposition(meal.recipeID);
         for(let ingredient of ingredientsNeeded){
             if(ingredient.ingredient.consumable)
             {

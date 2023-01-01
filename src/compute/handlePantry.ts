@@ -3,7 +3,6 @@ import { IUpdateOne } from "../models/mongoose";
 import { IPantry } from "../models/pantry";
 import { baseIngredient } from "./base/ingredient";
 import { basePantry } from "./base/pantry";
-import { IIngredientWithQuantity } from "./handleRecipe";
 import { IIngredient } from "../models/ingredient";
 
 export interface IPantryStatus {
