@@ -54,4 +54,14 @@ export namespace baseInstruction {
     export async function deleteOne(id: string) : Promise<IDeleteOne> {
         return Instruction.deleteOne({ _id: id });
     }
+
+    export async function getRecipeId(instructionId: string) : Promise<string | null> {
+        return Instruction.findOne({ _id: instructionId })
+        .then((instruction : IInstruction) => {
+            return instruction ? instruction.recipeID : null;
+        })
+        .catch((error: Error) => {
+            throw error;
+        })
+    }
 }

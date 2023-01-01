@@ -7,6 +7,7 @@ import { handleInstruction } from "../compute/handleInstructions";
 
 import { baseIngredient } from "../compute/base/ingredient";
 import { baseInstruction } from "../compute/base/instruction";
+import { handleComposition } from "../compute/handleComposition";
 
 export namespace instructionController {
   //POST
@@ -20,12 +21,20 @@ export namespace instructionController {
       req.body.cookingTime ?? undefined
     )
     .then((result: any) => {
-      res.status(201).json(result);
+      handleComposition.createComposition(req.body.recipeID)
+      .then((result: IUpdateOne	) => {
+        res.status(200).json({ message: result.modifiedCount ? "OK" : "NOK" });
+      })
+      .catch((error: Error) => {
+        res.status(500).json({
+          errorMessage: error
+        });
+      });
     })
     .catch((error: Error) => {
       res.status(500).json({
         errorMessage: error
-      })
+      });
     });
   }
   export async function writeInstructionByIngredientName(req: Request, res: Response){
@@ -44,7 +53,15 @@ export namespace instructionController {
         req.body.cookingTime ?? undefined
       )
       .then((result: any) => {
-        res.status(201).json(result);
+        handleComposition.createComposition(req.body.recipeID)
+        .then((result: IUpdateOne	) => {
+          res.status(200).json({ message: result.modifiedCount ? "OK" : "NOK" });
+        })
+        .catch((error: Error) => {
+          res.status(500).json({
+            errorMessage: error
+          });
+        });
       })
       .catch((error: Error) => {
         res.status(500).json({
@@ -124,6 +141,7 @@ export namespace instructionController {
     const ingredientsQuantity : number = req.body.ingredients.map((e: any) => e.quantity);
 
     const ingredientsID : string[] = await baseIngredient.getIngredientsIDByName(ingredientsName);
+    const recipeId : string = await baseInstruction.getRecipeId(req.params.id);
     
     baseInstruction.updateInstruction(
       req.params.id,
@@ -136,7 +154,15 @@ export namespace instructionController {
     )
     .then((result: IUpdateOne) => {
       if (result.modifiedCount > 0) {
-        res.status(200).json({status: "OK"});
+        handleComposition.createComposition(recipeId)
+        .then((result: IUpdateOne	) => {
+          res.status(200).json({ message: result.modifiedCount ? "OK" : "NOK" });
+        })
+        .catch((error: Error) => {
+          res.status(500).json({
+            errorMessage: error
+          });
+        });
       } else {
         res.status(401).json({ message: "Pas de modification" });
       }
@@ -150,15 +176,27 @@ export namespace instructionController {
 
   //DELETE
   export async function deleteInstruction(req: Request, res: Response){
+    const recipeId : string = await baseInstruction.getRecipeId(req.params.id);
+
     baseInstruction.deleteOne(req.params.id)
     .then((result: any) => {
       if (result.deletedCount > 0) {
-        res.status(200).json(result);
+        handleComposition.createComposition(recipeId)
+        .then((result: IUpdateOne	) => {
+          res.status(200).json({ message: result.modifiedCount ? "OK" : "NOK" });
+        })
+        .catch((error: Error) => {
+          console.error(error);
+          res.status(500).json({
+            errorMessage: error
+          });
+        });
       } else {
         res.status(500).json(result);
       }
     })
     .catch((error: Error) => {
+      console.error(error);
       res.status(500).json({
         errorMessage: error
       })
