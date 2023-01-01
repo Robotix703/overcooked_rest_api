@@ -1,7 +1,8 @@
 const baseMeal = require("../../build/compute/base/meal").baseMeal;
 const baseRecipe = require("../../build/compute/base/recipe").baseRecipe;
-const handleRecipe = require("../../build/compute/handleRecipe").handleRecipe;
+const handleComposition = require("../../build/compute/handleComposition").handleComposition;
 const handleMeal = require("../../build/compute/handleMeal").handleMeal;
+const baseInstruction = require("../../build/compute/base/instruction").baseInstruction;
 
 const registerIngredientsOnTodoFile = require("../../build/worker/registerIngredientsOnTodo").registerIngredientsOnTodo;
 const updatePantryWhenMealIsDone = require("../../build/compute/updatePantryWhenMealIsDone").updatePantryWhenMealIsDone;
@@ -87,10 +88,12 @@ test('writeMeal', async () => {
         }
     }
 
+    jest.spyOn(baseInstruction, "getRecipeId").mockResolvedValue(recipe);
+
     let spy = jest.spyOn(baseMeal, "register").mockResolvedValue(
         "OK"
     );
-    let spy2 = jest.spyOn(handleRecipe, "getIngredientList").mockResolvedValue(
+    let spy2 = jest.spyOn(handleComposition, "readComposition").mockResolvedValue(
         [ingredientWithQuantityConsumable]
     );
     let spy3 = jest.spyOn(registerIngredientsOnTodoFile, "registerIngredients").mockResolvedValue(
