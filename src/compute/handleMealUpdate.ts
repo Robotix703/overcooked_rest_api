@@ -2,10 +2,11 @@ import { IMeal } from "../models/meal";
 import { IDeleteOne } from "../models/mongoose";
 
 import { baseMeal } from "./base/meal";
-import { handleRecipe, IIngredientWithQuantity } from "./handleRecipe";
+import { IIngredientWithQuantity } from "./handleRecipe";
 
 import { deleteIngredientsOnTodo } from "../worker/deleteIngredientOnTodo";
 import { updateIngredientsOnTodo } from "../worker/updateIngredientOnTodo";
+import { handleComposition } from "./handleComposition";
 
 
 
@@ -16,7 +17,7 @@ export namespace handleMealUpdate {
         if(!mealToDelete) throw new Error("Meal not found");
         
         //Ingredient list
-        const ingredientsNeeded : IIngredientWithQuantity[] = await handleRecipe.getIngredientList(mealToDelete.recipeID, mealToDelete.numberOfLunchPlanned);
+        const ingredientsNeeded : IIngredientWithQuantity[] = await handleComposition.readComposition(mealToDelete.recipeID);
 
         //Update TodoList ans TodoItem
         for(let ingredientWithQuantity of ingredientsNeeded){
@@ -36,7 +37,7 @@ export namespace handleMealUpdate {
         if(!mealToUpdate) throw new Error("Meal not found");
         
         //Ingredient list
-        const ingredientsNeeded : IIngredientWithQuantity[] = await handleRecipe.getIngredientList(mealToUpdate.recipeID, mealToUpdate.numberOfLunchPlanned);
+        const ingredientsNeeded : IIngredientWithQuantity[] = await handleComposition.readComposition(mealToUpdate.recipeID);
 
         //Update TodoList ans TodoItem
         for(let ingredientWithQuantity of ingredientsNeeded){

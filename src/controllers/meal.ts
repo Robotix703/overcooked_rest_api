@@ -7,12 +7,13 @@ import { IUpdateOne } from "../models/mongoose";
 
 import { baseMeal } from "../compute/base/meal";
 import { baseRecipe } from "../compute/base/recipe";
-import { handleRecipe, IIngredientWithQuantity } from "../compute/handleRecipe";
+import { IIngredientWithQuantity } from "../compute/handleRecipe";
 import { handleMeal, IDisplayableMealStatus, IMealStatus } from "../compute/handleMeal";
 import { updatePantryWhenMealIsDone } from "../compute/updatePantryWhenMealIsDone";
 import { handleMealUpdate } from "../compute/handleMealUpdate";
 
 import { registerIngredientsOnTodo } from "../worker/registerIngredientsOnTodo";
+import { handleComposition } from "../compute/handleComposition";
 
 export namespace mealController{
   //POST
@@ -27,7 +28,7 @@ export namespace mealController{
     const recipe : IRecipe | void = await baseRecipe.getRecipeByID(req.body.recipeID);
     if(!recipe) throw new Error("Recipe not found");
     
-    const ingredientsNeeded : IIngredientWithQuantity[] = await handleRecipe.getIngredientList(req.body.recipeID, req.body.numberOfLunchPlanned);
+    const ingredientsNeeded : IIngredientWithQuantity[] = await handleComposition.readComposition(req.body.recipeID);
     
     await registerIngredientsOnTodo.registerIngredients(ingredientsNeeded, recipe.title)
     .then(() => {

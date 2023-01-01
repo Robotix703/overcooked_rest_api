@@ -9,6 +9,7 @@ import { baseRecipe } from "../compute/base/recipe";
 import { baseMeal } from "../compute/base/meal";
 import { handleRecipe, IIngredientWithQuantity, IPrettyRecipe } from "../compute/handleRecipe";
 import { resizeImage } from "../worker/tinypng";
+import { computeComposition, handleComposition } from "../compute/handleComposition";
 
 const isProduction = (process.env.NODE_ENV === "production");
 const protocol = isProduction ? "https" : "http";
@@ -35,6 +36,20 @@ export namespace recipeController {
         errorMessage: error
       })
     });
+  }
+  export async function createComposition(req: Request, res: Response){
+    if(!req.body.recipeId){
+      res.status(400).json({message: "Pas d'Id de recette"});
+      return;
+    }
+
+    return handleComposition.createComposition(req.body.recipeId as string)
+    .then((result: IUpdateOne	) => {
+      res.status(200).json({ message: result.modifiedCount ? "OK" : "NOK" });
+    })
+    .catch((error: Error) => {
+      res.status(500).json(error);
+    })
   }
 
   //GET
@@ -221,6 +236,34 @@ export namespace recipeController {
       });
     }
   }
+  export async function getComposition(req: Request, res: Response){
+    if(!req.query.recipeId){
+      res.status(400).json({message: "Pas d'Id de recette"});
+      return;
+    }
+
+    return computeComposition(req.query.recipeId as string)
+    .then((result: string) => {
+      res.status(200).json(result);
+    })
+    .catch((error: Error) => {
+      res.status(500).json(error);
+    })
+  }
+  export async function readComposition(req: Request, res: Response){
+    if(!req.query.recipeId){
+      res.status(400).json({message: "Pas d'Id de recette"});
+      return;
+    }
+
+    return handleComposition.readComposition(req.query.recipeId as string)
+    .then((result: object) => {
+      res.status(200).json(result);
+    })
+    .catch((error: Error) => {
+      res.status(500).json(error);
+    })
+  }
 
   //PUT
   export function updateRecipe(req: Request, res: Response){
@@ -231,7 +274,8 @@ export namespace recipeController {
       req.body.imagePath,
       req.body.category,
       req.body.duration,
-      req.body.lastCooked ? moment(req.body.expirationDate, "DD/MM/YYYY") : undefined
+      req.body.lastCooked ? moment(req.body.expirationDate, "DD/MM/YYYY") : undefined,
+      req.body.composition
     )
     .then((result: IUpdateOne) => {
       if (result.modifiedCount > 0) {

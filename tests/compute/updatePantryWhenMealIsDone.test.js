@@ -7,7 +7,7 @@ const consumeIngredientFromPantry = updatePantryFile.consumeIngredientFromPantry
 const basePantry = require("../../build/compute/base/pantry").basePantry;
 const baseMeal = require("../../build/compute/base/meal").baseMeal;
 const baseRecipe = require("../../build/compute/base/recipe").baseRecipe;
-const handleRecipe = require("../../build/compute/handleRecipe").handleRecipe;
+const handleComposition = require("../../build/compute/handleComposition").handleComposition;
 const updatePantryWhenMealIsDone = updatePantryFile.updatePantryWhenMealIsDone;
 
 let date = new Date();
@@ -126,7 +126,7 @@ test('updatePantryWhenMealsIsDone', async () => {
         return "OK";
     });
 
-    let getIngredientListSpy = jest.spyOn(handleRecipe, "getIngredientList").mockImplementationOnce(() => {
+    let getIngredientListSpy = jest.spyOn(handleComposition, "readComposition").mockImplementationOnce(() => {
         return [ingredientWithQuantity];
     });
 
@@ -142,5 +142,5 @@ test('updatePantryWhenMealsIsDone', async () => {
 
     expect(getMealByIDSpy).toHaveBeenCalledWith(meal._id);
     expect(updateLastCookedSpy).toHaveBeenCalledWith(meal.recipeID);
-    expect(getIngredientListSpy).toHaveBeenCalledWith(meal.recipeID, meal.numberOfLunchPlanned);
+    expect(getIngredientListSpy).toHaveBeenCalledWith(meal.recipeID);
 });

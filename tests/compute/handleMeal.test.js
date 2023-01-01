@@ -1,6 +1,7 @@
 const baseMeal = require("../../build/compute/base/meal").baseMeal;
 const baseRecipe = require("../../build/compute/base/recipe").baseRecipe;
 
+const handleComposition = require("../../build/compute/handleComposition").handleComposition;
 const handleMealFunction = require("../../build/compute/handleMeal");
 const handleMeal = handleMealFunction.handleMeal;
 const checkDisponibility = handleMealFunction.checkDisponibility;
@@ -31,7 +32,7 @@ let pantryInventoryWrongQuantity = {
 
 let meal = {
     _id: "date",
-    recipeID: "recipeID",
+    recipeID: "string",
     numberOfLunchPlanned: 1
 }
 let meal2 = {
@@ -162,14 +163,14 @@ test('checkIfMealIsReady with Ingredient not consumable', async () => {
         return meal;
     });
 
-    let handleRecipeSpy = jest.spyOn(handleRecipe, "getIngredientList").mockImplementationOnce(() => {
+    let handleRecipeSpy = jest.spyOn(handleComposition, "readComposition").mockImplementationOnce(() => {
         return [ingredientWithQuantityNotConsumable];
     });
     
     let result = await handleMeal.checkIfMealIsReady(meal._id);
 
     expect(baseMealSpy).toHaveBeenCalledWith(meal._id);
-    expect(handleRecipeSpy).toHaveBeenCalledWith(meal.recipeID, meal.numberOfLunchPlanned);
+    expect(handleRecipeSpy).toHaveBeenCalledWith(meal.recipeID);
     expect(JSON.parse(JSON.stringify(result))).toMatchObject({
         ingredientAvailable: [],
         ingredientAlmostExpire: [],
@@ -182,7 +183,7 @@ test('checkIfMealIsReady with Ingredient consumable available', async () => {
         return meal;
     });
 
-    let handleRecipeSpy = jest.spyOn(handleRecipe, "getIngredientList").mockImplementationOnce(() => {
+    let handleRecipeSpy = jest.spyOn(handleComposition, "readComposition").mockImplementationOnce(() => {
         return [ingredientWithQuantityConsumable];
     });
 
@@ -194,7 +195,7 @@ test('checkIfMealIsReady with Ingredient consumable available', async () => {
     let result = await handleMeal.checkIfMealIsReady(meal._id);
 
     expect(baseMealSpy).toHaveBeenCalledWith(meal._id);
-    expect(handleRecipeSpy).toHaveBeenCalledWith(meal.recipeID, meal.numberOfLunchPlanned);
+    expect(handleRecipeSpy).toHaveBeenCalledWith(meal.recipeID);
     expect(JSON.parse(JSON.stringify(result))).toMatchObject({
         ingredientAvailable: [ingredientWithQuantityConsumable],
         ingredientAlmostExpire: [],
@@ -207,7 +208,7 @@ test('checkIfMealIsReady with Ingredient consumable almost expired', async () =>
         return meal;
     });
 
-    let handleRecipeSpy = jest.spyOn(handleRecipe, "getIngredientList").mockImplementationOnce(() => {
+    let handleRecipeSpy = jest.spyOn(handleComposition, "readComposition").mockImplementationOnce(() => {
         return [ingredientWithQuantityConsumable];
     });
 
@@ -219,7 +220,7 @@ test('checkIfMealIsReady with Ingredient consumable almost expired', async () =>
     let result = await handleMeal.checkIfMealIsReady(meal._id);
 
     expect(baseMealSpy).toHaveBeenCalledWith(meal._id);
-    expect(handleRecipeSpy).toHaveBeenCalledWith(meal.recipeID, meal.numberOfLunchPlanned);
+    expect(handleRecipeSpy).toHaveBeenCalledWith(meal.recipeID);
     expect(JSON.parse(JSON.stringify(result))).toMatchObject({
         ingredientAvailable: [],
         ingredientAlmostExpire: [ingredientWithQuantityConsumable],
@@ -232,7 +233,7 @@ test('checkIfMealIsReady with Ingredient consumable unavailable', async () => {
         return meal;
     });
 
-    let handleRecipeSpy = jest.spyOn(handleRecipe, "getIngredientList").mockImplementationOnce(() => {
+    let handleRecipeSpy = jest.spyOn(handleComposition, "readComposition").mockImplementationOnce(() => {
         return [ingredientWithQuantityConsumable];
     });
 
@@ -244,7 +245,7 @@ test('checkIfMealIsReady with Ingredient consumable unavailable', async () => {
     let result = await handleMeal.checkIfMealIsReady(meal._id);
 
     expect(baseMealSpy).toHaveBeenCalledWith(meal._id);
-    expect(handleRecipeSpy).toHaveBeenCalledWith(meal.recipeID, meal.numberOfLunchPlanned);
+    expect(handleRecipeSpy).toHaveBeenCalledWith(meal.recipeID);
     expect(JSON.parse(JSON.stringify(result))).toMatchObject({
         ingredientAvailable: [],
         ingredientAlmostExpire: [],
