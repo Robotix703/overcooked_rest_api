@@ -1,5 +1,4 @@
 import express from "express";
-import { checkPantry, checkPlannedMeals } from "../worker/dailyCheck";
 import checkTodoList from "../worker/checkTodoList";
 
 import { resizeAll, resizeImage } from "../worker/tinypng";
@@ -27,18 +26,6 @@ debugRoutes.get("/checkTodoList", (req, res) => {
     checkTodoList();
 
     res.send("OK");
-});
-
-//dailyCheck
-debugRoutes.get("/checkPlannedMeals", (req, res) => {
-    checkPlannedMeals();
-
-    res.send("OK");
-});
-debugRoutes.get("/checkPantry", async (req, res) => {
-    let message = await checkPantry();
-
-    res.send(message);
 });
 
 //RegisterIngredientsOnTodo
