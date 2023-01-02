@@ -20,7 +20,6 @@ BDD.connectToDataBase()
 });
 
 //Routes
-import { userRoutes } from "./routes/user";
 import { ingredientRoutes } from "./routes/ingredients";
 import { instructionRoutes } from "./routes/instruction";
 import { recipeRoutes } from "./routes/recipe";
@@ -28,6 +27,7 @@ import { pantryRoutes } from "./routes/pantry";
 import { mealRoutes } from "./routes/meal";
 import { todoItemRoutes } from "./routes/todoItem";
 import { debugRoutes } from './routes/debug';
+import { checkAPIKey } from './apiKey';
 
 const app = express();
 
@@ -38,7 +38,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/images", express.static(path.join("images")));
 
 //Use routes
-app.use("/api/user", userRoutes);
+app.post("/api/login", (req: any, res: any) => {
+    const result = checkAPIKey(req.body.apiKey as string);
+
+    if(result) res.status(200).json("OK");
+    else res.status(401).json({errorMessage: "Wrong API Key"});
+});
 app.use("/api/ingredient", ingredientRoutes);
 app.use("/api/instruction", instructionRoutes);
 app.use("/api/recipe", recipeRoutes);
