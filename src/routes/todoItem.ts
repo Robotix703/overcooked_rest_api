@@ -1,7 +1,5 @@
 import express from "express";
 
-import checkAuth from "../middleware/check-auth";
-
 import { todoItemController } from "../controllers/todoItem";
 
 export const todoItemRoutes = express.Router();
@@ -10,11 +8,11 @@ export const todoItemRoutes = express.Router();
 todoItemRoutes.get("/", todoItemController.readTodoItems);
 
 //POST
-todoItemRoutes.post("/", checkAuth, todoItemController.writeTodoItem);
-todoItemRoutes.post("/updateQuantity/:id", checkAuth, todoItemController.updateQuantity);
+todoItemRoutes.post("/", todoItemController.writeTodoItem);
+todoItemRoutes.post("/updateQuantity/:id", todoItemController.updateQuantity);
 
 //PUT
-todoItemRoutes.put("/:id", checkAuth, todoItemController.updateTodoItem);
+todoItemRoutes.put("/:id", todoItemController.updateTodoItem);
 
 //DELETE
-todoItemRoutes.delete("/:id", checkAuth, todoItemController.deleteTodoItem);
+todoItemRoutes.delete("/:id", todoItemController.deleteTodoItem);

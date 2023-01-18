@@ -1,6 +1,5 @@
 import express from "express";
 
-import checkAuth from "../middleware/check-auth";
 import extractFile from "../middleware/file";
 
 import { recipeController } from "../controllers/recipe";
@@ -18,11 +17,11 @@ recipeRoutes.get("/composition", recipeController.getComposition);
 recipeRoutes.get("/readComposition", recipeController.readComposition);
 
 //POST
-recipeRoutes.post("/", checkAuth, extractFile, recipeController.writeRecipe);
+recipeRoutes.post("/", extractFile, recipeController.writeRecipe);
 recipeRoutes.post("/createComposition", recipeController.createComposition);
 
 //PUT
-recipeRoutes.put("/:id", checkAuth, recipeController.updateRecipe);
+recipeRoutes.put("/:id", recipeController.updateRecipe);
 
 //DELETE
-recipeRoutes.delete("/:id", checkAuth, recipeController.deleteRecipe);
+recipeRoutes.delete("/:id", recipeController.deleteRecipe);

@@ -1,6 +1,5 @@
 import express from "express";
 
-import checkAuth from "../middleware/check-auth";
 import extractFile from "../middleware/file";
 
 import { ingredientController } from "../controllers/ingredient";
@@ -18,10 +17,10 @@ ingredientRoutes.get("/forAutocomplete", ingredientController.getAllIngredientFo
 ingredientRoutes.get("/duplicatesCheck", ingredientController.duplicatesCheck);
 
 //POST
-ingredientRoutes.post("/", checkAuth, extractFile, ingredientController.writeIngredient);
+ingredientRoutes.post("/", extractFile, ingredientController.writeIngredient);
 
 //PUT
-ingredientRoutes.put("/:id", checkAuth, ingredientController.editIngredient);
+ingredientRoutes.put("/:id", ingredientController.editIngredient);
 
 //DELETE
-ingredientRoutes.delete("/:id", checkAuth, ingredientController.deleteIngredient);
+ingredientRoutes.delete("/:id", ingredientController.deleteIngredient);

@@ -1,7 +1,5 @@
 import express from "express";
 
-import checkAuth from "../middleware/check-auth";
-
 import { pantryController } from "../controllers/pantry";
 
 export const pantryRoutes = express.Router();
@@ -14,14 +12,14 @@ pantryRoutes.get("/fullPantryInventory", pantryController.getFullPantryInventory
 pantryRoutes.get("/byID", pantryController.getPantryByID);
 
 //POST
-pantryRoutes.post("/", checkAuth, pantryController.writePantry);
-pantryRoutes.post("/createByIngredientName", checkAuth, pantryController.writePantryByIngredientName);
-pantryRoutes.post("/freeze", checkAuth, pantryController.freezePantry);
-pantryRoutes.post("/refreshTodoist", checkAuth, pantryController.refreshTodoist);
-pantryRoutes.post("/buyAgain", checkAuth, pantryController.buyAgain);
+pantryRoutes.post("/", pantryController.writePantry);
+pantryRoutes.post("/createByIngredientName", pantryController.writePantryByIngredientName);
+pantryRoutes.post("/freeze", pantryController.freezePantry);
+pantryRoutes.post("/refreshTodoist", pantryController.refreshTodoist);
+pantryRoutes.post("/buyAgain", pantryController.buyAgain);
 
 //PUT
-pantryRoutes.put("/:id", checkAuth, pantryController.updatePantry);
+pantryRoutes.put("/:id", pantryController.updatePantry);
 
 //DELETE
-pantryRoutes.delete("/:id", checkAuth, pantryController.deletePantry);
+pantryRoutes.delete("/:id", pantryController.deletePantry);

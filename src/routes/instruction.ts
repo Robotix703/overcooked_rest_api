@@ -1,7 +1,5 @@
 import express from "express";
 
-import checkAuth from "../middleware/check-auth";
-
 import { instructionController } from "../controllers/instruction"; 
 
 export const instructionRoutes = express.Router();
@@ -13,11 +11,11 @@ instructionRoutes.get("/countForRecipe", instructionController.getInstructionCou
 instructionRoutes.get("/byID", instructionController.getInstructionByID);
 
 //POST
-instructionRoutes.post("/", checkAuth, instructionController.writeInstruction);
-instructionRoutes.post("/byIngredientName", checkAuth, instructionController.writeInstructionByIngredientName);
+instructionRoutes.post("/", instructionController.writeInstruction);
+instructionRoutes.post("/byIngredientName", instructionController.writeInstructionByIngredientName);
 
 //PUT
-instructionRoutes.put("/:id", checkAuth, instructionController.updateInstruction);
+instructionRoutes.put("/:id", instructionController.updateInstruction);
 
 //DELETE
-instructionRoutes.delete("/:id", checkAuth, instructionController.deleteInstruction);
+instructionRoutes.delete("/:id", instructionController.deleteInstruction);

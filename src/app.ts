@@ -28,6 +28,7 @@ import { mealRoutes } from "./routes/meal";
 import { todoItemRoutes } from "./routes/todoItem";
 import { debugRoutes } from './routes/debug';
 import { checkAPIKey } from './apiKey';
+import checkAuth from './middleware/check-auth';
 
 const app = express();
 
@@ -44,16 +45,16 @@ app.post("/api/login", (req: any, res: any) => {
     if(result) res.status(200).json("OK");
     else res.status(401).json({errorMessage: "Wrong API Key"});
 });
-app.use("/api/ingredient", ingredientRoutes);
-app.use("/api/instruction", instructionRoutes);
-app.use("/api/recipe", recipeRoutes);
-app.use("/api/pantry", pantryRoutes);
-app.use("/api/meal", mealRoutes);
-app.use("/api/todoItem", todoItemRoutes);
+app.use("/api/ingredient", checkAuth, ingredientRoutes);
+app.use("/api/instruction", checkAuth, instructionRoutes);
+app.use("/api/recipe", checkAuth, recipeRoutes);
+app.use("/api/pantry", checkAuth, pantryRoutes);
+app.use("/api/meal", checkAuth, mealRoutes);
+app.use("/api/todoItem", checkAuth, todoItemRoutes);
 
 if(process.env.ALLOWDEBUG == "true"){
     console.log("Debug allowed");
-    app.use("/debug", debugRoutes);
+    app.use("/debug", checkAuth, debugRoutes);
 }
 else {
     console.log("No debug allowed");
