@@ -41,9 +41,7 @@ app.use("/images", express.static(path.join("images")));
 //Use routes
 app.post("/api/login", (req: any, res: any) => {
     const result = checkAPIKey(req.body.apiKey as string);
-
-    if(result) res.status(200).json("OK");
-    else res.status(401).json({errorMessage: "Wrong API Key"});
+    res.status(200).json(result);
 });
 app.use("/api/ingredient", checkAuth, ingredientRoutes);
 app.use("/api/instruction", checkAuth, instructionRoutes);
