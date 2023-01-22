@@ -60,7 +60,7 @@ export namespace PantryInventory{
     }
     
     export async function getFullInventory() : Promise<IPrettyPantry[]> {
-        const allPantry : IPantry[] = await basePantry.getAllPantries(null, null);
+        const allPantry : IPantry[] = await basePantry.getAllPantries();
     
         let prettyPantries : IPrettyPantry[] = [];
     

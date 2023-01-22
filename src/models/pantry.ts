@@ -6,6 +6,16 @@ export interface IPantry {
   frozen: boolean | null
 }
 
+export interface IDiplayablePantry {
+  _id: string
+  ingredientName: string
+  ingredientImage: string
+  quantity: number
+  quantityUnitOfMeasure: string
+  expirationDate: string | null
+  frozen: boolean | null
+}
+
 const mongoose = require('mongoose');
 
 export const pantrySchema = mongoose.Schema({

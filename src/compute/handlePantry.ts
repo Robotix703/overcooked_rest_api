@@ -1,6 +1,6 @@
 import { registerIngredientsOnTodo } from "../worker/registerIngredientsOnTodo";
 import { IUpdateOne } from "../models/mongoose";
-import { IPantry } from "../models/pantry";
+import { IDiplayablePantry, IPantry } from "../models/pantry";
 import { baseIngredient } from "./base/ingredient";
 import { basePantry } from "./base/pantry";
 import { IIngredient } from "../models/ingredient";
@@ -74,5 +74,24 @@ export namespace handlePantry {
             }
         }
         return almostExpired;
+    }
+
+    export async function getPrettyPantries(): Promise<IDiplayablePantry[]>{
+        let pantries = await basePantry.getAllPantries();
+
+        let prettyPantries: IDiplayablePantry[] = [];
+        for(let pantry of pantries){
+            let ingredient: IIngredient = await baseIngredient.getIngredientByID(pantry.ingredientID as string);
+            prettyPantries.push({
+                _id: pantry._id,
+                ingredientName: ingredient.name,
+                ingredientImage: ingredient.imagePath,
+                quantity: pantry.quantity,
+                quantityUnitOfMeasure: ingredient.unitOfMeasure,
+                expirationDate: pantry.expirationDate.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" }),
+                frozen: pantry.frozen
+            });
+        }
+        return prettyPantries;
     }
 }

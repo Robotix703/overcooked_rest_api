@@ -10,6 +10,7 @@ pantryRoutes.get("/quantityLeft", pantryController.quantityLeft);
 pantryRoutes.get("/getNearestExpirationDate", pantryController.getNearestExpirationDate);
 pantryRoutes.get("/fullPantryInventory", pantryController.getFullPantryInventory);
 pantryRoutes.get("/byID", pantryController.getPantryByID);
+pantryRoutes.get("/prettyPantries", pantryController.getPrettyPantries);
 
 //POST
 pantryRoutes.post("/", pantryController.writePantry);
