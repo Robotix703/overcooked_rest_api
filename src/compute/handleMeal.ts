@@ -24,7 +24,8 @@ export interface IDisplayableMealStatus {
     title: string,
     numberOfLunch: number,
     imagePath: string,
-    state: IMealStatus
+    state: IMealStatus,
+    recipeId: string
 }
 
 let g_pantryInventory : IPantryInventory[];
@@ -128,7 +129,8 @@ export namespace handleMeal {
                 title: recipeData.title,
                 numberOfLunch: meal.numberOfLunchPlanned,
                 imagePath: recipeData.imagePath,
-                state: mealState
+                state: mealState,
+                recipeId: recipeData._id
             });
         }
         return mealData;
