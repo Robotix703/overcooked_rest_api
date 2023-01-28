@@ -15,8 +15,8 @@ export namespace basePantry {
         return Pantry.updateOne({ _id: pantry._id }, pantry);
     }
 
-    export async function getAllPantries(pageSize: number | undefined, currentPage: number | undefined) : Promise<IPantry[]> {
-        return Pantry.find().limit(pageSize).skip(pageSize * (currentPage - 1));;
+    export async function getAllPantries() : Promise<IPantry[]> {
+        return Pantry.find();
     }
 
     export async function getPantryByID(pantryID : string) : Promise<IPantry> {

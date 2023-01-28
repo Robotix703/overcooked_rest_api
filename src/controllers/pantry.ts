@@ -96,10 +96,7 @@ export namespace pantryController {
 
     //GET
     export async function readPantries(req: any, res: Response) {
-        const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 20;
-        const currentPage = req.query.currentPage ? parseInt(req.query.currentPage) + 1 : 1;
-
-        let fetchedPantries: IPantry[] | void = await basePantry.getAllPantries(pageSize, currentPage)
+        let fetchedPantries: IPantry[] | void = await basePantry.getAllPantries()
             .catch((error: Error) => {
                 res.status(500).json({
                     errorMessage: error
@@ -121,6 +118,15 @@ export namespace pantryController {
         }
 
         res.status(200).json(data);
+    }
+    export async function getPrettyPantries(req: any, res: any){
+        handlePantry.getPrettyPantries()
+        .then(data => {
+            res.status(200).json(data);
+        })
+        .catch(error => {
+            res.status(500).json(error);
+        });
     }
     export async function quantityLeft(req: Request, res: Response) {
         basePantry.getByIngredientID(req.query.ingredientID as string)

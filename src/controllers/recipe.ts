@@ -7,7 +7,7 @@ import { IDeleteOne, IUpdateOne } from "../models/mongoose";
 
 import { baseRecipe } from "../compute/base/recipe";
 import { baseMeal } from "../compute/base/meal";
-import { handleRecipe, IIngredientWithQuantity, IPrettyRecipe } from "../compute/handleRecipe";
+import { handleRecipe, IIngredientWithQuantity, IPrettyInstruction, IPrettyRecipe } from "../compute/handleRecipe";
 import { resizeImage } from "../worker/tinypng";
 import { computeComposition, handleComposition } from "../compute/handleComposition";
 
@@ -180,6 +180,29 @@ export namespace recipeController {
         errorMessage: "RecipeID not found"
       });
     }
+  }
+  export async function getInstructions(req: Request, res: Response){
+    let recipeID: string | void;
+    if (req.query.recipeID) {
+      recipeID = req.query.recipeID as string;
+      handleRecipe.getInstructionsByRecipeID(recipeID)
+      .then((result: IPrettyInstruction[]) => {
+        res.status(200).json(result);
+      })
+      .catch((error: Error) => {
+        res.status(500).json({
+          errorMessage: error
+        });
+        return;
+      });
+    }
+    else
+    {
+      res.status(400).json({
+        errorMessage: "RecipeID not found"
+      });
+    }
+    
   }
   export async function getIngredientsNeeded(req: Request, res: Response){
     let recipeID: string | void;
