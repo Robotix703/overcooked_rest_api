@@ -15,6 +15,7 @@ recipeRoutes.get("/prettyRecipe", recipeController.getPrettyRecipe);
 recipeRoutes.get("/ingredientNeeded", recipeController.getIngredientsNeeded);
 recipeRoutes.get("/composition", recipeController.getComposition);
 recipeRoutes.get("/readComposition", recipeController.readComposition);
+recipeRoutes.get("/instructions", recipeController.getInstructions);
 
 //POST
 recipeRoutes.post("/", extractFile, recipeController.writeRecipe);
