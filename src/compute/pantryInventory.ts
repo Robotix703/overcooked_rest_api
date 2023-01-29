@@ -20,6 +20,7 @@ export interface IPrettyPantry {
     ingredientName: string,
     ingredientImagePath: string,
     ingredientFreezable: boolean,
+    ingredientUnitOfMeasure: string,
     pantries: IPantry[]
 }
 
@@ -78,6 +79,7 @@ export namespace PantryInventory{
                     ingredientName: ingredientInfo.name,
                     ingredientImagePath: ingredientInfo.imagePath,
                     ingredientFreezable: ingredientInfo.freezable,
+                    ingredientUnitOfMeasure: ingredientInfo.unitOfMeasure,
                     pantries: [pantry]
                 })
             }
