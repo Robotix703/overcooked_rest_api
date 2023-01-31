@@ -18,7 +18,7 @@ import { handleComposition } from "../compute/handleComposition";
 export namespace mealController{
   //POST
   export async function writeMeal(req : Request, res : Response) {
-    const registerResult = await baseMeal.register(req.body.recipeID, req.body.numberOfLunchPlanned)
+    const registerResult = await baseMeal.register(req.body.recipeID)
     .catch((error : Error) => {
       res.status(500).json({
         errorMessage: error
@@ -84,10 +84,7 @@ export namespace mealController{
 
   //GET
   export async function readMeals(req : any, res : Response) {
-    const pageSize : number = req.query.pageSize ? parseInt(req.query.pageSize) : 20;
-    const currentPage : number = req.query.currentPage ? parseInt(req.query.currentPage) + 1 : 1;
-
-    let fetchedMeals : IMeal[] | void = await baseMeal.getAllMeals(pageSize, currentPage)
+    let fetchedMeals : IMeal[] | void = await baseMeal.getAllMeals()
     .catch((error : Error) => {
       res.status(500).json({
         errorMessage: error
@@ -135,7 +132,7 @@ export namespace mealController{
 
   //PUT
   export async function updateMeal(req : Request, res: Response) {
-    baseMeal.update(req.params.id, req.body.recipeID, req.body.numberOfLunchPlanned)
+    baseMeal.update(req.params.id, req.body.recipeID)
     .then((result : IUpdateOne) => {
       if (result.modifiedCount > 0) {
         res.status(200).json(result);

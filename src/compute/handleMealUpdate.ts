@@ -48,6 +48,6 @@ export namespace handleMealUpdate {
         }
 
         //Update meal
-        return baseMeal.update(mealID, mealToUpdate.recipeID, mealToUpdate.numberOfLunchPlanned);
+        return baseMeal.update(mealID, mealToUpdate.recipeID);
     }
 }

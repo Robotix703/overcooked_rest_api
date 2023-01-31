@@ -7,18 +7,21 @@ export namespace baseMeal {
         return Meal.findById(mealID);
     }
 
-    export async function getAllMeals(pageSize: number | null, currentPage: number | null) : Promise<IMeal[] | void> {
-        return Meal.find().limit(pageSize).skip(pageSize * (currentPage - 1));
+    export async function getMealByRecipeId(recipeId: string): Promise<IMeal | void>{
+        return Meal.findOne({ recipeID: recipeId });
+    }
+
+    export async function getAllMeals() : Promise<IMeal[] | void> {
+        return Meal.find();
     }
 
     export async function deleteMeal(mealID : string) : Promise<IDeleteOne> {
         return Meal.deleteOne({ _id: mealID });
     }
 
-    export async function register(recipeID: string, numberOfLunchPlanned: number) : Promise<any | Error> {
+    export async function register(recipeID: string) : Promise<any | Error> {
         const meal = new Meal({
-            recipeID: recipeID,
-            numberOfLunchPlanned: numberOfLunchPlanned
+            recipeID: recipeID
         });
 
         return meal.save()
@@ -34,11 +37,10 @@ export namespace baseMeal {
         return Meal.count();
     }
 
-    export async function update(_id: string, recipeID: string, numberOfLunchPlanned: number) : Promise<IUpdateOne> {
+    export async function update(_id: string, recipeID: string) : Promise<IUpdateOne> {
         const meal = new Meal({
             _id: _id,
-            recipeID: recipeID,
-            numberOfLunchPlanned: numberOfLunchPlanned
+            recipeID: recipeID
         });
         
         return Meal.updateOne({ _id: _id }, meal);

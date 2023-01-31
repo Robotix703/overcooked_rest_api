@@ -22,7 +22,6 @@ export interface IMealPrettyStatus {
 export interface IDisplayableMealStatus {
     _id: string,
     title: string,
-    numberOfLunch: number,
     imagePath: string,
     state: IMealStatus,
     recipeId: string
@@ -89,7 +88,7 @@ export namespace handleMeal {
     }
 
     export async function checkMealList() : Promise<IMealPrettyStatus[] | void> {
-        const allMeals : IMeal[] | void = await baseMeal.getAllMeals(null, null);
+        const allMeals : IMeal[] | void = await baseMeal.getAllMeals();
         if(!allMeals) return ;
         await handleMeal.initPantryInventory();
     
@@ -110,7 +109,7 @@ export namespace handleMeal {
     }
     
     export async function displayMealWithRecipeAndState() : Promise<IDisplayableMealStatus[] | void> {
-        const allMeals : IMeal[] | void = await baseMeal.getAllMeals(null, null);
+        const allMeals : IMeal[] | void = await baseMeal.getAllMeals();
         if(!allMeals) return;
 
         await handleMeal.initPantryInventory();
@@ -127,7 +126,6 @@ export namespace handleMeal {
             mealData.push({
                 _id: meal._id,
                 title: recipeData.title,
-                numberOfLunch: meal.numberOfLunchPlanned,
                 imagePath: recipeData.imagePath,
                 state: mealState,
                 recipeId: recipeData._id
@@ -137,7 +135,7 @@ export namespace handleMeal {
     }
     
     export async function getMealNumber() : Promise<number | void> {
-        const allMeals : IMeal[] | void = await baseMeal.getAllMeals(null, null);
+        const allMeals : IMeal[] | void = await baseMeal.getAllMeals();
         if(!allMeals) return ;
 
         return allMeals.length;
