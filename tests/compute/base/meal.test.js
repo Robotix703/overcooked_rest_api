@@ -5,8 +5,7 @@ const baseMeal = require("../../../build/compute/base/meal").baseMeal;
 
 let meal = {
     _id: "62ade7624d9e831eddc8320b",
-    recipeID: "recipeID",
-    numberOfLunchPlanned: 10
+    recipeID: "recipeID"
 }
 
 test('getMealByID', async () => {
