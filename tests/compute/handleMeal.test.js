@@ -317,7 +317,6 @@ test('displayMealWithRecipeAndState', async () => {
     expect(result.length).toBe(1);
     expect(prettyResult._id).toBe(meal._id);
     expect(prettyResult.title).toBe(recipe.title);
-    expect(prettyResult.numberOfLunch).toBe(meal.numberOfLunchPlanned);
     expect(prettyResult.imagePath).toBe(recipe.imagePath);
     expect(prettyResult.state).toMatchObject({
         ingredientAvailable: [],

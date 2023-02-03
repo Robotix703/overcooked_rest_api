@@ -44,9 +44,21 @@ export namespace pantryController {
                 })
             });
     }
-    export function writePantry(req: Request, res: Response) {
+    export async function writePantry(req: Request, res: Response) {
+        let ingredientId: string = req.body.ingredientID;
+        if(req.body.ingredientName){
+            let ingredient: IIngredient | null = await baseIngredient.getIngredientByName(req.body.ingredientName);
+            if(ingredient){
+                ingredientId = ingredient._id;
+            }
+            else{
+                res.status(400).json("Ingredient not found");
+                return;
+            }
+        }
+        
         basePantry.register(
-            req.body.ingredientID,
+            ingredientId,
             req.body.quantity,
             req.body.expirationDate ? moment(req.body.expirationDate, "DD/MM/YYYY") : null,
             req.body.frozen ?? false

@@ -18,7 +18,7 @@ import { handleComposition } from "../compute/handleComposition";
 export namespace mealController{
   //POST
   export async function writeMeal(req : Request, res : Response) {
-    const registerResult = await baseMeal.register(req.body.recipeID, req.body.numberOfLunchPlanned)
+    const registerResult = await baseMeal.register(req.body.recipeID)
     .catch((error : Error) => {
       res.status(500).json({
         errorMessage: error
@@ -39,25 +39,37 @@ export namespace mealController{
     })
   }
   export async function consumeMeal(req : Request, res : Response) {
+    let mealId: string;
     if (req.body.mealID) {
-      let error = await updatePantryWhenMealIsDone.updatePantryWhenMealsIsDone(req.body.mealID);
-      if(error)
-      {
-        res.status(500).json({ errorMessage: error });
+      mealId = req.body.mealID;
+    }
+    else if(req.body.recipeID){
+      const mealFound = await baseMeal.getMealByRecipeId(req.body.recipeID);
+      if(mealFound) mealId = mealFound._id;
+      else{
+        res.status(400).json({ errorMessage: "No meal found"});
         return;
-      }
-
-      const result : IDeleteOne = await baseMeal.deleteMeal(req.body.mealID);
-
-      if (result.deletedCount > 0) {
-        res.status(200).json({ status: "ok" });
-      } else {
-        res.status(404).json({ errorMessage: "Wrong ID"});
       }
     }
     else
     {
       res.status(400).json({ errorMessage: "No mealID provided"});
+      return;
+    }
+
+    let error = await updatePantryWhenMealIsDone.updatePantryWhenMealsIsDone(mealId);
+    if(error)
+    {
+      res.status(500).json({ errorMessage: error });
+      return;
+    }
+
+    const result : IDeleteOne = await baseMeal.deleteMeal(req.body.mealID);
+
+    if (result.deletedCount > 0) {
+      res.status(200).json({ status: "ok" });
+    } else {
+      res.status(404).json({ errorMessage: "Wrong ID"});
     }
   }
   export async function setHighPrio(req : Request, res : Response) {
@@ -84,10 +96,7 @@ export namespace mealController{
 
   //GET
   export async function readMeals(req : any, res : Response) {
-    const pageSize : number = req.query.pageSize ? parseInt(req.query.pageSize) : 20;
-    const currentPage : number = req.query.currentPage ? parseInt(req.query.currentPage) + 1 : 1;
-
-    let fetchedMeals : IMeal[] | void = await baseMeal.getAllMeals(pageSize, currentPage)
+    let fetchedMeals : IMeal[] | void = await baseMeal.getAllMeals()
     .catch((error : Error) => {
       res.status(500).json({
         errorMessage: error
@@ -132,10 +141,21 @@ export namespace mealController{
       })
     });
   }
+  export async function getByRecipeId(req: Request, res: Response){
+    baseMeal.getMealByRecipeId(req.query.recipeID as string)
+    .then((result: IMeal | void) => {
+      res.status(200).json(result);
+    })
+    .catch((error : Error) => {
+      res.status(500).json({
+        errorMessage: error
+      })
+    });
+  }
 
   //PUT
   export async function updateMeal(req : Request, res: Response) {
-    baseMeal.update(req.params.id, req.body.recipeID, req.body.numberOfLunchPlanned)
+    baseMeal.update(req.params.id, req.body.recipeID)
     .then((result : IUpdateOne) => {
       if (result.modifiedCount > 0) {
         res.status(200).json(result);
