@@ -8,6 +8,7 @@ export const mealRoutes = express.Router();
 mealRoutes.get("/", mealController.readMeals);
 mealRoutes.get("/checkIfReady", mealController.checkIfReady);
 mealRoutes.get("/displayable", mealController.displayable);
+mealRoutes.get("/byRecipeId", mealController.getByRecipeId);
 
 //POST
 mealRoutes.post("/", mealController.writeMeal);

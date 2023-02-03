@@ -39,25 +39,37 @@ export namespace mealController{
     })
   }
   export async function consumeMeal(req : Request, res : Response) {
+    let mealId: string;
     if (req.body.mealID) {
-      let error = await updatePantryWhenMealIsDone.updatePantryWhenMealsIsDone(req.body.mealID);
-      if(error)
-      {
-        res.status(500).json({ errorMessage: error });
+      mealId = req.body.mealID;
+    }
+    else if(req.body.recipeID){
+      const mealFound = await baseMeal.getMealByRecipeId(req.body.recipeID);
+      if(mealFound) mealId = mealFound._id;
+      else{
+        res.status(400).json({ errorMessage: "No meal found"});
         return;
-      }
-
-      const result : IDeleteOne = await baseMeal.deleteMeal(req.body.mealID);
-
-      if (result.deletedCount > 0) {
-        res.status(200).json({ status: "ok" });
-      } else {
-        res.status(404).json({ errorMessage: "Wrong ID"});
       }
     }
     else
     {
       res.status(400).json({ errorMessage: "No mealID provided"});
+      return;
+    }
+
+    let error = await updatePantryWhenMealIsDone.updatePantryWhenMealsIsDone(mealId);
+    if(error)
+    {
+      res.status(500).json({ errorMessage: error });
+      return;
+    }
+
+    const result : IDeleteOne = await baseMeal.deleteMeal(req.body.mealID);
+
+    if (result.deletedCount > 0) {
+      res.status(200).json({ status: "ok" });
+    } else {
+      res.status(404).json({ errorMessage: "Wrong ID"});
     }
   }
   export async function setHighPrio(req : Request, res : Response) {
@@ -122,6 +134,17 @@ export namespace mealController{
     handleMeal.displayMealWithRecipeAndState()
     .then((mealsData : IDisplayableMealStatus[]) => {
       res.status(200).json(mealsData);
+    })
+    .catch((error : Error) => {
+      res.status(500).json({
+        errorMessage: error
+      })
+    });
+  }
+  export async function getByRecipeId(req: Request, res: Response){
+    baseMeal.getMealByRecipeId(req.query.recipeID as string)
+    .then((result: IMeal | void) => {
+      res.status(200).json(result);
     })
     .catch((error : Error) => {
       res.status(500).json({
