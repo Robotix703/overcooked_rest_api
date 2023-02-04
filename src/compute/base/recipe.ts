@@ -17,10 +17,37 @@ export namespace baseRecipe {
         return Recipe.updateOne({ _id: recipeID }, recipeToUpdate);
     }
 
-    export async function filterRecipe(category: string | undefined, name: string | undefined, pageSize: number, currentPage: number) : Promise<IRecipe[]> {
+    export async function addTag(recipeId: string, tagId: string){
+        let recipeData = await baseRecipe.getRecipeByID(recipeId);
+        if(!recipeData){
+            throw new Error("Recipe not found");
+        }
+
+        recipeData.tags.push(tagId);
+        return Recipe.updateOne({ _id: recipeId }, recipeData);
+    }
+
+    export async function removeTag(recipeId: string, tagId: string){
+        let recipeData = await baseRecipe.getRecipeByID(recipeId);
+        if(!recipeData){
+            throw new Error("Recipe not found");
+        }
+
+        recipeData.tags = recipeData.tags.filter(e => e !== tagId);
+        return Recipe.updateOne({ _id: recipeId }, recipeData);
+    }
+
+    export async function filterRecipe(
+        category: string | undefined, 
+        name: string | undefined, 
+        tags: string[] | undefined,
+        pageSize: number, 
+        currentPage: number
+        ) : Promise<IRecipe[]> {
         let filters : any = {};
         if (category) filters.category = category;
         if (name) filters.title = { "$regex": name, "$options": "i" };
+        if(tags) filters.tags = { $all: tags };
 
         if (pageSize && currentPage > 0) {
             const query = Recipe.find(filters).limit(pageSize).skip(pageSize * (currentPage - 1));
