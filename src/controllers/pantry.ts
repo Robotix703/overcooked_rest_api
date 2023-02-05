@@ -283,6 +283,23 @@ export namespace pantryController {
             });
         }
     }
+    export async function updateExpirationDate(req: Request, res: Response) {
+        let updatePantry = await basePantry.updatePantry(
+            req.params.id,
+            undefined,
+            undefined,
+            req.body.expirationDate ? new Date(req.body.expirationDate,) : null,
+            undefined
+        )
+
+        if (updatePantry) {
+            if (updatePantry.modifiedCount > 0) {
+                res.status(200).json({ status: "OK" });
+            } else {
+                res.status(500).json({ message: "Pas de modification" });
+            }
+        }
+    }
 
     //DELETE
     export function deletePantry(req: Request, res: Response) {

@@ -21,6 +21,7 @@ pantryRoutes.post("/buyAgain", pantryController.buyAgain);
 
 //PUT
 pantryRoutes.put("/:id", pantryController.updatePantry);
+pantryRoutes.put("/expirationDate/:id", pantryController.updateExpirationDate);
 
 //DELETE
 pantryRoutes.delete("/:id", pantryController.deletePantry);
