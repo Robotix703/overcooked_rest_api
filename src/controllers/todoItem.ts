@@ -126,7 +126,7 @@ export namespace todoItemController {
 
       if (deleteResult) {
         if (deleteResult.deletedCount > 0) {
-          const result: boolean | void = await Todoist.deleteItem(todoItem.todoID)
+          const result: boolean | void = await Todoist.deleteItem(todoItem.todoID.toString())
             .catch((error: Error | IBackendError) => {
               if ("backendError" in error) res.status(500).json(error.display());
               else res.status(500).json(new BackendError(errorTypes.Todoist, error.message).display());
