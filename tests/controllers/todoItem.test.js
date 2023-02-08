@@ -7,7 +7,7 @@ const todoItemController = require("../../build/controllers/todoItem").todoItemC
 
 let todoItem = {
     _id: "15",
-    todoID: 10,
+    todoID: "10",
     text: "pommes - 10 pc",
     ingredientName: "ingredientName",
     consumable: true,
