@@ -2,11 +2,10 @@ import Tag, { ITag } from "../../models/tag";
 
 export namespace baseTag {
 
-    export async function writeTag(name: string, color: string, path: string){
+    export async function writeTag(name: string, image: string){
         const tag = new Tag({
             name: name,
-            color: color,
-            path: path
+            image: image
         });
 
         return tag.save()
@@ -22,12 +21,11 @@ export namespace baseTag {
         return Tag.find();
     }
 
-    export async function updateTag(id: string, name: string, color: string, path: string){
+    export async function updateTag(id: string, name: string, image: string){
         const tag = new Tag({
             _id: id,
-            name: name, 
-            color: color,
-            path: path
+            name: name,
+            image: image
         });
 
         return Tag.updateOne({ _id: id }, tag);

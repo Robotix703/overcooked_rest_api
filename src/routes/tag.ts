@@ -1,4 +1,5 @@
 import express from "express";
+import extractFile from "../middleware/file";
 
 import { tagController } from "../controllers/tag";
 
@@ -8,7 +9,7 @@ export const tagRoutes = express.Router();
 tagRoutes.get("/", tagController.getTags);
 
 //POST
-tagRoutes.post("/", tagController.writeTag);
+tagRoutes.post("/", extractFile, tagController.writeTag);
 
 //PUT
 tagRoutes.put("/:id", tagController.updateTag);
