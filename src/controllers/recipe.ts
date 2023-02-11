@@ -124,7 +124,7 @@ export namespace recipeController {
     let fetchedRecipes: IRecipe[] | void = await baseRecipe.filterRecipe(
       req.query.category, 
       req.query.name, 
-      req.query.tags,
+      JSON.parse(req.query.tags),
       parseInt(req.query.pageSize), 
       parseInt(req.query.currentPage)
     )

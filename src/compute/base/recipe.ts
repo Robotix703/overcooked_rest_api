@@ -47,7 +47,7 @@ export namespace baseRecipe {
         let filters : any = {};
         if (category) filters.category = category;
         if (name) filters.title = { "$regex": name, "$options": "i" };
-        if(tags) filters.tags = { $all: tags };
+        if (tags && tags.length > 0) filters.tags = { $all: tags };
 
         if (pageSize && currentPage > 0) {
             const query = Recipe.find(filters).limit(pageSize).skip(pageSize * (currentPage - 1));
