@@ -17,10 +17,37 @@ export namespace baseRecipe {
         return Recipe.updateOne({ _id: recipeID }, recipeToUpdate);
     }
 
-    export async function filterRecipe(category: string | undefined, name: string | undefined, pageSize: number, currentPage: number) : Promise<IRecipe[]> {
+    export async function addTag(recipeId: string, tagId: string){
+        let recipeData = await baseRecipe.getRecipeByID(recipeId);
+        if(!recipeData){
+            throw new Error("Recipe not found");
+        }
+
+        recipeData.tags.push(tagId);
+        return Recipe.updateOne({ _id: recipeId }, recipeData);
+    }
+
+    export async function removeTag(recipeId: string, tagId: string){
+        let recipeData = await baseRecipe.getRecipeByID(recipeId);
+        if(!recipeData){
+            throw new Error("Recipe not found");
+        }
+
+        recipeData.tags = recipeData.tags.filter(e => e !== tagId);
+        return Recipe.updateOne({ _id: recipeId }, recipeData);
+    }
+
+    export async function filterRecipe(
+        category: string | undefined, 
+        name: string | undefined, 
+        tags: string[] | undefined,
+        pageSize: number, 
+        currentPage: number
+        ) : Promise<IRecipe[]> {
         let filters : any = {};
         if (category) filters.category = category;
         if (name) filters.title = { "$regex": name, "$options": "i" };
+        if (tags && tags.length > 0) filters.tags = { $all: tags };
 
         if (pageSize && currentPage > 0) {
             const query = Recipe.find(filters).limit(pageSize).skip(pageSize * (currentPage - 1));
@@ -33,7 +60,16 @@ export namespace baseRecipe {
         return Recipe.find({ 'title': { "$regex": name, "$options": "i" } });
     }
 
-    export async function updateRecipe(_id : string, title : string, numberOfLunch : number, imagePath : string, category : string, duration : number, lastCooked : any, composition: string) : Promise<IUpdateOne> {
+    export async function updateRecipe(
+        _id : string, 
+        title : string, 
+        numberOfLunch : number, 
+        imagePath : string, 
+        category : string, 
+        duration : number, 
+        lastCooked : any, 
+        composition: string,
+        tags: string[]) : Promise<IUpdateOne> {
         let elementToUpdate : any = { _id: _id };
 
         if(title) elementToUpdate.title = title;
@@ -43,6 +79,7 @@ export namespace baseRecipe {
         if(duration) elementToUpdate.duration = duration;
         if(lastCooked) elementToUpdate.lastCooked = lastCooked;
         if(composition) elementToUpdate.composition = composition;
+        if(tags) elementToUpdate.tags = tags;
 
         return Recipe.updateOne({ _id: _id }, elementToUpdate);
     }
@@ -53,14 +90,16 @@ export namespace baseRecipe {
         imagePath : string,
         category : string,
         duration : number,
-        lastCooked : any | undefined) : Promise<any> {
+        lastCooked : any | undefined,
+        tags: string[]) : Promise<any> {
             const recipe = new Recipe({
                 title: title,
                 numberOfLunch: numberOfLunch,
                 imagePath: imagePath,
                 category: category,
                 duration: duration,
-                lastCooked: lastCooked
+                lastCooked: lastCooked,
+                tags: tags
             });
 
             return recipe.save()

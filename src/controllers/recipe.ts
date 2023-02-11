@@ -25,7 +25,8 @@ export namespace recipeController {
       url + "/images/" + req.file.filename,
       req.body.category,
       req.body.duration,
-      undefined
+      undefined,
+      JSON.parse(req.body.tags)
     )
     .then((result: any) => {
       if(isProduction) resizeImage(req.file.filename);
@@ -51,13 +52,43 @@ export namespace recipeController {
       res.status(500).json(error);
     })
   }
+  export async function addTag(req: any, res: any){
+    baseRecipe.addTag(req.body.recipeId, req.body.tagId)
+    .then((result: IUpdateOne) => {
+      if (result.modifiedCount > 0) {
+        res.status(200).json({ status: "OK" });
+      } else {
+        res.status(500).json({ message: "Pas de modification" });
+      }
+    })
+    .catch((error: Error) => {
+      res.status(500).json({
+        errorMessage: error
+      })
+    });
+  }
+  export async function removeTag(req: any, res: any){
+    baseRecipe.removeTag(req.body.recipeId, req.body.tagId)
+    .then((result: IUpdateOne) => {
+      if (result.modifiedCount > 0) {
+        res.status(200).json({ status: "OK" });
+      } else {
+        res.status(500).json({ message: "Pas de modification" });
+      }
+    })
+    .catch((error: Error) => {
+      res.status(500).json({
+        errorMessage: error
+      })
+    });
+  }
 
   //GET
   export async function readRecipes(req: any, res: Response){
     const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 20;
     const currentPage = req.query.currentPage ? parseInt(req.query.currentPage) + 1 : 1;
 
-    let fetchedRecipes: IRecipe[] | void = await baseRecipe.filterRecipe(undefined, undefined, pageSize, currentPage)
+    let fetchedRecipes: IRecipe[] | void = await baseRecipe.filterRecipe(undefined, undefined, undefined, pageSize, currentPage)
     .catch((error: Error) => {
       res.status(500).json({
         errorMessage: error
@@ -93,6 +124,7 @@ export namespace recipeController {
     let fetchedRecipes: IRecipe[] | void = await baseRecipe.filterRecipe(
       req.query.category, 
       req.query.name, 
+      JSON.parse(req.query.tags),
       parseInt(req.query.pageSize), 
       parseInt(req.query.currentPage)
     )
@@ -298,7 +330,8 @@ export namespace recipeController {
       req.body.category,
       req.body.duration,
       req.body.lastCooked ? moment(req.body.expirationDate, "DD/MM/YYYY") : undefined,
-      req.body.composition
+      req.body.composition,
+      JSON.parse(req.body.tags)
     )
     .then((result: IUpdateOne) => {
       if (result.modifiedCount > 0) {
