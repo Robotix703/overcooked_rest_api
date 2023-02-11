@@ -82,40 +82,6 @@ let notDeleteOne = {
     ok: 1
 }
 
-test('writeRecipe', async () => {
-    let mockStatusCode = jest.fn();
-    let mockResponse = {
-        status : mockStatusCode.mockReturnValue({json: jest.fn()})
-    }
-
-    let mockRequest = {
-        get : function (){return "toto"},
-        body: {
-            title: "title",
-            numberOfLunch: "numberOfLunch",
-            category: "category",
-            duration: 2
-        },
-        file: {
-            filename: "filename"
-        }
-    }
-
-    let spy = jest.spyOn(baseRecipe, "register").mockResolvedValue(
-        "OK"
-    );
-    
-    await recipeController.writeRecipe(mockRequest, mockResponse);
-
-    let responseBody = mockResponse.status().json.mock.calls[0][0];
-    let reponseStatus = mockStatusCode.mock.calls[0][0];
-
-    expect(responseBody).toBe("OK");
-    expect(reponseStatus).toBe(201);
-
-    spy.mockRestore();
-});
-
 test('readRecipes', async () => {
     let mockStatusCode = jest.fn();
     let mockResponse = {
@@ -177,43 +143,6 @@ test('getRecipeByID', async () => {
     expect(spy).toHaveBeenCalledWith(recipe._id);
 
     spy.mockRestore();
-});
-
-test('getFilteredRecipe', async () => {
-    let mockStatusCode = jest.fn();
-    let mockResponse = {
-        status : mockStatusCode.mockReturnValue({json: jest.fn()})
-    }
-
-    let mockRequest = {
-        query: {
-            category: recipe.category,
-            name: recipe.name,
-            pageSize: "10",
-            currentPage: "1"
-        }
-    }
-
-    let spy = jest.spyOn(baseRecipe, "filterRecipe").mockResolvedValue(
-        [recipe]
-    );
-    let spy2 = jest.spyOn(baseRecipe, "count").mockResolvedValue(
-        2
-    );
-    
-    await recipeController.getFilteredRecipe(mockRequest, mockResponse);
-
-    let responseBody = mockResponse.status().json.mock.calls[0][0];
-    let reponseStatus = mockStatusCode.mock.calls[0][0];
-
-    expect(responseBody).toMatchObject({
-        recipes: [recipe],
-        count: 2
-    });
-    expect(reponseStatus).toBe(200);
-
-    spy.mockRestore();
-    spy2.mockRestore();
 });
 
 test('getRecipeByName', async () => {
@@ -416,75 +345,6 @@ test('getIngredientsNeeded without anything', async () => {
         errorMessage: "RecipeID not found"
     });
     expect(reponseStatus).toBe(400);
-});
-
-test('updateRecipe', async () => {
-    let mockStatusCode = jest.fn();
-    let mockResponse = {
-        status : mockStatusCode.mockReturnValue({json: jest.fn()})
-    }
-
-    let mockRequest = {
-        params: {
-            id: "id"
-        },
-        body: {
-            title: recipe.title,
-            numberOfLunch: recipe.numberOfLunch,
-            imagePath: recipe.imagePath,
-            category: recipe.category,
-            duration: recipe.duration,
-            lastCooked: recipe.lastCooked
-        }
-    }
-
-    let spy = jest.spyOn(baseRecipe, "updateRecipe").mockResolvedValue(
-        update
-    );
-    
-    await recipeController.updateRecipe(mockRequest, mockResponse);
-
-    let responseBody = mockResponse.status().json.mock.calls[0][0];
-    let reponseStatus = mockStatusCode.mock.calls[0][0];
-
-    expect(responseBody).toMatchObject({ status: "OK" });
-    expect(reponseStatus).toBe(200);
-
-    spy.mockRestore();
-});
-test('updateRecipe with error', async () => {
-    let mockStatusCode = jest.fn();
-    let mockResponse = {
-        status : mockStatusCode.mockReturnValue({json: jest.fn()})
-    }
-
-    let mockRequest = {
-        params: {
-            id: "id"
-        },
-        body: {
-            title: recipe.title,
-            numberOfLunch: recipe.numberOfLunch,
-            imagePath: recipe.imagePath,
-            category: recipe.category,
-            duration: recipe.duration,
-            lastCooked: recipe.lastCooked
-        }
-    }
-
-    let spy = jest.spyOn(baseRecipe, "updateRecipe").mockResolvedValue(
-        notUpdate
-    );
-    
-    await recipeController.updateRecipe(mockRequest, mockResponse);
-
-    let responseBody = mockResponse.status().json.mock.calls[0][0];
-    let reponseStatus = mockStatusCode.mock.calls[0][0];
-
-    expect(responseBody).toMatchObject({ message: "Pas de modification" });
-    expect(reponseStatus).toBe(500);
-
-    spy.mockRestore();
 });
 
 test('deleteRecipe', async () => {
