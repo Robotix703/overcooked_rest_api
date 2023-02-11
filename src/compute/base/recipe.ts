@@ -60,7 +60,16 @@ export namespace baseRecipe {
         return Recipe.find({ 'title': { "$regex": name, "$options": "i" } });
     }
 
-    export async function updateRecipe(_id : string, title : string, numberOfLunch : number, imagePath : string, category : string, duration : number, lastCooked : any, composition: string) : Promise<IUpdateOne> {
+    export async function updateRecipe(
+        _id : string, 
+        title : string, 
+        numberOfLunch : number, 
+        imagePath : string, 
+        category : string, 
+        duration : number, 
+        lastCooked : any, 
+        composition: string,
+        tags: string[]) : Promise<IUpdateOne> {
         let elementToUpdate : any = { _id: _id };
 
         if(title) elementToUpdate.title = title;
@@ -70,6 +79,7 @@ export namespace baseRecipe {
         if(duration) elementToUpdate.duration = duration;
         if(lastCooked) elementToUpdate.lastCooked = lastCooked;
         if(composition) elementToUpdate.composition = composition;
+        if(tags) elementToUpdate.tags = tags;
 
         return Recipe.updateOne({ _id: _id }, elementToUpdate);
     }
@@ -80,14 +90,16 @@ export namespace baseRecipe {
         imagePath : string,
         category : string,
         duration : number,
-        lastCooked : any | undefined) : Promise<any> {
+        lastCooked : any | undefined,
+        tags: string[]) : Promise<any> {
             const recipe = new Recipe({
                 title: title,
                 numberOfLunch: numberOfLunch,
                 imagePath: imagePath,
                 category: category,
                 duration: duration,
-                lastCooked: lastCooked
+                lastCooked: lastCooked,
+                tags: tags
             });
 
             return recipe.save()

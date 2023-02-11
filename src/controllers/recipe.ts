@@ -25,7 +25,8 @@ export namespace recipeController {
       url + "/images/" + req.file.filename,
       req.body.category,
       req.body.duration,
-      undefined
+      undefined,
+      JSON.parse(req.body.tags)
     )
     .then((result: any) => {
       if(isProduction) resizeImage(req.file.filename);
@@ -329,7 +330,8 @@ export namespace recipeController {
       req.body.category,
       req.body.duration,
       req.body.lastCooked ? moment(req.body.expirationDate, "DD/MM/YYYY") : undefined,
-      req.body.composition
+      req.body.composition,
+      JSON.parse(req.body.tags)
     )
     .then((result: IUpdateOne) => {
       if (result.modifiedCount > 0) {
