@@ -124,7 +124,7 @@ export namespace recipeController {
     let fetchedRecipes: IRecipe[] | void = await baseRecipe.filterRecipe(
       req.query.category, 
       req.query.name, 
-      JSON.parse(req.query.tags),
+      (req.query.tags)? JSON.parse(req.query.tags) : undefined,
       parseInt(req.query.pageSize), 
       parseInt(req.query.currentPage)
     )
@@ -331,7 +331,7 @@ export namespace recipeController {
       req.body.duration,
       req.body.lastCooked ? moment(req.body.expirationDate, "DD/MM/YYYY") : undefined,
       req.body.composition,
-      JSON.parse(req.body.tags)
+      (req.body.tags)? JSON.parse(req.body.tags) : undefined
     )
     .then((result: IUpdateOne) => {
       if (result.modifiedCount > 0) {
