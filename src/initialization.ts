@@ -23,10 +23,6 @@ function initTodoSurvey(){
         cronInterval,
         todoSurvey
     )
-}
-
-function initDailyCheck(){
-    let cronInterval = createDailyCronSettings(process.env.DAILYNOTIFICATIONHOUR);
 
     handleScheduleTask.addperiodicTask(
         dailyCheck,
@@ -37,5 +33,4 @@ function initDailyCheck(){
 
 export function init(){
     initTodoSurvey();
-    initDailyCheck();
 }
