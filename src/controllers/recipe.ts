@@ -10,6 +10,7 @@ import { baseMeal } from "../compute/base/meal";
 import { handleRecipe, IIngredientWithQuantity, IPrettyInstruction, IPrettyRecipe } from "../compute/handleRecipe";
 import { resizeImage } from "../modules/tinypng";
 import { computeComposition, handleComposition } from "../compute/handleComposition";
+import { handleRecipeImage } from "../modules/file";
 
 const isProduction = (process.env.NODE_ENV === "production");
 const protocol = isProduction ? "https" : "http";
@@ -30,6 +31,30 @@ export namespace recipeController {
     )
     .then((result: any) => {
       if(isProduction) resizeImage(req.file.filename);
+      res.status(201).json(result);
+    })
+    .catch((error: Error) => {
+      res.status(500).json({
+        errorMessage: error
+      })
+    });
+  }
+  export async function createRecipeWithImageUrl(req: any, res: Response){
+    const url = protocol + '://' + req.get("host");
+    const imagePath = "images/" + req.body.title + '-' + Date.now() + '.png';
+    const imageUrl = req.body.imageUrl;
+
+    baseRecipe.register(
+      req.body.title,
+      req.body.numberOfLunch,
+      url + imagePath,
+      req.body.category,
+      req.body.duration,
+      undefined,
+      JSON.parse(req.body.tags)
+    )
+    .then(async (result: any) => {
+      await handleRecipeImage(imageUrl, imagePath);
       res.status(201).json(result);
     })
     .catch((error: Error) => {

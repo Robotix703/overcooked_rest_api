@@ -18,18 +18,16 @@ export async function handleIngredientImage(url: string, ingredientName: string)
     });
 }
 
-export async function handleRecipeImage(url: string, recipeName: string) : Promise<string | Error> {
-    const dest = `images/${recipeName}.png`;
-
+export async function handleRecipeImage(url: string, path: string) : Promise<string | Error> {
     //Download image
-    await donwloadFile(url, dest, async (err: Error) => {
+    await donwloadFile(url, path, async (err: Error) => {
         if(err) throw new Error(err.message);
 
         //Resize image
-        await resizeImageFromPath(dest);
+        await resizeImageFromPath(path);
     });
 
-    return dest;
+    return path;
 }
 
 export async function donwloadFile(url: string, dest: string, cb: (err: any) => void) {
