@@ -8,7 +8,7 @@ import { IDeleteOne, IUpdateOne } from "../models/mongoose";
 import { baseRecipe } from "../compute/base/recipe";
 import { baseMeal } from "../compute/base/meal";
 import { handleRecipe, IIngredientWithQuantity, IPrettyInstruction, IPrettyRecipe } from "../compute/handleRecipe";
-import { resizeImage } from "../worker/tinypng";
+import { resizeImage } from "../modules/tinypng";
 import { computeComposition, handleComposition } from "../compute/handleComposition";
 
 const isProduction = (process.env.NODE_ENV === "production");

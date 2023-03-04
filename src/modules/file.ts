@@ -1,6 +1,6 @@
 import fs from 'fs';
 import https from 'https';
-import { resizeImageFromPath } from '../worker/tinypng';
+import { resizeImageFromPath } from './tinypng';
 
 export async function handleRecipeImage(url: string, recipeName: string) : Promise<string | Error> {
     const dest = `images/${recipeName}.png`;

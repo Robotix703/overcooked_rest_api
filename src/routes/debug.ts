@@ -1,7 +1,7 @@
 import express from "express";
 import checkTodoList from "../worker/checkTodoList";
 
-import { resizeAll, resizeImage } from "../worker/tinypng";
+import { resizeAll, resizeImage } from "../modules/tinypng";
 import { registerIngredientsOnTodo } from "../worker/registerIngredientsOnTodo";
 import { Todoist } from "../modules/todoist";
 import { baseRecipe } from "../compute/base/recipe";

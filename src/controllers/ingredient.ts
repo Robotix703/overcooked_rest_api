@@ -3,7 +3,7 @@ import { IIngredient } from "../models/ingredient";
 import { baseIngredient } from "../compute/base/ingredient";
 import { IDeleteOne, IUpdateOne } from "../models/mongoose";
 import { BackendError, errorTypes, IBackendError } from "../error/backendError";
-import { resizeImage } from "../worker/tinypng";
+import { resizeImage } from "../modules/tinypng";
 
 const isProduction = (process.env.NODE_ENV === "production");
 const protocol = isProduction ? "https" : "http";
