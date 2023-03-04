@@ -14,6 +14,9 @@ export function resizeImage(filename: string) : void {
 
     resize(filePath, 200, undefined);
 }
+export function resizeImageFromPath(filePath: string) : void {
+    resize(filePath, 200, undefined);
+}
 
 //Resize all image of a folder
 export function resizeAll() : void{

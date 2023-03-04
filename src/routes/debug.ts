@@ -6,6 +6,7 @@ import { registerIngredientsOnTodo } from "../worker/registerIngredientsOnTodo";
 import { Todoist } from "../modules/todoist";
 import { baseRecipe } from "../compute/base/recipe";
 import { handleComposition } from "../compute/handleComposition";
+import { donwloadFile, handleRecipeImage } from "../modules/file";
 
 export const debugRoutes = express.Router();
 
@@ -110,4 +111,25 @@ debugRoutes.get("/computeAllComposition", async (req, res) => {
         current++;
     }
     res.json(totalLength);
+});
+
+//File download
+debugRoutes.post("/downloadFile", async (req, res) => {
+    const url = req.body.url as string;
+    const filename = "images/temp/" + (req.body.filename as string) + ".png";
+
+    await donwloadFile(url, filename, (err: Error) => {
+        res.json(err);
+        return;
+    });
+    res.json("OK");
+});
+
+//Handle Recipe Image
+debugRoutes.post("/handleRecipeImage", async (req, res) => {
+    const url = req.body.url as string;
+    const recipeName = req.body.recipeName as string;
+
+    const dest = await handleRecipeImage(url, recipeName);
+    res.json(dest);
 });
