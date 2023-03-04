@@ -1,9 +1,8 @@
 import path from "path";
 import fs from 'fs';
+import tinify from "tinify";
 
 require('dotenv').config();
-
-const tinify = require("tinify");
 
 //Authentication
 tinify.key = process.env.TINYPNGKEY;
@@ -14,8 +13,8 @@ export function resizeImage(filename: string) : void {
 
     resize(filePath, 200, undefined);
 }
-export function resizeImageFromPath(filePath: string) : void {
-    resize(filePath, 200, undefined);
+export async function resizeImageFromPath(filePath: string) : Promise<void> {
+    return resize(filePath, 200, undefined);
 }
 
 //Resize all image of a folder
@@ -36,7 +35,7 @@ export function resizeAll() : void{
     }
 }
 
-function resize(filename: string, width: number, height: number) : void {
+async function resize(filename: string, width: number, height: number) : Promise<void> {
     if(!filename) return;
 
     const source = tinify.fromFile(filename);
@@ -48,5 +47,5 @@ function resize(filename: string, width: number, height: number) : void {
 
     const resized = source.resize(resizeParams);
 
-    resized.toFile(filename);
+    return resized.toFile(filename);
 }

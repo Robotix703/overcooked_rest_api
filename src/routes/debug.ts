@@ -6,7 +6,8 @@ import { registerIngredientsOnTodo } from "../worker/registerIngredientsOnTodo";
 import { Todoist } from "../modules/todoist";
 import { baseRecipe } from "../compute/base/recipe";
 import { handleComposition } from "../compute/handleComposition";
-import { donwloadFile, handleRecipeImage } from "../modules/file";
+import { donwloadFile, handleIngredientImage, handleRecipeImage } from "../modules/file";
+import { removeBackgroundFromPath } from "../modules/removebg";
 
 export const debugRoutes = express.Router();
 
@@ -132,4 +133,31 @@ debugRoutes.post("/handleRecipeImage", async (req, res) => {
 
     const dest = await handleRecipeImage(url, recipeName);
     res.json(dest);
+});
+
+//remove bg
+debugRoutes.post("/removeBG", async (req, res) => {
+    const filePath = req.body.filePath as string;
+
+    const result = await removeBackgroundFromPath(filePath)
+    .catch((error : Error) => {
+        res.status(500).send(error.message);
+        return;
+    });
+
+    res.json(result);
+});
+
+//Handle Ingredient Image
+debugRoutes.post("/handleIngredientImage", async (req, res) => {
+    const url = req.body.url as string;
+    const ingredientName = req.body.ingredientName as string;
+
+    handleIngredientImage(url, ingredientName)
+    .then(() => {
+        res.json("OK");
+    })
+    .catch((error : Error) => {
+        res.status(500).send(error.message);
+    });
 });
