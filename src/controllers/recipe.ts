@@ -47,7 +47,7 @@ export namespace recipeController {
     baseRecipe.register(
       req.body.title,
       req.body.numberOfLunch,
-      url + imagePath,
+      url + "/" + imagePath,
       req.body.category,
       req.body.duration,
       undefined,

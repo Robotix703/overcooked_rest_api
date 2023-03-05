@@ -37,7 +37,7 @@ export namespace ingredientController {
 
     baseIngredient.register(
       req.body.name,
-      url + imagePath,
+      url + "/" + imagePath,
       req.body.consumable,
       req.body.unitOfMeasure,
       req.body.shelfLife,
