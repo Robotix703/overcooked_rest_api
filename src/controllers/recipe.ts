@@ -51,7 +51,7 @@ export namespace recipeController {
       req.body.category,
       req.body.duration,
       undefined,
-      JSON.parse(req.body.tags)
+      req.body.tags ? JSON.parse(req.body.tags) : undefined
     )
     .then(async (result: any) => {
       await handleRecipeImage(imageUrl, imagePath);
