@@ -1,7 +1,5 @@
 import express from "express";
 
-import extractFile from "../middleware/file";
-
 import { recipeController } from "../controllers/recipe";
 
 export const recipeRoutes = express.Router();
@@ -18,8 +16,7 @@ recipeRoutes.get("/readComposition", recipeController.readComposition);
 recipeRoutes.get("/instructions", recipeController.getInstructions);
 
 //POST
-recipeRoutes.post("/", extractFile, recipeController.writeRecipe);
-recipeRoutes.post("/createRecipeWithImageUrl", recipeController.createRecipeWithImageUrl);
+recipeRoutes.post("/", recipeController.createRecipeWithImageUrl);
 recipeRoutes.post("/createComposition", recipeController.createComposition);
 recipeRoutes.post("/addTag", recipeController.addTag);
 recipeRoutes.post("/removeTag", recipeController.removeTag);

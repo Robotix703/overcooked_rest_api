@@ -27,9 +27,10 @@ import { pantryRoutes } from "./routes/pantry";
 import { mealRoutes } from "./routes/meal";
 import { todoItemRoutes } from "./routes/todoItem";
 import { debugRoutes } from './routes/debug';
+import { tagRoutes } from './routes/tag';
+
 import { checkAPIKey } from './apiKey';
 import checkAuth from './middleware/check-auth';
-import { tagRoutes } from './routes/tag';
 
 const app = express();
 

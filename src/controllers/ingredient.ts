@@ -3,7 +3,6 @@ import { IIngredient } from "../models/ingredient";
 import { baseIngredient } from "../compute/base/ingredient";
 import { IDeleteOne, IUpdateOne } from "../models/mongoose";
 import { BackendError, errorTypes, IBackendError } from "../error/backendError";
-import { resizeImage } from "../modules/tinypng";
 import { handleIngredientImage } from "../modules/file";
 
 const isProduction = (process.env.NODE_ENV === "production");
@@ -11,29 +10,15 @@ const protocol = isProduction ? "https" : "http";
 
 export namespace ingredientController {
   //POST
-  export async function writeIngredient(req: any, res: Response){
-    const url = protocol + '://' + req.get("host");
-
-    baseIngredient.register(
-      req.body.name,
-      url + "/images/" + req.file.filename,
-      req.body.consumable,
-      req.body.unitOfMeasure,
-      req.body.shelfLife,
-      req.body.freezable)
-    .then((result: any) => {
-      if(isProduction) resizeImage(req.file.filename);
-      res.status(201).json(result);
-    })
-    .catch((error: Error | IBackendError) => {
-      if("backendError" in error) res.status(500).json(error.display());
-      else res.status(500).json(new BackendError(errorTypes.Controller, error.message).display());
-    });
-  }
   export async function createWithImageURL(req: any, res: Response){
+    if(!req.body.name || !req.body.imageUrl) return res.status(400).json({errorMessage: "Missing name or imageUrl"});
+
     const url = protocol + '://' + req.get("host");
     const imagePath = "images/" + req.body.name + '-' + Date.now() + '.png';
     const imageUrl = req.body.imageUrl;
+
+    if(req.body.consumable == undefined || !req.body.unitOfMeasure || req.body.freezable == undefined) return res.status(400).json({errorMessage: "Missing consumable, unitOfMeasure or freezable"});
+    if(req.body.shelfLife == undefined || isNaN(req.body.shelfLife)) return res.status(400).json({errorMessage: "ShelfLife must be a number"});
 
     baseIngredient.register(
       req.body.name,

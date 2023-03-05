@@ -8,7 +8,6 @@ import { IDeleteOne, IUpdateOne } from "../models/mongoose";
 import { baseRecipe } from "../compute/base/recipe";
 import { baseMeal } from "../compute/base/meal";
 import { handleRecipe, IIngredientWithQuantity, IPrettyInstruction, IPrettyRecipe } from "../compute/handleRecipe";
-import { resizeImage } from "../modules/tinypng";
 import { computeComposition, handleComposition } from "../compute/handleComposition";
 import { handleRecipeImage } from "../modules/file";
 
@@ -17,32 +16,16 @@ const protocol = isProduction ? "https" : "http";
 
 export namespace recipeController {
   //POST
-  export function writeRecipe(req: any, res: Response){
-    const url = protocol + '://' + req.get("host");
-
-    baseRecipe.register(
-      req.body.title,
-      req.body.numberOfLunch,
-      url + "/images/" + req.file.filename,
-      req.body.category,
-      req.body.duration,
-      undefined,
-      JSON.parse(req.body.tags)
-    )
-    .then((result: any) => {
-      if(isProduction) resizeImage(req.file.filename);
-      res.status(201).json(result);
-    })
-    .catch((error: Error) => {
-      res.status(500).json({
-        errorMessage: error
-      })
-    });
-  }
   export async function createRecipeWithImageUrl(req: any, res: Response){
+    if(!req.body.title || !req.body.imageUrl) return res.status(400).json({errorMessage: "Missing title or imageUrl"});
+
     const url = protocol + '://' + req.get("host");
     const imagePath = "images/" + req.body.title + '-' + Date.now() + '.png';
     const imageUrl = req.body.imageUrl;
+
+    if(!req.body.numberOfLunch || isNaN(req.body.numberOfLunch)) return res.status(400).json({errorMessage: "numberOfLunch must be a number"});
+    if(!req.body.category) return res.status(400).json({errorMessage: "Missing category"});
+    if(!req.body.duration || isNaN(req.body.duration)) return res.status(400).json({errorMessage: "duration must be a number"});
 
     baseRecipe.register(
       req.body.title,

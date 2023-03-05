@@ -1,7 +1,5 @@
 import express from "express";
 
-import extractFile from "../middleware/file";
-
 import { ingredientController } from "../controllers/ingredient";
 
 export const ingredientRoutes = express.Router();
@@ -17,8 +15,7 @@ ingredientRoutes.get("/forAutocomplete", ingredientController.getAllIngredientFo
 ingredientRoutes.get("/duplicatesCheck", ingredientController.duplicatesCheck);
 
 //POST
-ingredientRoutes.post("/", extractFile, ingredientController.writeIngredient);
-ingredientRoutes.post("/createWithImageURL", extractFile, ingredientController.createWithImageURL);
+ingredientRoutes.post("/", ingredientController.createWithImageURL);
 
 //PUT
 ingredientRoutes.put("/:id", ingredientController.editIngredient);
