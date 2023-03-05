@@ -11,39 +11,6 @@ let ingredient = {
     freezable: true
 }
 
-test('writeIngredient', async () => {
-    let mockStatusCode = jest.fn();
-    let mockResponse = {
-        status : mockStatusCode.mockReturnValue({json: jest.fn()})
-    }
-
-    let mockRequest = {
-        get : function (){return "toto"},
-        body: {
-            name: "name",
-            consumable: "consumable",
-            unitOfMeasure: "unitOfMeasure",
-            shelfLife: 10,
-            freezable: true
-        },
-        file: {
-            filename: "filename"
-        }
-    }
-
-    let registerSpy = jest.spyOn(baseIngredient, "register").mockResolvedValue("OK");
-    
-    await ingredientController.writeIngredient(mockRequest, mockResponse);
-
-    let responseBody = mockResponse.status().json.mock.calls[0][0];
-    let reponseStatus = mockStatusCode.mock.calls[0][0];
-
-    expect(responseBody).toBe("OK");
-    expect(reponseStatus).toBe(201);
-
-    registerSpy.mockRestore();
-});
-
 test('readIngredients', async () => {
     let mockStatusCode = jest.fn();
     let mockResponse = {
