@@ -3,18 +3,16 @@ import https from 'https';
 import { removeBackgroundFromPath } from './removebg';
 import { resizeImageFromPath } from './tinypng';
 
-export async function handleIngredientImage(url: string, ingredientName: string) : Promise<void>{
-    const dest = `images/${ingredientName}.png`;
-
+export async function handleIngredientImage(url: string, path: string) : Promise<void>{
     //Download image
-    donwloadFile(url, dest, async (err: Error) => {
+    donwloadFile(url, path, async (err: Error) => {
         if(err) throw new Error(err.message);
 
         //Resize image
-        await resizeImageFromPath(dest);
+        await resizeImageFromPath(path);
 
         //Remove background
-        await removeBackgroundFromPath(dest);
+        await removeBackgroundFromPath(path);
     });
 }
 

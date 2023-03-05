@@ -4,6 +4,7 @@ import { baseIngredient } from "../compute/base/ingredient";
 import { IDeleteOne, IUpdateOne } from "../models/mongoose";
 import { BackendError, errorTypes, IBackendError } from "../error/backendError";
 import { resizeImage } from "../modules/tinypng";
+import { handleIngredientImage } from "../modules/file";
 
 const isProduction = (process.env.NODE_ENV === "production");
 const protocol = isProduction ? "https" : "http";
@@ -22,6 +23,27 @@ export namespace ingredientController {
       req.body.freezable)
     .then((result: any) => {
       if(isProduction) resizeImage(req.file.filename);
+      res.status(201).json(result);
+    })
+    .catch((error: Error | IBackendError) => {
+      if("backendError" in error) res.status(500).json(error.display());
+      else res.status(500).json(new BackendError(errorTypes.Controller, error.message).display());
+    });
+  }
+  export async function createWithImageURL(req: any, res: Response){
+    const url = protocol + '://' + req.get("host");
+    const imagePath = "images/" + req.body.name + '-' + Date.now() + '.png';
+    const imageUrl = req.body.imageUrl;
+
+    baseIngredient.register(
+      req.body.name,
+      url + imagePath,
+      req.body.consumable,
+      req.body.unitOfMeasure,
+      req.body.shelfLife,
+      req.body.freezable)
+    .then(async (result: any) => {
+      await handleIngredientImage(imageUrl, imagePath);
       res.status(201).json(result);
     })
     .catch((error: Error | IBackendError) => {

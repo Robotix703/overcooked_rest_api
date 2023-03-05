@@ -18,6 +18,7 @@ ingredientRoutes.get("/duplicatesCheck", ingredientController.duplicatesCheck);
 
 //POST
 ingredientRoutes.post("/", extractFile, ingredientController.writeIngredient);
+ingredientRoutes.post("/createWithImageURL", extractFile, ingredientController.createWithImageURL);
 
 //PUT
 ingredientRoutes.put("/:id", ingredientController.editIngredient);
