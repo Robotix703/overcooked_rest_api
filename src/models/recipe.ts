@@ -10,6 +10,12 @@ export interface IRecipe{
   tags: string[]
 }
 
+export const categories = {
+  accompagnement: "accompagnement",
+  plat: "plat",
+  dessert: "dessert"
+} 
+
 const mongoose = require('mongoose');
 
 export const recipeSchema = mongoose.Schema({
