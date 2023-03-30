@@ -8,6 +8,7 @@ import { baseRecipe } from "../compute/base/recipe";
 import { handleComposition } from "../compute/handleComposition";
 import { donwloadFile, handleIngredientImage, handleRecipeImage } from "../modules/file";
 import { removeBackgroundFromPath } from "../modules/removebg";
+import { fetchData } from "../modules/webScrapping";
 
 export const debugRoutes = express.Router();
 
@@ -160,4 +161,11 @@ debugRoutes.post("/handleIngredientImage", async (req, res) => {
     .catch((error : Error) => {
         res.status(500).send(error.message);
     });
+});
+
+//WebScrapper
+debugRoutes.get("/webScrapper", async (req, res) => {
+
+    const webS = await fetchData(req.query.url as string);
+    res.json(webS);
 });

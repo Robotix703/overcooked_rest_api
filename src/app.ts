@@ -31,6 +31,7 @@ import { tagRoutes } from './routes/tag';
 
 import { checkAPIKey } from './apiKey';
 import checkAuth from './middleware/check-auth';
+import { toolsRoutes } from './routes/tools';
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.use("/api/pantry", checkAuth, pantryRoutes);
 app.use("/api/meal", checkAuth, mealRoutes);
 app.use("/api/todoItem", checkAuth, todoItemRoutes);
 app.use("/api/tag", checkAuth, tagRoutes);
+app.use("/api/tools", checkAuth, toolsRoutes);
 
 if(process.env.ALLOWDEBUG == "true"){
     console.log("Debug allowed");
