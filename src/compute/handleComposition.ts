@@ -43,7 +43,7 @@ export namespace handleComposition {
 
         const composition = await computeComposition(recipeId);
 
-        return baseRecipe.updateRecipe(recipeId, recipe.title, recipe.numberOfLunch, recipe.imagePath, recipe.category, recipe.duration, recipe.lastCooked, composition, recipe.tags);
+        return baseRecipe.updateRecipe(recipeId, recipe.title, recipe.numberOfLunch, recipe.imagePath, recipe.category, recipe.duration, recipe.lastCooked, composition, recipe.tags, recipe.isComplete);
     }
 
     export async function readComposition(recipeId: string) : Promise<IIngredientWithQuantity[] | null>{

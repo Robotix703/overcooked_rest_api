@@ -34,7 +34,8 @@ export namespace recipeController {
       req.body.category,
       req.body.duration,
       undefined,
-      req.body.tags ? JSON.parse(req.body.tags) : undefined
+      req.body.tags ? JSON.parse(req.body.tags) : undefined,
+      req.body.isComplete
     )
     .then(async (result: any) => {
       await handleRecipeImage(imageUrl, imagePath);
@@ -339,7 +340,8 @@ export namespace recipeController {
       req.body.duration,
       req.body.lastCooked ? moment(req.body.expirationDate, "DD/MM/YYYY") : undefined,
       req.body.composition,
-      (req.body.tags)? JSON.parse(req.body.tags) : undefined
+      (req.body.tags)? JSON.parse(req.body.tags) : undefined,
+      req.body.isComplete
     )
     .then((result: IUpdateOne) => {
       if (result.modifiedCount > 0) {

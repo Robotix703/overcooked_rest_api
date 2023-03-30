@@ -69,7 +69,8 @@ export namespace baseRecipe {
         duration : number, 
         lastCooked : any, 
         composition: string,
-        tags: string[]) : Promise<IUpdateOne> {
+        tags: string[],
+        isComplete: boolean) : Promise<IUpdateOne> {
         let elementToUpdate : any = { _id: _id };
 
         if(title) elementToUpdate.title = title;
@@ -80,6 +81,7 @@ export namespace baseRecipe {
         if(lastCooked) elementToUpdate.lastCooked = lastCooked;
         if(composition) elementToUpdate.composition = composition;
         if(tags) elementToUpdate.tags = tags;
+        if(isComplete) elementToUpdate.isComplete = isComplete;
 
         return Recipe.updateOne({ _id: _id }, elementToUpdate);
     }
@@ -91,7 +93,8 @@ export namespace baseRecipe {
         category : string,
         duration : number,
         lastCooked : any | undefined,
-        tags: string[]) : Promise<any> {
+        tags: string[],
+        isComplete: boolean) : Promise<any> {
             const recipe = new Recipe({
                 title: title,
                 numberOfLunch: numberOfLunch,
@@ -99,7 +102,8 @@ export namespace baseRecipe {
                 category: category,
                 duration: duration,
                 lastCooked: lastCooked,
-                tags: tags
+                tags: tags,
+                isComplete: isComplete
             });
 
             return recipe.save()

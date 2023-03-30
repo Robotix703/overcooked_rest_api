@@ -8,6 +8,7 @@ export interface IRecipe{
   lastCooked: Date | null
   composition: string | null
   tags: string[]
+  isComplete: boolean
 }
 
 export const categories = {
@@ -26,7 +27,8 @@ export const recipeSchema = mongoose.Schema({
   duration: { type: Number, required: true },
   lastCooked: { type: Date },
   composition: { type: String, required: false},
-  tags: { type: [String] }
+  tags: { type: [String] },
+  isComplete: { type: Boolean, required: true }
 });
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
