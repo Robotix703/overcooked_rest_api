@@ -6,3 +6,4 @@ export const toolsRoutes = express.Router();
 
 //GET
 toolsRoutes.get("/extractFromMarmiton", toolsController.extractFromMarmiton);
+toolsRoutes.get("/shelfLifeFromChatGPT", toolsController.shelfLifeFromChatGPT);
