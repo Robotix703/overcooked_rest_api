@@ -55,14 +55,14 @@ export namespace baseIngredient {
         return ingredientsName;
     }
     
-    export async function getFilteredIngredient(name : string, category: string, limit : number) : Promise<IIngredient[]> {
+    export async function getFilteredIngredient(name : string, pageSize: number, currentPage: number) : Promise<IIngredient[]> {
         let filters : any = {};
         if (name) filters.name = { "$regex": name, "$options": "i" };
-        if (category) filters.category = category;
-        
-        if (limit && limit > 0) {
-            return Ingredient.find(filters).limit(limit);
+
+        if (pageSize && currentPage > 0) {
+            return Ingredient.find(filters).limit(pageSize).skip(pageSize * (currentPage - 1));
         }
+        
         return Ingredient.find(filters);
     }
     

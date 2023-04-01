@@ -122,7 +122,7 @@ export namespace ingredientController {
       });
   }
   export async function filteredIngredients(req: Request, res: Response){
-    baseIngredient.getFilteredIngredient(req.query.name as string, req.query.category as string, null)
+    baseIngredient.getFilteredIngredient(req.query.name as string, parseInt(req.query.pageSize as string), parseInt(req.query.currentPage as string))
       .then((result: IIngredient[]) => {
         res.status(200).json(result);
       })
