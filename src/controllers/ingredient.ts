@@ -122,9 +122,16 @@ export namespace ingredientController {
       });
   }
   export async function filteredIngredients(req: Request, res: Response){
+    const count = await baseIngredient.count()
+    .catch((error: Error) => {
+      res.status(500).json({
+        errorMessage: error
+      })
+    });
+
     baseIngredient.getFilteredIngredient(req.query.name as string, parseInt(req.query.pageSize as string), parseInt(req.query.currentPage as string))
       .then((result: IIngredient[]) => {
-        res.status(200).json(result);
+        res.status(200).json({ingredients: result, count: count});
       })
       .catch((error: Error) => {
         res.status(500).json({
