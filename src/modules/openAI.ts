@@ -17,7 +17,6 @@ export async function getShelfLifeFromChatGPT(ingredientName: string){
             }
         ]
     });
-    console.log(response);
 
     return response.data.choices[0].message.content;
 }
