@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { getShelfLifeFromChatGPT } from "../modules/openAI";
 import { fetchData } from "../modules/webScrapping";
 
@@ -12,6 +12,8 @@ export namespace toolsController {
         res.status(200).json(result);
     }
     export async function shelfLifeFromChatGPT(req: any, res: Response) {
+        if(!req.query.ingredientName) return res.status(400).json({errorMessage: "Ingredient name is missing"});
+
         const result = await getShelfLifeFromChatGPT(req.query.ingredientName as string);
         res.status(200).json(result);
     }
