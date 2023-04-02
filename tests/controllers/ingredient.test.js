@@ -164,7 +164,7 @@ test('filteredIngredients', async () => {
     let responseBody = mockResponse.status().json.mock.calls[0][0];
     let reponseStatus = mockStatusCode.mock.calls[0][0];
 
-    expect(responseBody).toMatchObject([ingredient]);
+    expect(responseBody).toMatchObject({ingredients: [ingredient], count: 1});
     expect(reponseStatus).toBe(200);
 
     findByNameSpy.mockRestore();
