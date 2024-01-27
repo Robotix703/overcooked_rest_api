@@ -51,7 +51,7 @@ export namespace baseRecipe {
 
         switch(sort){
             case "numberOfTimeCooked":
-                return Recipe.find(filters).sort({ numberOfTimeCooked: order ?? 1 });
+                return Recipe.find(filters).sort({ numberOfTimeCooked: order ?? -1 });
             default:
                 return Recipe.find(filters);
         }
