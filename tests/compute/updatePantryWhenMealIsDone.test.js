@@ -122,7 +122,7 @@ test('updatePantryWhenMealsIsDone', async () => {
         return meal;
     });
 
-    let updateLastCookedSpy = jest.spyOn(baseRecipe, "updateLastCooked").mockImplementationOnce(() => {
+    let updateNumberOfTimeCookedSpy = jest.spyOn(baseRecipe, "updateNumberOfTimeCooked").mockImplementationOnce(() => {
         return "OK";
     });
 
@@ -141,6 +141,6 @@ test('updatePantryWhenMealsIsDone', async () => {
     await updatePantryWhenMealIsDone.updatePantryWhenMealsIsDone(meal._id);
 
     expect(getMealByIDSpy).toHaveBeenCalledWith(meal._id);
-    expect(updateLastCookedSpy).toHaveBeenCalledWith(meal.recipeID);
+    expect(updateNumberOfTimeCookedSpy).toHaveBeenCalledWith(meal.recipeID);
     expect(getIngredientListSpy).toHaveBeenCalledWith(meal.recipeID);
 });

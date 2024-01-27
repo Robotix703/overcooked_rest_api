@@ -12,7 +12,7 @@ let recipe = {
     imagePath: "imagePath",
     category: "category",
     duration: 10,
-    lastCooked: null
+    numberOfTimeCooked: null
 }
 
 let prettyIngredient = {

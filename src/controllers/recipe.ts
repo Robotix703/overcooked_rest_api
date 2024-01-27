@@ -337,7 +337,7 @@ export namespace recipeController {
       req.body.imagePath,
       req.body.category,
       req.body.duration,
-      req.body.lastCooked ? moment(req.body.expirationDate, "DD/MM/YYYY") : undefined,
+      req.body.numberOfTimeCooked,
       req.body.composition,
       (req.body.tags)? JSON.parse(req.body.tags) : undefined
     )

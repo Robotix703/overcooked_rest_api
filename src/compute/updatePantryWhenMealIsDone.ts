@@ -58,7 +58,7 @@ export namespace updatePantryWhenMealIsDone {
         const meal : IMeal | void = await baseMeal.getMealByID(mealID);
         if(!meal) return new Error("meal not found");
 
-        await baseRecipe.updateLastCooked(meal.recipeID);
+        await baseRecipe.updateNumberOfTimeCooked(meal.recipeID);
     
         const ingredientsNeeded : IIngredientWithQuantity[] = await handleComposition.readComposition(meal.recipeID);
         for(let ingredient of ingredientsNeeded){

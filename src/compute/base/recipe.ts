@@ -11,9 +11,9 @@ export namespace baseRecipe {
         return Recipe.find();
     }
 
-    export async function updateLastCooked(recipeID : string) : Promise<IUpdateOne> {
+    export async function updateNumberOfTimeCooked(recipeID : string) : Promise<IUpdateOne> {
         let recipeToUpdate : IRecipe = await Recipe.findById(recipeID);
-        recipeToUpdate.lastCooked = new Date;
+        recipeToUpdate.numberOfTimeCooked ? recipeToUpdate.numberOfTimeCooked++ : recipeToUpdate.numberOfTimeCooked = 1;
         return Recipe.updateOne({ _id: recipeID }, recipeToUpdate);
     }
 
@@ -67,7 +67,7 @@ export namespace baseRecipe {
         imagePath : string, 
         category : string, 
         duration : number, 
-        lastCooked : any, 
+        numberOfTimeCooked : any, 
         composition: string,
         tags: string[]) : Promise<IUpdateOne> {
         let elementToUpdate : any = { _id: _id };
@@ -77,7 +77,7 @@ export namespace baseRecipe {
         if(imagePath) elementToUpdate.imagePath = imagePath;
         if(category) elementToUpdate.category = category;
         if(duration) elementToUpdate.duration = duration;
-        if(lastCooked) elementToUpdate.lastCooked = lastCooked;
+        if(numberOfTimeCooked) elementToUpdate.numberOfTimeCooked = numberOfTimeCooked;
         if(composition) elementToUpdate.composition = composition;
         if(tags) elementToUpdate.tags = tags;
 
@@ -90,7 +90,7 @@ export namespace baseRecipe {
         imagePath : string,
         category : string,
         duration : number,
-        lastCooked : any | undefined,
+        numberOfTimeCooked : any | undefined,
         tags: string[]) : Promise<any> {
             const recipe = new Recipe({
                 title: title,
@@ -98,7 +98,7 @@ export namespace baseRecipe {
                 imagePath: imagePath,
                 category: category,
                 duration: duration,
-                lastCooked: lastCooked,
+                numberOfTimeCooked: numberOfTimeCooked,
                 tags: tags
             });
 

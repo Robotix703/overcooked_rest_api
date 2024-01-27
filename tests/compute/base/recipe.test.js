@@ -10,7 +10,7 @@ let recipe = {
     imagePath: "imagePath",
     category: "category",
     duration: 56,
-    lastCooked: null,
+    numberOfTimeCooked: null,
 }
 
 let recipe2 = {
@@ -20,7 +20,7 @@ let recipe2 = {
     imagePath: "imagePath2",
     category: "category2",
     duration: 577,
-    lastCooked: null,
+    numberOfTimeCooked: null,
 }
 
 test('getRecipeByID', async () => {
@@ -31,11 +31,11 @@ test('getRecipeByID', async () => {
     expect(JSON.parse(JSON.stringify(result))).toMatchObject(recipe);
 });
 
-test('updateLastCooked', async () => {
+test('updateNumberOfTimeCooked', async () => {
     mockingoose(Recipe).toReturn(recipe, 'findOne');
     mockingoose(Recipe).toReturn("OK", 'updateOne');
 
-    let result = await baseRecipe.updateLastCooked(recipe._id);
+    let result = await baseRecipe.updateNumberOfTimeCooked(recipe._id);
 
     expect(JSON.parse(JSON.stringify(result))).toBe("OK");
 });
@@ -58,7 +58,7 @@ test('updateRecipe', async () => {
         recipe.imagePath,
         recipe.category,
         recipe.duration,
-        recipe.lastCooked
+        recipe.numberOfTimeCooked
     );
 
     expect(JSON.parse(JSON.stringify(result))).toBe("OK");
@@ -81,7 +81,7 @@ test('register', async () => {
         recipe.imagePath,
         recipe.category,
         recipe.duration,
-        recipe.lastCooked
+        recipe.numberOfTimeCooked
     );
 
     let prettyResult = JSON.parse(JSON.stringify(result));
