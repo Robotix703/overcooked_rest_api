@@ -41,19 +41,20 @@ export namespace baseRecipe {
         category: string | undefined, 
         name: string | undefined, 
         tags: string[] | undefined,
-        pageSize: number, 
-        currentPage: number
+        sort: string | undefined,
+        order: Number | undefined
         ) : Promise<IRecipe[]> {
         let filters : any = {};
         if (category) filters.category = category;
         if (name) filters.title = { "$regex": name, "$options": "i" };
         if (tags && tags.length > 0) filters.tags = { $all: tags };
 
-        if (pageSize && currentPage > 0) {
-            const query = Recipe.find(filters).limit(pageSize).skip(pageSize * (currentPage - 1));
-            return query;
+        switch(sort){
+            case "numberOfTimeCooked":
+                return Recipe.find(filters).sort({ numberOfTimeCooked: order ?? 1 });
+            default:
+                return Recipe.find(filters);
         }
-        return Recipe.find(filters);
     }
 
     export async function searchByName(name : string) : Promise<IRecipe[]> {

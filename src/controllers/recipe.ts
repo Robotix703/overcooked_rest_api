@@ -93,10 +93,7 @@ export namespace recipeController {
 
   //GET
   export async function readRecipes(req: any, res: Response){
-    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 20;
-    const currentPage = req.query.currentPage ? parseInt(req.query.currentPage) + 1 : 1;
-
-    let fetchedRecipes: IRecipe[] | void = await baseRecipe.filterRecipe(undefined, undefined, undefined, pageSize, currentPage)
+    let fetchedRecipes: IRecipe[] | void = await baseRecipe.filterRecipe(undefined, undefined, undefined, undefined, undefined)
     .catch((error: Error) => {
       res.status(500).json({
         errorMessage: error
@@ -133,8 +130,8 @@ export namespace recipeController {
       req.query.category, 
       req.query.name, 
       (req.query.tags)? JSON.parse(req.query.tags) : undefined,
-      parseInt(req.query.pageSize), 
-      parseInt(req.query.currentPage)
+      req.query.sort,
+      req.query.order
     )
     .catch((error: Error) => {
       res.status(500).json({
@@ -150,6 +147,11 @@ export namespace recipeController {
       });
       return;
     });
+
+    if(req.query.sort == "random" && fetchedRecipes)
+    {
+      fetchedRecipes = fetchedRecipes.sort(() => Math.random() - 0.5);
+    }
 
     let data = {
       recipes: fetchedRecipes,
