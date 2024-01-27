@@ -10,6 +10,7 @@
         "outDir": "build",
         "baseUrl": ".",
         "types": ["node"],
+        "skipLibCheck": true,
         "paths": {
             "*": [
                 "node_modules/*"
