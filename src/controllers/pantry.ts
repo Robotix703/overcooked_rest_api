@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
-import moment from 'moment';
 
 import { IPantry } from "../models/pantry";
 import { IIngredient } from "../models/ingredient";
-import { IUpdateOne } from "../models/mongoose";
 import { IDeleteOne } from "../models/mongoose";
 
 import { IPrettyPantry, PantryInventory } from "../compute/pantryInventory";
@@ -12,38 +10,9 @@ import { basePantry } from "../compute/base/pantry";
 import { handlePantry } from "../compute/handlePantry";
 
 import checkTodoList from "../worker/checkTodoList";
-import { registerIngredientsOnTodo } from "../worker/registerIngredientsOnTodo";
 
 export namespace pantryController {
     //POST
-    export function buyAgain(req: Request, res: Response){
-        if(!req.body.ingredientID) res.status(400).json({errorMessage: "No ingredientID provided"});
-        if(!req.body.ingredientName) res.status(400).json({errorMessage: "No ingredientName provided"});
-        if(!req.body.quantity) res.status(400).json({errorMessage: "No quantity provided"});
-        if(!req.body.pantryID) res.status(400).json({errorMessage: "No pantryID provided"});
-
-        basePantry.deleteOne(req.body.pantryID)
-            .then((result: IDeleteOne) => {
-                if (result.deletedCount > 0) {
-                    registerIngredientsOnTodo.registerIngredient(req.body.ingredientID, req.body.ingredientName, req.body.quantity, "Rachat")
-                    .then((result: any) => {
-                        res.status(201).json(result);
-                    })
-                    .catch((error: Error) => {
-                        res.status(500).json({
-                            errorMessage: error
-                        })
-                    });
-                } else {
-                    res.status(401).json(result);
-                }
-            })
-            .catch((error: Error) => {
-                res.status(500).json({
-                    errorMessage: error
-                })
-            });
-    }
     export async function writePantry(req: Request, res: Response) {
         let ingredientId: string = req.body.ingredientID;
         if(req.body.ingredientName){
@@ -59,9 +28,7 @@ export namespace pantryController {
         
         basePantry.register(
             ingredientId,
-            req.body.quantity,
-            req.body.expirationDate ? moment(req.body.expirationDate, "DD/MM/YYYY") : null,
-            req.body.frozen ?? false
+            req.body.quantity
         )
             .then((result: any) => {
                 res.status(201).json(result);
@@ -77,9 +44,7 @@ export namespace pantryController {
 
         basePantry.register(
             ingredientID._id,
-            req.body.quantity,
-            req.body.expirationDate ? moment(req.body.expirationDate, "DD/MM/YYYY") : null,
-            req.body.frozen ?? false
+            req.body.quantity
         )
             .then((result: any) => {
                 res.status(201).json(result);
@@ -89,16 +54,6 @@ export namespace pantryController {
                     errorMessage: error
                 })
             });
-    }
-    export async function freezePantry(req: Request, res: Response) {
-        let result: IUpdateOne = await handlePantry.freezePantry(req.body.pantryID);
-
-        if (result.modifiedCount > 0) {
-            res.status(200).json(result);
-        }
-        else {
-            res.status(404).json({ errorMessage: "Pantry not found" });
-        }
     }
     export async function refreshTodoist(req: Request, res: Response) {
         await checkTodoList();
@@ -158,26 +113,6 @@ export namespace pantryController {
                 })
             });
     }
-    export async function getNearestExpirationDate(req: Request, res: Response) {
-        basePantry.getByIngredientID(req.query.ingredientID as string)
-            .then((documents: IPantry[]) => {
-                const fetchedPantries: IPantry[] = [...documents];
-
-                let nearestExpirationDate: Date = new Date();
-                nearestExpirationDate.setFullYear(nearestExpirationDate.getFullYear() + 1);
-
-                fetchedPantries.forEach((e) => {
-                    if (e.expirationDate < nearestExpirationDate) nearestExpirationDate = e.expirationDate;
-                })
-
-                res.status(200).json({ nearestExpirationDate: nearestExpirationDate });
-            })
-            .catch((error: Error) => {
-                res.status(500).json({
-                    errorMessage: error
-                })
-            });
-    }
     export async function getFullPantryInventory(req: Request, res: Response) {
         PantryInventory.getFullInventory()
             .then((fullInventory: IPrettyPantry[]) => {
@@ -212,9 +147,7 @@ export namespace pantryController {
                     _id: pantry._id,
                     ingredientID: pantry.ingredientID,
                     quantity: pantry.quantity,
-                    expirationDate: pantry.expirationDate || null,
-                    ingredientName: ingredientName,
-                    frozen: pantry.frozen
+                    ingredientName: ingredientName
                 });
             }
             else {
@@ -248,9 +181,7 @@ export namespace pantryController {
                 let updatePantry = await basePantry.updatePantry(
                     req.params.id,
                     ingredientID,
-                    req.body.quantity,
-                    req.body.expirationDate ? moment(req.body.expirationDate, "DD/MM/YYYY") : null,
-                    req.body.frozen
+                    req.body.quantity
                 )
                     .catch((error: Error) => {
                         res.status(500).json({
@@ -281,23 +212,6 @@ export namespace pantryController {
             res.status(400).json({
                 errorMessage: "IngredientName not provided"
             });
-        }
-    }
-    export async function updateExpirationDate(req: Request, res: Response) {
-        let updatePantry = await basePantry.updatePantry(
-            req.params.id,
-            undefined,
-            undefined,
-            req.body.expirationDate ? new Date(req.body.expirationDate,) : null,
-            undefined
-        )
-
-        if (updatePantry) {
-            if (updatePantry.modifiedCount > 0) {
-                res.status(200).json({ status: "OK" });
-            } else {
-                res.status(500).json({ message: "Pas de modification" });
-            }
         }
     }
 

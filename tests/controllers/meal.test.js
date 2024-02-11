@@ -16,9 +16,7 @@ let ingredientWithQuantityConsumable = {
         imagePath: "imagePath2",
         consumable: true,
         category: "category2",
-        unitOfMeasure: "unitOfMeasure2",
-        shelfLife: 1,
-        freezable: true
+        unitOfMeasure: "unitOfMeasure2"
     },
     quantity: 1
 }
@@ -42,7 +40,6 @@ let meal = {
 
 let mealStatus = {
     ingredientAvailable: [],
-    ingredientAlmostExpire: [],
     ingredientUnavailable: []
 }
 

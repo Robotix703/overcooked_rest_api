@@ -7,9 +7,7 @@ let ingredient = {
     imagePath: "imagePath",
     consumable: true,
     category: "category",
-    unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10,
-    freezable: true
+    unitOfMeasure: "unitOfMeasure"
 }
 
 test('getConsumable', async () => {

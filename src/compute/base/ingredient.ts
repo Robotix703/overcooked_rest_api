@@ -66,14 +66,12 @@ export namespace baseIngredient {
         return Ingredient.find(filters);
     }
     
-    export async function updateIngredient(_id : string, name : string, consumable : boolean, unitOfMeasure : string, shelfLife : number, freezable : boolean) : Promise<IUpdateOne> {
+    export async function updateIngredient(_id : string, name : string, consumable : boolean, unitOfMeasure : string) : Promise<IUpdateOne> {
         let elementToUpdate : any = { _id: _id };
     
         if(name != undefined) elementToUpdate.name = name;
         if(consumable != undefined) elementToUpdate.consumable = consumable;
         if(unitOfMeasure != undefined) elementToUpdate.unitOfMeasure = unitOfMeasure;
-        if(shelfLife != undefined) elementToUpdate.shelfLife = shelfLife;
-        if(freezable != undefined) elementToUpdate.freezable = freezable;
     
         return Ingredient.updateOne({ _id: _id }, elementToUpdate);
     }
@@ -98,16 +96,12 @@ export namespace baseIngredient {
         name: string, 
         imagePath: string, 
         consumable: boolean,
-        unitOfMeasure: string, 
-        shelfLife: number | undefined,
-        freezable: boolean) : Promise<any> {
+        unitOfMeasure: string) : Promise<any> {
         const ingredient = new Ingredient({
             name: name,
             imagePath: imagePath,
             consumable: consumable,
-            unitOfMeasure: unitOfMeasure,
-            shelfLife: shelfLife ? shelfLife : null,
-            freezable: freezable
+            unitOfMeasure: unitOfMeasure
         });
 
         return await ingredient.save()

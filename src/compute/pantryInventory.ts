@@ -6,20 +6,17 @@ import { basePantry } from "./base/pantry";
 
 export interface IPantryInventory {
     ingredientID: string,
-    quantityLeft: number,
-    expirationDate: Date
+    quantityLeft: number
 }
 
 export interface IPantryStatus {
-    quantityLeft: number,
-    nearestExpirationDate: Date
+    quantityLeft: number
 }
 
 export interface IPrettyPantry {
     ingredientID: string,
     ingredientName: string,
     ingredientImagePath: string,
-    ingredientFreezable: boolean,
     ingredientUnitOfMeasure: string,
     pantries: IPantry[]
 }
@@ -33,14 +30,10 @@ export async function getInventoryForIngredientID(ingredientID : string) : Promi
     let fetchedPantries : IPantry[] = await basePantry.getAllPantryByIngredientID(ingredientID);
 
     let sum : number = 0;
-    let nearestExpirationDate : Date = new Date();
-    nearestExpirationDate.setFullYear(nearestExpirationDate.getFullYear() + 1);
-
     fetchedPantries.forEach((e) => {
         sum += e.quantity;
-        if(e.expirationDate < nearestExpirationDate) nearestExpirationDate = e.expirationDate;
     });
-    return { quantityLeft: sum, nearestExpirationDate: nearestExpirationDate };
+    return { quantityLeft: sum };
 }
 
 export namespace PantryInventory{
@@ -53,8 +46,7 @@ export namespace PantryInventory{
             const inventory : IPantryStatus = await getInventoryForIngredientID(ingredientID);
             listAllConsumableLeft.push({
                 ingredientID: ingredientID,
-                quantityLeft: inventory.quantityLeft,
-                expirationDate: inventory.nearestExpirationDate
+                quantityLeft: inventory.quantityLeft
             });
         }
         return listAllConsumableLeft;
@@ -78,7 +70,6 @@ export namespace PantryInventory{
                     ingredientID: pantry.ingredientID,
                     ingredientName: ingredientInfo.name,
                     ingredientImagePath: ingredientInfo.imagePath,
-                    ingredientFreezable: ingredientInfo.freezable,
                     ingredientUnitOfMeasure: ingredientInfo.unitOfMeasure,
                     pantries: [pantry]
                 })

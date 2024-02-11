@@ -23,17 +23,11 @@ export namespace basePantry {
         return Pantry.findById(pantryID);
     }
 
-    export async function getAllPantryWithExpirationDate() : Promise<IPantry[]> {
-        return Pantry.find({expirationDate: {$ne:null}});
-    }
-
-    export async function updatePantry(_id : string, ingredientID : string, quantity : number, expirationDate : any, frozen : boolean) : Promise<IUpdateOne> {
+    export async function updatePantry(_id : string, ingredientID : string, quantity : number) : Promise<IUpdateOne> {
         let elementToUpdate : any = { _id: _id };
 
         if(ingredientID) elementToUpdate.ingredientID = ingredientID;
         if(quantity) elementToUpdate.quantity = quantity;
-        if(expirationDate) elementToUpdate.expirationDate = expirationDate;
-        if(frozen) elementToUpdate.frozen = frozen;
 
         return Pantry.updateOne({ _id: _id }, elementToUpdate);
     }
@@ -42,12 +36,10 @@ export namespace basePantry {
         return Pantry.findById(id);
     }
 
-    export async function register(ingredientID: string, quantity: number, expirationDate: any | null, frozen: boolean) : Promise<any> {
+    export async function register(ingredientID: string, quantity: number) : Promise<any> {
         const pantry = new Pantry({
             ingredientID: ingredientID,
-            quantity: quantity,
-            expirationDate: expirationDate,
-            frozen: frozen
+            quantity: quantity
         });
 
         return pantry.save()

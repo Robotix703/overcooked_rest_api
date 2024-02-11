@@ -13,9 +13,7 @@ let ingredient = {
     imagePath: "imagePath",
     consumable: true,
     category: "category",
-    unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10,
-    freezable: true
+    unitOfMeasure: "unitOfMeasure"
 }
 let ingredient2 = {
     _id: "string2",
@@ -23,9 +21,7 @@ let ingredient2 = {
     imagePath: "imagePath2",
     consumable: true,
     category: "category2",
-    unitOfMeasure: "unitOfMeasure2",
-    shelfLife: 12,
-    freezable: false
+    unitOfMeasure: "unitOfMeasure2"
 }
 
 let date = new Date();
@@ -33,21 +29,16 @@ date.setDate(date.getDate() + 1);
 let pantry = {
     _id: "string",
     ingredientID: "ingredientID",
-    quantity: 1,
-    expirationDate: date,
-    frozen: false
+    quantity: 1
 }
 let pantry2 = {
     _id: "string2",
     ingredientID: "ingredientID",
-    quantity: 2,
-    expirationDate: new Date("12/12/12"),
-    frozen: true
+    quantity: 2
 }
 
 let pantryStatus = {
-    quantityLeft: 3,
-    nearestExpirationDate: "12/12/2012"
+    quantityLeft: 3
 }
 
 test('getConsumableID', async () => {
@@ -71,11 +62,9 @@ test('getInventoryForIngredientID', async () => {
     let result = await getInventoryForIngredientID(pantry.ingredientID);
 
     let object = JSON.parse(JSON.stringify(result));
-    object.nearestExpirationDate = new Date(object.nearestExpirationDate).toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
 
     expect(object).toMatchObject({
-        quantityLeft: 3,
-        nearestExpirationDate: "12/12/2012"
+        quantityLeft: 3
     });
 });
 
@@ -112,6 +101,5 @@ test('getInventory', async () => {
     expect(object[0].ingredientID).toBe(pantry.ingredientID);
     expect(object[0].ingredientName).toBe(ingredient.name);
     expect(object[0].ingredientImagePath).toBe(ingredient.imagePath);
-    expect(object[0].ingredientFreezable).toBe(ingredient.freezable);
     expect(object[0].pantries.length).toBe(2);
 });

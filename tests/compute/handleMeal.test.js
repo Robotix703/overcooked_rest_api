@@ -11,23 +11,19 @@ const PantryInventory = require("../../build/compute/pantryInventory").PantryInv
 
 let pantryInventory = {
     ingredientID: "string",
-    quantityLeft: 10,
-    expirationDate: null
+    quantityLeft: 10
 }
 let pantryInventoryDate = {
     ingredientID: "date",
-    quantityLeft: 10,
-    expirationDate: new Date(Date.now)
+    quantityLeft: 10
 }
 let pantryInventoryOldDate = {
     ingredientID: "date",
-    quantityLeft: 10,
-    expirationDate: new Date()
+    quantityLeft: 10
 }
 let pantryInventoryWrongQuantity = {
     ingredientID: "string",
-    quantityLeft: 0,
-    expirationDate: null
+    quantityLeft: 0
 }
 
 let meal = {
@@ -48,9 +44,7 @@ let ingredientWithQuantityNotConsumable = {
         imagePath: "imagePath",
         consumable: false,
         category: "category",
-        unitOfMeasure: "unitOfMeasure",
-        shelfLife: 10,
-        freezable: false
+        unitOfMeasure: "unitOfMeasure"
     },
     quantity: 1
 }
@@ -61,9 +55,7 @@ let ingredientWithQuantityConsumable = {
         imagePath: "imagePath2",
         consumable: true,
         category: "category2",
-        unitOfMeasure: "unitOfMeasure2",
-        shelfLife: 1,
-        freezable: true
+        unitOfMeasure: "unitOfMeasure2"
     },
     quantity: 1
 }
@@ -108,18 +100,6 @@ test('checkDisponibility with correct date', async () => {
     let result = checkDisponibility(pantryInventoryDate.ingredientID, 1);
 
     expect(result).toBe(0);
-});
-
-test('checkDisponibility with expired date', async () => {
-    jest.spyOn(PantryInventory, "getInventory").mockImplementationOnce(() => {
-        return [pantryInventoryOldDate];
-    });
-    
-    await handleMeal.initPantryInventory();
-    
-    let result = checkDisponibility(pantryInventoryOldDate.ingredientID, 1);
-
-    expect(result).toBe(-1);
 });
 
 test('checkDisponibility without date', async () => {
@@ -173,7 +153,6 @@ test('checkIfMealIsReady with Ingredient not consumable', async () => {
     expect(handleRecipeSpy).toHaveBeenCalledWith(meal.recipeID);
     expect(JSON.parse(JSON.stringify(result))).toMatchObject({
         ingredientAvailable: [],
-        ingredientAlmostExpire: [],
         ingredientUnavailable: []
     })
 });
@@ -198,32 +177,6 @@ test('checkIfMealIsReady with Ingredient consumable available', async () => {
     expect(handleRecipeSpy).toHaveBeenCalledWith(meal.recipeID);
     expect(JSON.parse(JSON.stringify(result))).toMatchObject({
         ingredientAvailable: [ingredientWithQuantityConsumable],
-        ingredientAlmostExpire: [],
-        ingredientUnavailable: []
-    })
-});
-
-test('checkIfMealIsReady with Ingredient consumable almost expired', async () => {
-    let baseMealSpy = jest.spyOn(baseMeal, "getMealByID").mockImplementationOnce(() => {
-        return meal;
-    });
-
-    let handleRecipeSpy = jest.spyOn(handleComposition, "readComposition").mockImplementationOnce(() => {
-        return [ingredientWithQuantityConsumable];
-    });
-
-    jest.spyOn(PantryInventory, "getInventory").mockImplementationOnce(() => {
-        return [pantryInventoryOldDate];
-    });
-    await handleMeal.initPantryInventory();
-    
-    let result = await handleMeal.checkIfMealIsReady(meal._id);
-
-    expect(baseMealSpy).toHaveBeenCalledWith(meal._id);
-    expect(handleRecipeSpy).toHaveBeenCalledWith(meal.recipeID);
-    expect(JSON.parse(JSON.stringify(result))).toMatchObject({
-        ingredientAvailable: [],
-        ingredientAlmostExpire: [ingredientWithQuantityConsumable],
         ingredientUnavailable: []
     })
 });
@@ -248,7 +201,6 @@ test('checkIfMealIsReady with Ingredient consumable unavailable', async () => {
     expect(handleRecipeSpy).toHaveBeenCalledWith(meal.recipeID);
     expect(JSON.parse(JSON.stringify(result))).toMatchObject({
         ingredientAvailable: [],
-        ingredientAlmostExpire: [],
         ingredientUnavailable: [ingredientWithQuantityConsumable]
     })
 });
@@ -269,7 +221,6 @@ test('checkMealList', async () => {
     let checkIfMealIsReadySpy = jest.spyOn(handleMeal, "checkIfMealIsReady").mockImplementationOnce(() => {
         return {
             ingredientAvailable: [],
-            ingredientAlmostExpire: [],
             ingredientUnavailable: [ingredientWithQuantityConsumable]
         };
     });
@@ -283,7 +234,6 @@ test('checkMealList', async () => {
     expect(prettyResult.title).toBe(recipe.title);
     expect(prettyResult.state).toMatchObject({
         ingredientAvailable: [],
-        ingredientAlmostExpire: [],
         ingredientUnavailable: [ingredientWithQuantityConsumable]
     });
 });
@@ -304,7 +254,6 @@ test('displayMealWithRecipeAndState', async () => {
     let checkIfMealIsReadySpy = jest.spyOn(handleMeal, "checkIfMealIsReady").mockImplementationOnce(() => {
         return {
             ingredientAvailable: [],
-            ingredientAlmostExpire: [],
             ingredientUnavailable: [ingredientWithQuantityConsumable]
         };
     });
@@ -320,7 +269,6 @@ test('displayMealWithRecipeAndState', async () => {
     expect(prettyResult.imagePath).toBe(recipe.imagePath);
     expect(prettyResult.state).toMatchObject({
         ingredientAvailable: [],
-        ingredientAlmostExpire: [],
         ingredientUnavailable: [ingredientWithQuantityConsumable]
     });
 });

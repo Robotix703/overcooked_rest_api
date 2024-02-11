@@ -6,17 +6,13 @@ const basePantry = require("../../../build/compute/base/pantry").basePantry;
 let pantry = {
     _id: "62adecd7c2285147db155742",
     ingredientID: "ingredientID",
-    quantity: 10,
-    expirationDate: null,
-    frozen: true
+    quantity: 10
 }
 
 let pantry2 = {
     _id: "62adecd7c2285147db155743",
     ingredientID: "ingredientID2",
-    quantity: 12,
-    expirationDate: null,
-    frozen: false
+    quantity: 12
 }
 
 test('getAllPantryByIngredientID', async () => {
@@ -66,23 +62,13 @@ test('getPantryByID', async () => {
     expect(JSON.parse(JSON.stringify(result))).toMatchObject(pantry);
 });
 
-test('getAllPantryWithExpirationDate', async () => {
-    mockingoose(Pantry).toReturn([pantry, pantry2], 'find');
-
-    let result = await basePantry.getAllPantryWithExpirationDate();
-
-    expect(JSON.parse(JSON.stringify(result))).toMatchObject([pantry, pantry2]);
-});
-
 test('updatePantry', async () => {
     mockingoose(Pantry).toReturn("OK", 'updateOne');
 
     let result = await basePantry.updatePantry(
         pantry._id,
         pantry.ingredientID,
-        pantry.quantity,
-        pantry.expirationDate,
-        pantry.frozen
+        pantry.quantity
     );
 
     expect(JSON.parse(JSON.stringify(result))).toBe("OK");
@@ -101,14 +87,11 @@ test('register', async () => {
 
     let result = await basePantry.register(
         pantry.ingredientID,
-        pantry.quantity,
-        pantry.expirationDate,
-        pantry.frozen
+        pantry.quantity
     );
 
     let prettyResult = JSON.parse(JSON.stringify(result));
     expect(prettyResult.id.length).toBeGreaterThanOrEqual(10);
-    expect(prettyResult.pantry.frozen).toBe(pantry.frozen);
 });
 
 test('count', async () => {
@@ -117,14 +100,6 @@ test('count', async () => {
     let result = await basePantry.count();
 
     expect(JSON.parse(JSON.stringify(result))).toBe(10);
-});
-
-test('getByIngredientID', async () => {
-    mockingoose(Pantry).toReturn([pantry, pantry2], 'find');
-
-    let result = await basePantry.getAllPantryWithExpirationDate();
-
-    expect(JSON.parse(JSON.stringify(result))).toMatchObject([pantry, pantry2]);
 });
 
 test('deleteOne', async () => {

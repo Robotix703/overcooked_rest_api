@@ -8,9 +8,7 @@ let ingredient = {
     name: "name",
     imagePath: "imagePath",
     consumable: true,
-    unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10,
-    freezable: true
+    unitOfMeasure: "unitOfMeasure"
 }
 
 let ingredientWrong = {
@@ -18,9 +16,7 @@ let ingredientWrong = {
     name: "name2",
     imagePath: "imagePath2",
     consumable: false,
-    unitOfMeasure: "unitOfMeasure2",
-    shelfLife: 12,
-    freezable: false
+    unitOfMeasure: "unitOfMeasure2"
 }
 
 test('getIngredientNameByID', async () => {
@@ -112,9 +108,7 @@ test('updateIngredient', async () => {
         ingredient._id,
         ingredient.name,
         ingredient.consumable,
-        ingredient.unitOfMeasure,
-        ingredient.shelfLife,
-        ingredient.freezable);
+        ingredient.unitOfMeasure);
 
     expect(JSON.parse(JSON.stringify(result))).toBe("OK");
 });
@@ -154,9 +148,7 @@ test('register', async () => {
         ingredient.name,
         ingredient.imagePath,
         ingredient.consumable,
-        ingredient.unitOfMeasure,
-        ingredient.shelfLife,
-        ingredient.freezable);
+        ingredient.unitOfMeasure);
     
     let prettyResult = JSON.parse(JSON.stringify(result));
     expect(prettyResult.id.length).toBeGreaterThanOrEqual(10);

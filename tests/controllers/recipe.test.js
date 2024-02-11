@@ -53,9 +53,7 @@ let ingredientWithQuantity = {
         imagePath: "imagePath",
         consumable: true,
         category: "category",
-        unitOfMeasure: "unitOfMeasure",
-        shelfLife: 10,
-        freezable: false
+        unitOfMeasure: "unitOfMeasure"
     },
     quantity: 2
 }

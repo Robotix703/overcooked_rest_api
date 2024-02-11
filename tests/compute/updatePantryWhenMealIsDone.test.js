@@ -1,7 +1,6 @@
 const updatePantryFile = require("../../build/compute/updatePantryWhenMealIsDone");
 
 const comparePantriesByQuantity = updatePantryFile.comparePantriesByQuantity;
-const comparePantriesByExpirationDate = updatePantryFile.comparePantriesByExpirationDate;
 const consumeIngredientFromPantry = updatePantryFile.consumeIngredientFromPantry;
 
 const basePantry = require("../../build/compute/base/pantry").basePantry;
@@ -15,23 +14,17 @@ date.setDate(date.getDate() + 1);
 let pantry = {
     _id: "62bc94b4a969443c312272df",
     ingredientID: "ingredientID",
-    quantity: 1,
-    expirationDate: date,
-    frozen: false
+    quantity: 1
 }
 let pantry2 = {
     _id: "62bc94b4a969443c312272df",
     ingredientID: "ingredientID2",
-    quantity: 2,
-    expirationDate: new Date(),
-    frozen: true
+    quantity: 2
 }
 let pantry3 = {
     _id: "string2",
     ingredientID: "ingredientID2",
-    quantity: 2,
-    expirationDate: null,
-    frozen: true
+    quantity: 2
 }
 
 let meal = {
@@ -47,9 +40,7 @@ let ingredientWithQuantity = {
         imagePath: "imagePath",
         consumable: true,
         category: "category",
-        unitOfMeasure: "unitOfMeasure",
-        shelfLife: 10,
-        freezable: false
+        unitOfMeasure: "unitOfMeasure"
     },
     quantity: 2
 }
@@ -58,15 +49,6 @@ test('getIngredientIDFromInstruction', () => {
     
     expect(comparePantriesByQuantity(pantry, pantry2)).toBe(-1);
     expect(comparePantriesByQuantity(pantry2, pantry)).toBe(1);
-});
-
-test('comparePantriesByExpirationDate', () => {
-    
-    expect(comparePantriesByExpirationDate(pantry, pantry2)).toBe(-1);
-    expect(comparePantriesByExpirationDate(pantry2, pantry)).toBe(1);
-    expect(comparePantriesByExpirationDate(pantry, pantry3)).toBe(-1);
-    expect(comparePantriesByExpirationDate(pantry3, pantry)).toBe(1);
-    expect(comparePantriesByExpirationDate(pantry3, pantry3)).toBe(0);
 });
 
 test('consumeIngredientFromPantry with quantityToConsume > left', async () => {

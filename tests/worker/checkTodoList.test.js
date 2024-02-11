@@ -14,9 +14,7 @@ let ingredient = {
     imagePath: "imagePath",
     consumable: true,
     category: "category",
-    unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10,
-    freezable: true
+    unitOfMeasure: "unitOfMeasure"
 }
 
 let todoItem = {
@@ -53,9 +51,6 @@ test('addIngredientToPantry', async () => {
     expect(spy).toHaveBeenCalledWith("ingredientName");
     expect(spy2.mock.calls[0][0]).toBe(ingredient._id);
     expect(spy2.mock.calls[0][1]).toBe(5);
-    expect(spy2.mock.calls[0][2].toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" }))
-    .toBe(addDays(date, ingredient.shelfLife).toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" }));
-    expect(spy2.mock.calls[0][3]).toBe(false);
 
     spy.mockRestore();
     spy2.mockRestore();
