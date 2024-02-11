@@ -18,14 +18,12 @@ export namespace ingredientController {
     const imageUrl = req.body.imageUrl;
 
     if(req.body.consumable == undefined || !req.body.unitOfMeasure) return res.status(400).json({errorMessage: "Missing consumable or unitOfMeasure"});
-    if(req.body.shelfLife == undefined || isNaN(req.body.shelfLife)) return res.status(400).json({errorMessage: "ShelfLife must be a number"});
 
     baseIngredient.register(
       req.body.name,
       url + "/" + imagePath,
       req.body.consumable,
-      req.body.unitOfMeasure,
-      req.body.shelfLife)
+      req.body.unitOfMeasure)
     .then(async (result: any) => {
       await handleIngredientImage(imageUrl, imagePath);
       res.status(201).json(result);
@@ -171,8 +169,7 @@ export namespace ingredientController {
       req.params.id,
       req.body.name,
       req.body.consumable,
-      req.body.unitOfMeasure,
-      req.body.shelfLife ?? undefined
+      req.body.unitOfMeasure
     )
     .then((result: IUpdateOne) => {
       if (result.modifiedCount > 0) {

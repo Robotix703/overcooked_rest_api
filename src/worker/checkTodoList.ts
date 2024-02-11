@@ -21,17 +21,10 @@ export async function addIngredientToPantry (itemText: string): Promise<void> {
     const quantity : string = textSplit[1].split(" ")[0];
 
     const ingredient : IIngredient = await baseIngredient.getIngredientByName(ingredientName);
-    
-    let expirationDate: Date | null = null;
-    if(ingredient.shelfLife){
-        expirationDate = new Date();
-        expirationDate = addDays(expirationDate, ingredient.shelfLife);
-    }
 
     await basePantry.register(
         ingredient._id, 
-        parseInt(quantity), 
-        expirationDate || null
+        parseInt(quantity)
     );
 }
 

@@ -10,7 +10,6 @@ import { handleComposition } from "./handleComposition";
 
 export interface IMealStatus {
     ingredientAvailable: IIngredientWithQuantity[],
-    ingredientAlmostExpire: IIngredientWithQuantity[],
     ingredientUnavailable: IIngredientWithQuantity[]
 }
 
@@ -39,15 +38,7 @@ export function checkDisponibility(ingredientID : string, quantity : number) : n
     const ingredientFound : IPantryInventory = g_pantryInventory.find((e : any) => e.ingredientID.toString() == ingredientID.toString());
     if(ingredientFound){
         if(quantity <= ingredientFound.quantityLeft){
-            let dateNow : Date = new Date();
-            dateNow = dateNow.addDays(3);
-
-            if(!ingredientFound.expirationDate) return 0;
-            
-            if(ingredientFound.expirationDate.getTime() < dateNow.getTime()){
-                return -1;
-            }
-            return 0;
+           return 0;
         }
         return -2;
     }else{
@@ -68,7 +59,6 @@ export namespace handleMeal {
     
         let ingredientAvailable = [];
         let ingredientUnavailable = [];
-        let ingredientAlmostExpire = [];
     
         for(let ingredient of ingredientsNeeded){
             if(ingredient.ingredient.consumable)
@@ -76,13 +66,11 @@ export namespace handleMeal {
                 let state : number = checkDisponibility(ingredient.ingredient._id, ingredient.quantity);
     
                 if(state == 0) ingredientAvailable.push(ingredient);
-                if(state == -1) ingredientAlmostExpire.push(ingredient);
                 if(state == -2) ingredientUnavailable.push(ingredient);
             }
         }
         return {
             ingredientAvailable: ingredientAvailable,
-            ingredientAlmostExpire: ingredientAlmostExpire,
             ingredientUnavailable: ingredientUnavailable
         };
     }

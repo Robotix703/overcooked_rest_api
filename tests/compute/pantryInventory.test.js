@@ -13,8 +13,7 @@ let ingredient = {
     imagePath: "imagePath",
     consumable: true,
     category: "category",
-    unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10
+    unitOfMeasure: "unitOfMeasure"
 }
 let ingredient2 = {
     _id: "string2",
@@ -22,8 +21,7 @@ let ingredient2 = {
     imagePath: "imagePath2",
     consumable: true,
     category: "category2",
-    unitOfMeasure: "unitOfMeasure2",
-    shelfLife: 12
+    unitOfMeasure: "unitOfMeasure2"
 }
 
 let date = new Date();
@@ -31,19 +29,16 @@ date.setDate(date.getDate() + 1);
 let pantry = {
     _id: "string",
     ingredientID: "ingredientID",
-    quantity: 1,
-    expirationDate: date
+    quantity: 1
 }
 let pantry2 = {
     _id: "string2",
     ingredientID: "ingredientID",
-    quantity: 2,
-    expirationDate: new Date("12/12/12")
+    quantity: 2
 }
 
 let pantryStatus = {
-    quantityLeft: 3,
-    nearestExpirationDate: "12/12/2012"
+    quantityLeft: 3
 }
 
 test('getConsumableID', async () => {
@@ -67,11 +62,9 @@ test('getInventoryForIngredientID', async () => {
     let result = await getInventoryForIngredientID(pantry.ingredientID);
 
     let object = JSON.parse(JSON.stringify(result));
-    object.nearestExpirationDate = new Date(object.nearestExpirationDate).toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
 
     expect(object).toMatchObject({
-        quantityLeft: 3,
-        nearestExpirationDate: "12/12/2012"
+        quantityLeft: 3
     });
 });
 

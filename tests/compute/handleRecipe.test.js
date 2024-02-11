@@ -35,8 +35,7 @@ let ingredientWithQuantity = {
         imagePath: "imagePath",
         consumable: true,
         category: "category",
-        unitOfMeasure: "unitOfMeasure",
-        shelfLife: 10
+        unitOfMeasure: "unitOfMeasure"
     },
     quantity: 2
 }
@@ -47,8 +46,7 @@ let ingredientWithQuantity2 = {
         imagePath: "imagePath2",
         consumable: true,
         category: "category2",
-        unitOfMeasure: "unitOfMeasure2",
-        shelfLife: 14
+        unitOfMeasure: "unitOfMeasure2"
     },
     quantity: 2
 }
@@ -59,8 +57,7 @@ let ingredientWithQuantity3 = {
         imagePath: "imagePath2",
         consumable: true,
         category: "category2",
-        unitOfMeasure: "unitOfMeasure2",
-        shelfLife: 14
+        unitOfMeasure: "unitOfMeasure2"
     },
     quantity: 2
 }
@@ -71,8 +68,7 @@ let ingredientWithQuantity4 = {
         imagePath: "imagePath",
         consumable: true,
         category: "category",
-        unitOfMeasure: "unitOfMeasure",
-        shelfLife: 10
+        unitOfMeasure: "unitOfMeasure"
     },
     quantity: 2
 }
@@ -93,8 +89,7 @@ let ingredient1 = {
     imagePath: "imagePath",
     consumable: true,
     category: "category",
-    unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10
+    unitOfMeasure: "unitOfMeasure"
 }
 
 let ingredient2 = {
@@ -103,8 +98,7 @@ let ingredient2 = {
     imagePath: "imagePath",
     consumable: true,
     category: "category",
-    unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10
+    unitOfMeasure: "unitOfMeasure"
 }
 
 test('getIngredientIDFromInstruction', async () => {

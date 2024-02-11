@@ -1,18 +1,12 @@
 require('dotenv').config();
 
 import checkTodoList from "./worker/checkTodoList";
-import dailyCheck from "./worker/dailyCheck";
 import { handleScheduleTask } from "./worker/handleScheduleTask";
 
 const todoSurvey = "todoSurvey";
-const dailySurvey = "dailySurvey";
 
 function createIntervalCronSettings(interval: string){
     return "*/" + interval + " * * * *";
-}
-
-function createDailyCronSettings(hour: string){
-    return "0 " + hour + " * * *";
 }
 
 function initTodoSurvey(){
@@ -22,12 +16,6 @@ function initTodoSurvey(){
         checkTodoList,
         cronInterval,
         todoSurvey
-    )
-
-    handleScheduleTask.addperiodicTask(
-        dailyCheck,
-        cronInterval,
-        dailySurvey
     )
 }
 

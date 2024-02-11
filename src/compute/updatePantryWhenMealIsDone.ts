@@ -14,25 +14,9 @@ export function comparePantriesByQuantity(x : IPantry, y : IPantry) : number {
     return 0;
 }
 
-export function comparePantriesByExpirationDate(x : IPantry, y : IPantry) : number {
-    if(x.expirationDate == undefined && y.expirationDate == undefined) return comparePantriesByQuantity(x, y);
-
-    if(x.expirationDate == undefined) return 1;
-
-    if(y.expirationDate == undefined) return -1;
-
-    if(x.expirationDate < y.expirationDate) return 1;
-
-    if(x.expirationDate > y.expirationDate) return -1;
-
-    return comparePantriesByQuantity(x, y);
-}
-
 export async function consumeIngredientFromPantry(ingredientID : string, quantity : number) : Promise<void> {
     let quantityToConsume : number = quantity;
     let allPantry : IPantry[] = await basePantry.getAllPantryByIngredientID(ingredientID);
-
-    allPantry = allPantry.sort(comparePantriesByExpirationDate);
 
     while(quantityToConsume > 0){
         if(allPantry[0].quantity > quantityToConsume){

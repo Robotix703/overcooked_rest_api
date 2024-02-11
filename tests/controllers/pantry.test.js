@@ -14,15 +14,13 @@ let ingredient = {
     imagePath: "imagePath",
     consumable: true,
     category: "category",
-    unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10
+    unitOfMeasure: "unitOfMeasure"
 }
 
 let pantry = {
     _id: "string",
     ingredientID: "ingredientID",
-    quantity: 1,
-    expirationDate: null
+    quantity: 1
 }
 
 let date = new Date();
@@ -30,20 +28,17 @@ date.setDate(date.getDate() + 1);
 let pantry2 = {
     _id: "string",
     ingredientID: "ingredientID",
-    quantity: 1,
-    expirationDate: date
+    quantity: 1
 }
 
 let pantry3 = {
     _id: "string2",
     ingredientID: "ingredientID2",
-    quantity: 2,
-    expirationDate: new Date()
+    quantity: 2
 }
 
 let pantryStatus = {
-    quantityLeft: 3,
-    nearestExpirationDate: "12/12/2012"
+    quantityLeft: 3
 }
 let prettyInventory = [{
     ingredientID: ingredient._id,
@@ -81,8 +76,7 @@ test('writePantry', async () => {
     let mockRequest = {
         body: {
             ingredientID: "ingredientID",
-            quantity: 10,
-            expirationDate: null
+            quantity: 10
         }
     }
 
@@ -111,8 +105,7 @@ test('writePantryByIngredientName', async () => {
         body: {
             ingredientName: "ingredientName",
             ingredientID: "ingredientID",
-            quantity: 10,
-            expirationDate: null
+            quantity: 10
         }
     }
 
@@ -221,85 +214,6 @@ test('quantityLeft', async () => {
     spy.mockRestore();
 });
 
-test('getNearestExpirationDate without date', async () => {
-    let mockStatusCode = jest.fn();
-    let mockResponse = {
-        status : mockStatusCode.mockReturnValue({json: jest.fn()})
-    }
-
-    let mockRequest = {
-        query: {
-            ingredientID: "ingredientID"
-        }
-    }
-
-    let spy = jest.spyOn(basePantry, "getByIngredientID").mockResolvedValue(
-        [pantry]
-    );
-    
-    await pantryController.getNearestExpirationDate(mockRequest, mockResponse);
-
-    let responseBody = mockResponse.status().json.mock.calls[0][0];
-    let reponseStatus = mockStatusCode.mock.calls[0][0];
-
-    expect(responseBody).toMatchObject({ nearestExpirationDate: pantry.expirationDate });
-    expect(reponseStatus).toBe(200);
-
-    spy.mockRestore();
-});
-test('getNearestExpirationDate without date', async () => {
-    let mockStatusCode = jest.fn();
-    let mockResponse = {
-        status : mockStatusCode.mockReturnValue({json: jest.fn()})
-    }
-
-    let mockRequest = {
-        query: {
-            ingredientID: "ingredientID"
-        }
-    }
-
-    let spy = jest.spyOn(basePantry, "getByIngredientID").mockResolvedValue(
-        [pantry2]
-    );
-    
-    await pantryController.getNearestExpirationDate(mockRequest, mockResponse);
-
-    let responseBody = mockResponse.status().json.mock.calls[0][0];
-    let reponseStatus = mockStatusCode.mock.calls[0][0];
-
-    expect(responseBody).toMatchObject({ nearestExpirationDate: pantry2.expirationDate });
-    expect(reponseStatus).toBe(200);
-
-    spy.mockRestore();
-});
-test('getNearestExpirationDate without date in the past', async () => {
-    let mockStatusCode = jest.fn();
-    let mockResponse = {
-        status : mockStatusCode.mockReturnValue({json: jest.fn()})
-    }
-
-    let mockRequest = {
-        query: {
-            ingredientID: "ingredientID"
-        }
-    }
-
-    let spy = jest.spyOn(basePantry, "getByIngredientID").mockResolvedValue(
-        [pantry3]
-    );
-    
-    await pantryController.getNearestExpirationDate(mockRequest, mockResponse);
-
-    let responseBody = mockResponse.status().json.mock.calls[0][0];
-    let reponseStatus = mockStatusCode.mock.calls[0][0];
-
-    expect(responseBody).toMatchObject({ nearestExpirationDate: pantry3.expirationDate });
-    expect(reponseStatus).toBe(200);
-
-    spy.mockRestore();
-});
-
 test('getFullPantryInventory', async () => {
     let mockStatusCode = jest.fn();
     let mockResponse = {
@@ -352,7 +266,6 @@ test('getPantryByID with pantry and ingredientName', async () => {
         _id: pantry._id,
         ingredientID: pantry.ingredientID,
         quantity: pantry.quantity,
-        expirationDate: pantry.expirationDate,
         ingredientName: ingredient.name
     });
     expect(reponseStatus).toBe(200);

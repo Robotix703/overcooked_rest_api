@@ -27,8 +27,7 @@ let ingredient = {
     imagePath: "imagePath",
     consumable: true,
     category: "category",
-    unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10
+    unitOfMeasure: "unitOfMeasure"
 }
 let ingredient2 = {
     _id: "string2",
@@ -36,8 +35,7 @@ let ingredient2 = {
     imagePath: "imagePath2",
     consumable: false,
     category: "category2",
-    unitOfMeasure: "unitOfMeasure2",
-    shelfLife: 12
+    unitOfMeasure: "unitOfMeasure2"
 }
 
 test('getInstructionCountForRecipe', async () => {
