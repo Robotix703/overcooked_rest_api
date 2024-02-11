@@ -3,7 +3,6 @@ export interface IPantry {
   ingredientID: string
   quantity: number
   expirationDate: Date | null
-  frozen: boolean | null
 }
 
 export interface IDiplayablePantry {
@@ -13,7 +12,6 @@ export interface IDiplayablePantry {
   quantity: number
   quantityUnitOfMeasure: string
   expirationDate: string | null
-  frozen: boolean | null
 }
 
 const mongoose = require('mongoose');
@@ -21,8 +19,7 @@ const mongoose = require('mongoose');
 export const pantrySchema = mongoose.Schema({
   ingredientID: { type: String, required: true },
   quantity: { type: Number, required: true },
-  expirationDate: { type: Date },
-  frozen: { type: Boolean }
+  expirationDate: { type: Date }
 });
 
 const Pantry = mongoose.model('Pantry', pantrySchema);

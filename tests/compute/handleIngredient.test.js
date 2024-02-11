@@ -8,8 +8,7 @@ let ingredient = {
     consumable: true,
     category: "category",
     unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10,
-    freezable: true
+    shelfLife: 10
 }
 
 test('getConsumable', async () => {

@@ -31,8 +31,7 @@ export async function addIngredientToPantry (itemText: string): Promise<void> {
     await basePantry.register(
         ingredient._id, 
         parseInt(quantity), 
-        expirationDate || null, 
-        false
+        expirationDate || null
     );
 }
 

@@ -16,22 +16,19 @@ let pantry = {
     _id: "62bc94b4a969443c312272df",
     ingredientID: "ingredientID",
     quantity: 1,
-    expirationDate: date,
-    frozen: false
+    expirationDate: date
 }
 let pantry2 = {
     _id: "62bc94b4a969443c312272df",
     ingredientID: "ingredientID2",
     quantity: 2,
-    expirationDate: new Date(),
-    frozen: true
+    expirationDate: new Date()
 }
 let pantry3 = {
     _id: "string2",
     ingredientID: "ingredientID2",
     quantity: 2,
-    expirationDate: null,
-    frozen: true
+    expirationDate: null
 }
 
 let meal = {
@@ -48,8 +45,7 @@ let ingredientWithQuantity = {
         consumable: true,
         category: "category",
         unitOfMeasure: "unitOfMeasure",
-        shelfLife: 10,
-        freezable: false
+        shelfLife: 10
     },
     quantity: 2
 }

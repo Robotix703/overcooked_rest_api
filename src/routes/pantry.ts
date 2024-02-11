@@ -15,7 +15,6 @@ pantryRoutes.get("/prettyPantries", pantryController.getPrettyPantries);
 //POST
 pantryRoutes.post("/", pantryController.writePantry);
 pantryRoutes.post("/createByIngredientName", pantryController.writePantryByIngredientName);
-pantryRoutes.post("/freeze", pantryController.freezePantry);
 pantryRoutes.post("/refreshTodoist", pantryController.refreshTodoist);
 pantryRoutes.post("/buyAgain", pantryController.buyAgain);
 

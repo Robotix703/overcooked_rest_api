@@ -7,16 +7,14 @@ let pantry = {
     _id: "62adecd7c2285147db155742",
     ingredientID: "ingredientID",
     quantity: 10,
-    expirationDate: null,
-    frozen: true
+    expirationDate: null
 }
 
 let pantry2 = {
     _id: "62adecd7c2285147db155743",
     ingredientID: "ingredientID2",
     quantity: 12,
-    expirationDate: null,
-    frozen: false
+    expirationDate: null
 }
 
 test('getAllPantryByIngredientID', async () => {
@@ -81,8 +79,7 @@ test('updatePantry', async () => {
         pantry._id,
         pantry.ingredientID,
         pantry.quantity,
-        pantry.expirationDate,
-        pantry.frozen
+        pantry.expirationDate
     );
 
     expect(JSON.parse(JSON.stringify(result))).toBe("OK");
@@ -102,13 +99,11 @@ test('register', async () => {
     let result = await basePantry.register(
         pantry.ingredientID,
         pantry.quantity,
-        pantry.expirationDate,
-        pantry.frozen
+        pantry.expirationDate
     );
 
     let prettyResult = JSON.parse(JSON.stringify(result));
     expect(prettyResult.id.length).toBeGreaterThanOrEqual(10);
-    expect(prettyResult.pantry.frozen).toBe(pantry.frozen);
 });
 
 test('count', async () => {

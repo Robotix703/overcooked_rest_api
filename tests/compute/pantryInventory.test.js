@@ -14,8 +14,7 @@ let ingredient = {
     consumable: true,
     category: "category",
     unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10,
-    freezable: true
+    shelfLife: 10
 }
 let ingredient2 = {
     _id: "string2",
@@ -24,8 +23,7 @@ let ingredient2 = {
     consumable: true,
     category: "category2",
     unitOfMeasure: "unitOfMeasure2",
-    shelfLife: 12,
-    freezable: false
+    shelfLife: 12
 }
 
 let date = new Date();
@@ -34,15 +32,13 @@ let pantry = {
     _id: "string",
     ingredientID: "ingredientID",
     quantity: 1,
-    expirationDate: date,
-    frozen: false
+    expirationDate: date
 }
 let pantry2 = {
     _id: "string2",
     ingredientID: "ingredientID",
     quantity: 2,
-    expirationDate: new Date("12/12/12"),
-    frozen: true
+    expirationDate: new Date("12/12/12")
 }
 
 let pantryStatus = {
@@ -112,6 +108,5 @@ test('getInventory', async () => {
     expect(object[0].ingredientID).toBe(pantry.ingredientID);
     expect(object[0].ingredientName).toBe(ingredient.name);
     expect(object[0].ingredientImagePath).toBe(ingredient.imagePath);
-    expect(object[0].ingredientFreezable).toBe(ingredient.freezable);
     expect(object[0].pantries.length).toBe(2);
 });

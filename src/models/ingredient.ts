@@ -5,7 +5,6 @@ export interface IIngredient {
   consumable: boolean
   unitOfMeasure: string
   shelfLife: number | null
-  freezable: boolean
 }
 
 const mongoose = require('mongoose');
@@ -15,8 +14,7 @@ export const ingredientSchema = mongoose.Schema({
   imagePath: { type: String, required:true },
   consumable: { type: Boolean, required: true },
   unitOfMeasure: { type: String, required: true },
-  shelfLife: { type: Number },
-  freezable: { type: Boolean, required: true }
+  shelfLife: { type: Number }
 });
 
 const Ingredient = mongoose.model('Ingredient', ingredientSchema);

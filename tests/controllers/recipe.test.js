@@ -54,8 +54,7 @@ let ingredientWithQuantity = {
         consumable: true,
         category: "category",
         unitOfMeasure: "unitOfMeasure",
-        shelfLife: 10,
-        freezable: false
+        shelfLife: 10
     },
     quantity: 2
 }

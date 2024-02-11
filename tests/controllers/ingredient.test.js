@@ -7,8 +7,7 @@ let ingredient = {
     imagePath: "imagePath",
     consumable: true,
     unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10,
-    freezable: true
+    shelfLife: 10
 }
 
 test('readIngredients', async () => {
@@ -207,8 +206,7 @@ test('editIngredient OK', async () => {
             name: "name",
             consumable: true,
             unitOfMeasure: "unitOfMeasure",
-            shelfLife: 1,
-            freezable: false
+            shelfLife: 1
         }
     }
 
@@ -247,8 +245,7 @@ test('editIngredient NOK', async () => {
             name: "name",
             consumable: true,
             unitOfMeasure: "unitOfMeasure",
-            shelfLife: 1,
-            freezable: false
+            shelfLife: 1
         }
     }
 

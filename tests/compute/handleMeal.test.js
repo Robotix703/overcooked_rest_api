@@ -49,8 +49,7 @@ let ingredientWithQuantityNotConsumable = {
         consumable: false,
         category: "category",
         unitOfMeasure: "unitOfMeasure",
-        shelfLife: 10,
-        freezable: false
+        shelfLife: 10
     },
     quantity: 1
 }
@@ -62,8 +61,7 @@ let ingredientWithQuantityConsumable = {
         consumable: true,
         category: "category2",
         unitOfMeasure: "unitOfMeasure2",
-        shelfLife: 1,
-        freezable: true
+        shelfLife: 1
     },
     quantity: 1
 }

@@ -28,8 +28,7 @@ let ingredient = {
     consumable: true,
     category: "category",
     unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10,
-    freezable: true
+    shelfLife: 10
 }
 let ingredient2 = {
     _id: "string2",
@@ -38,8 +37,7 @@ let ingredient2 = {
     consumable: false,
     category: "category2",
     unitOfMeasure: "unitOfMeasure2",
-    shelfLife: 12,
-    freezable: false
+    shelfLife: 12
 }
 
 test('getInstructionCountForRecipe', async () => {

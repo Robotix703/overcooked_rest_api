@@ -11,29 +11,25 @@ let pantry = {
     _id: "string",
     ingredientID: "ingredientID",
     quantity: 1,
-    expirationDate: date,
-    frozen: false
+    expirationDate: date
 }
 let pantry2 = {
     _id: "string2",
     ingredientID: "ingredientID2",
     quantity: 2,
-    expirationDate: new Date(),
-    frozen: false
+    expirationDate: new Date()
 }
 let pantry3 = {
     _id: "string3",
     ingredientID: "ingredientID2",
     quantity: 2,
-    expirationDate: null,
-    frozen: true
+    expirationDate: null
 }
 let pantry4 = {
     _id: "string",
     ingredientID: "ingredientID",
     quantity: 1,
-    expirationDate: date,
-    frozen: false
+    expirationDate: date
 }
 
 let ingredient = {
@@ -43,25 +39,8 @@ let ingredient = {
     consumable: true,
     category: "category",
     unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10,
-    freezable: true
+    shelfLife: 10
 }
-
-test('freezePantry', async () => {
-    let getByIDSpy = jest.spyOn(basePantry, "getByID").mockImplementationOnce(() => {
-        return pantry;
-    });
-
-    let updatePantryWithPantrySpy = jest.spyOn(basePantry, "updatePantryWithPantry").mockImplementationOnce(() => {
-        return "OK";
-    });
-    
-    let result = await handlePantry.freezePantry(pantry._id);
-
-    expect(getByIDSpy).toHaveBeenCalledWith(pantry._id);
-    expect(updatePantryWithPantrySpy).toHaveBeenCalledWith(pantry);
-    expect(result).toBe("OK");
-});
 
 test('checkPantryExpiration with expiration date correct', async () => {
     let getAllPantryWithExpirationDateSpy = jest.spyOn(basePantry, "getAllPantryWithExpirationDate").mockImplementationOnce(() => {
@@ -118,22 +97,4 @@ test('checkPantryExpiration with expiration date too short', async () => {
     deletePantryByIDSpy.mockRestore();
     getIngredientByIDSpy.mockRestore();
     registerIngredientsSpy.mockRestore();
-});
-
-test('checkPantryExpiration without expiration date', async () => {
-    let getAllPantryWithExpirationDateSpy = jest.spyOn(basePantry, "getAllPantryWithExpirationDate").mockImplementationOnce(() => {
-        return [pantry3];
-    });
-
-    let deletePantryByIDSpy = jest.spyOn(basePantry, "deletePantryByID").mockImplementationOnce(() => {
-        return "OK";
-    });
-    
-    let result = await handlePantry.checkPantryExpiration();
-
-    expect(getAllPantryWithExpirationDateSpy).toHaveBeenCalled();
-    expect(deletePantryByIDSpy).toHaveBeenCalledTimes(0);
-
-    getAllPantryWithExpirationDateSpy.mockRestore();
-    deletePantryByIDSpy.mockRestore();
 });

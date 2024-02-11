@@ -60,8 +60,7 @@ export namespace pantryController {
         basePantry.register(
             ingredientId,
             req.body.quantity,
-            req.body.expirationDate ? moment(req.body.expirationDate, "DD/MM/YYYY") : null,
-            req.body.frozen ?? false
+            req.body.expirationDate ? moment(req.body.expirationDate, "DD/MM/YYYY") : null
         )
             .then((result: any) => {
                 res.status(201).json(result);
@@ -78,8 +77,7 @@ export namespace pantryController {
         basePantry.register(
             ingredientID._id,
             req.body.quantity,
-            req.body.expirationDate ? moment(req.body.expirationDate, "DD/MM/YYYY") : null,
-            req.body.frozen ?? false
+            req.body.expirationDate ? moment(req.body.expirationDate, "DD/MM/YYYY") : null
         )
             .then((result: any) => {
                 res.status(201).json(result);
@@ -89,16 +87,6 @@ export namespace pantryController {
                     errorMessage: error
                 })
             });
-    }
-    export async function freezePantry(req: Request, res: Response) {
-        let result: IUpdateOne = await handlePantry.freezePantry(req.body.pantryID);
-
-        if (result.modifiedCount > 0) {
-            res.status(200).json(result);
-        }
-        else {
-            res.status(404).json({ errorMessage: "Pantry not found" });
-        }
     }
     export async function refreshTodoist(req: Request, res: Response) {
         await checkTodoList();
@@ -213,8 +201,7 @@ export namespace pantryController {
                     ingredientID: pantry.ingredientID,
                     quantity: pantry.quantity,
                     expirationDate: pantry.expirationDate || null,
-                    ingredientName: ingredientName,
-                    frozen: pantry.frozen
+                    ingredientName: ingredientName
                 });
             }
             else {
@@ -249,8 +236,7 @@ export namespace pantryController {
                     req.params.id,
                     ingredientID,
                     req.body.quantity,
-                    req.body.expirationDate ? moment(req.body.expirationDate, "DD/MM/YYYY") : null,
-                    req.body.frozen
+                    req.body.expirationDate ? moment(req.body.expirationDate, "DD/MM/YYYY") : null
                 )
                     .catch((error: Error) => {
                         res.status(500).json({
@@ -288,8 +274,7 @@ export namespace pantryController {
             req.params.id,
             undefined,
             undefined,
-            req.body.expirationDate ? new Date(req.body.expirationDate,) : null,
-            undefined
+            req.body.expirationDate ? new Date(req.body.expirationDate,) : null
         )
 
         if (updatePantry) {

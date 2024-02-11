@@ -15,16 +15,14 @@ let ingredient = {
     consumable: true,
     category: "category",
     unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10,
-    freezable: true
+    shelfLife: 10
 }
 
 let pantry = {
     _id: "string",
     ingredientID: "ingredientID",
     quantity: 1,
-    expirationDate: null,
-    frozen: false
+    expirationDate: null
 }
 
 let date = new Date();
@@ -33,16 +31,14 @@ let pantry2 = {
     _id: "string",
     ingredientID: "ingredientID",
     quantity: 1,
-    expirationDate: date,
-    frozen: false
+    expirationDate: date
 }
 
 let pantry3 = {
     _id: "string2",
     ingredientID: "ingredientID2",
     quantity: 2,
-    expirationDate: new Date(),
-    frozen: true
+    expirationDate: new Date()
 }
 
 let pantryStatus = {
@@ -86,8 +82,7 @@ test('writePantry', async () => {
         body: {
             ingredientID: "ingredientID",
             quantity: 10,
-            expirationDate: null,
-            frozen: false
+            expirationDate: null
         }
     }
 
@@ -117,8 +112,7 @@ test('writePantryByIngredientName', async () => {
             ingredientName: "ingredientName",
             ingredientID: "ingredientID",
             quantity: 10,
-            expirationDate: null,
-            frozen: false
+            expirationDate: null
         }
     }
 
@@ -139,67 +133,6 @@ test('writePantryByIngredientName', async () => {
 
     spy.mockRestore();
     spy2.mockRestore();
-});
-
-test('freezePantry with update', async () => {
-    let mockStatusCode = jest.fn();
-    let mockResponse = {
-        status : mockStatusCode.mockReturnValue({json: jest.fn()})
-    }
-
-    let mockRequest = {
-        body: {
-            ingredientName: "ingredientName",
-            ingredientID: "ingredientID",
-            quantity: 10,
-            expirationDate: null,
-            frozen: false
-        }
-    }
-
-    let spy = jest.spyOn(handlePantry, "freezePantry").mockResolvedValue(
-        updateOne
-    );
-    
-    await pantryController.freezePantry(mockRequest, mockResponse);
-
-    let responseBody = mockResponse.status().json.mock.calls[0][0];
-    let reponseStatus = mockStatusCode.mock.calls[0][0];
-
-    expect(responseBody).toMatchObject(updateOne);
-    expect(reponseStatus).toBe(200);
-
-    spy.mockRestore();
-});
-test('freezePantry without update', async () => {
-    let mockStatusCode = jest.fn();
-    let mockResponse = {
-        status : mockStatusCode.mockReturnValue({json: jest.fn()})
-    }
-
-    let mockRequest = {
-        body: {
-            ingredientName: "ingredientName",
-            ingredientID: "ingredientID",
-            quantity: 10,
-            expirationDate: null,
-            frozen: false
-        }
-    }
-
-    let spy = jest.spyOn(handlePantry, "freezePantry").mockResolvedValue(
-        notupdateOne
-    );
-    
-    await pantryController.freezePantry(mockRequest, mockResponse);
-
-    let responseBody = mockResponse.status().json.mock.calls[0][0];
-    let reponseStatus = mockStatusCode.mock.calls[0][0];
-
-    expect(responseBody).toMatchObject({ errorMessage: "Pantry not found"});
-    expect(reponseStatus).toBe(404);
-
-    spy.mockRestore();
 });
 
 test('refreshTodoist', async () => {
@@ -420,8 +353,7 @@ test('getPantryByID with pantry and ingredientName', async () => {
         ingredientID: pantry.ingredientID,
         quantity: pantry.quantity,
         expirationDate: pantry.expirationDate,
-        ingredientName: ingredient.name,
-        frozen: pantry.frozen
+        ingredientName: ingredient.name
     });
     expect(reponseStatus).toBe(200);
 

@@ -36,8 +36,7 @@ let ingredientWithQuantity = {
         consumable: true,
         category: "category",
         unitOfMeasure: "unitOfMeasure",
-        shelfLife: 10,
-        freezable: false
+        shelfLife: 10
     },
     quantity: 2
 }
@@ -49,8 +48,7 @@ let ingredientWithQuantity2 = {
         consumable: true,
         category: "category2",
         unitOfMeasure: "unitOfMeasure2",
-        shelfLife: 14,
-        freezable: false
+        shelfLife: 14
     },
     quantity: 2
 }
@@ -62,8 +60,7 @@ let ingredientWithQuantity3 = {
         consumable: true,
         category: "category2",
         unitOfMeasure: "unitOfMeasure2",
-        shelfLife: 14,
-        freezable: false
+        shelfLife: 14
     },
     quantity: 2
 }
@@ -75,8 +72,7 @@ let ingredientWithQuantity4 = {
         consumable: true,
         category: "category",
         unitOfMeasure: "unitOfMeasure",
-        shelfLife: 10,
-        freezable: false
+        shelfLife: 10
     },
     quantity: 2
 }
@@ -98,8 +94,7 @@ let ingredient1 = {
     consumable: true,
     category: "category",
     unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10,
-    freezable: false
+    shelfLife: 10
 }
 
 let ingredient2 = {
@@ -109,8 +104,7 @@ let ingredient2 = {
     consumable: true,
     category: "category",
     unitOfMeasure: "unitOfMeasure",
-    shelfLife: 10,
-    freezable: false
+    shelfLife: 10
 }
 
 test('getIngredientIDFromInstruction', async () => {

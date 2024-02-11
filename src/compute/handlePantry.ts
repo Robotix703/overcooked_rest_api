@@ -37,12 +37,6 @@ Date.prototype.removeDays = function (days : number) {
 
 export namespace handlePantry {
 
-    export async function freezePantry(pantryID : string) : Promise<IUpdateOne> {
-        let pantry : IPantry = await basePantry.getByID(pantryID);
-        pantry.frozen = true;
-        return basePantry.updatePantryWithPantry(pantry);
-    }
-
     export async function checkPantryExpiration() : Promise<IPantryStatus[]> {
         let allPantry : IPantry[] = await basePantry.getAllPantryWithExpirationDate();
     
@@ -53,24 +47,22 @@ export namespace handlePantry {
     
         let almostExpired : IPantryStatus[] = [];
         for (let pantry of allPantry) {
-            if (pantry.frozen == false) {
-                //Expired
-                if (pantry.expirationDate.getTime() < dateExpired.getTime()) {
-                    await basePantry.deletePantryByID(pantry._id);
+            //Expired
+            if (pantry.expirationDate.getTime() < dateExpired.getTime()) {
+                await basePantry.deletePantryByID(pantry._id);
 
-                    let ingredient : IIngredient = await baseIngredient.getIngredientByID(pantry.ingredientID);
-                    
-                    await registerIngredientsOnTodo.registerIngredient(ingredient._id, ingredient.name, pantry.quantity, "Rachat");
-                }
-                //Almost expired
-                else if (pantry.expirationDate.getTime() < dateAlmostExpired.getTime()) {
-                    let ingredientName : string = await baseIngredient.getIngredientNameByID(pantry.ingredientID);
-                    almostExpired.push({
-                        ingredientName: ingredientName,
-                        quantity: pantry.quantity,
-                        expirationDate: pantry.expirationDate.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })
-                    })
-                }
+                let ingredient : IIngredient = await baseIngredient.getIngredientByID(pantry.ingredientID);
+                
+                await registerIngredientsOnTodo.registerIngredient(ingredient._id, ingredient.name, pantry.quantity, "Rachat");
+            }
+            //Almost expired
+            else if (pantry.expirationDate.getTime() < dateAlmostExpired.getTime()) {
+                let ingredientName : string = await baseIngredient.getIngredientNameByID(pantry.ingredientID);
+                almostExpired.push({
+                    ingredientName: ingredientName,
+                    quantity: pantry.quantity,
+                    expirationDate: pantry.expirationDate.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })
+                })
             }
         }
         return almostExpired;
@@ -88,8 +80,7 @@ export namespace handlePantry {
                 ingredientImage: ingredient.imagePath,
                 quantity: pantry.quantity,
                 quantityUnitOfMeasure: ingredient.unitOfMeasure,
-                expirationDate: pantry.expirationDate.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" }),
-                frozen: pantry.frozen
+                expirationDate: pantry.expirationDate.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })
             });
         }
         return prettyPantries;
