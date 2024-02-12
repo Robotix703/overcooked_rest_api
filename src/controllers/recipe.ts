@@ -7,6 +7,7 @@ import { IDeleteOne, IUpdateOne } from "../models/mongoose";
 
 import { baseRecipe } from "../compute/base/recipe";
 import { baseMeal } from "../compute/base/meal";
+import { baseInstruction } from "../compute/base/instruction";
 import { handleRecipe, IIngredientWithQuantity, IPrettyInstruction, IPrettyRecipe } from "../compute/handleRecipe";
 import { computeComposition, handleComposition } from "../compute/handleComposition";
 import { handleRecipeImage } from "../modules/file";
@@ -355,6 +356,38 @@ export namespace recipeController {
         errorMessage: error
       })
     });
+  }
+
+  export async function updateInstructions(req: Request, res: Response){
+    if(!req.body.instructions){
+      res.status(400).json({message: "Pas d'instructions"});
+      return;
+    }
+
+    let instructions : IPrettyInstruction[] = JSON.parse(req.body.instructions);
+
+    for(let instruction of instructions){
+      if(!instruction._id || !instruction.text || !instruction.order){
+        res.status(400).json({message: "Instruction incomplète"});
+        return;
+      }
+
+      await baseInstruction.updateInstruction(instruction._id, instruction.text, req.params.id, undefined, undefined, instruction.order, undefined)
+      .then((result: IUpdateOne) => {
+        if (result.modifiedCount > 0) {
+          console.log("Modification OK");
+        } else {
+          console.log("No Modification");
+        }
+      })
+      .catch((error: Error) => {
+        res.status(500).json({
+          errorMessage: error
+        })
+      });
+    }
+
+    res.status(200).json({ status: "OK" });
   }
 
   //DELETE

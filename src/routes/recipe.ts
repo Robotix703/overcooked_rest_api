@@ -23,6 +23,7 @@ recipeRoutes.post("/removeTag", recipeController.removeTag);
 
 //PUT
 recipeRoutes.put("/:id", recipeController.updateRecipe);
+recipeRoutes.put("/updateInstructions/:id", recipeController.updateInstructions);
 
 //DELETE
 recipeRoutes.delete("/:id", recipeController.deleteRecipe);
