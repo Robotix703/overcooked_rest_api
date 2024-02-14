@@ -37,7 +37,7 @@ export function concatList(originalList : IIngredientWithQuantity[], additionLis
 }
 
 export namespace handleComposition {
-    export async function createComposition(recipeId: string) : Promise<IUpdateOne>{
+    export async function editComposition(recipeId: string) : Promise<IUpdateOne>{
         const recipe : IRecipe | void = await baseRecipe.getRecipeByID(recipeId);
         if(!recipe) throw new Error("No recipe found");
 

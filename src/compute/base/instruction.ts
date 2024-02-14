@@ -11,7 +11,7 @@ export namespace baseInstruction {
         return Instruction.find({ 'recipeID': recipeID });
     }
 
-    export async function updateInstruction(_id : string, text : string, recipeID : string, ingredientsID : string[], quantity : number, order : number, cookingTime : number) : Promise<IUpdateOne>{
+    export async function updateInstruction(_id : string, text : string, recipeID : string, ingredientsID : string[], quantity : number[], order : number, cookingTime : number) : Promise<IUpdateOne>{
         let elementToUpdate : any = { _id: _id };
 
         if(text) elementToUpdate.text = text;
@@ -24,7 +24,7 @@ export namespace baseInstruction {
         return Instruction.updateOne({ _id: _id }, elementToUpdate);
     }
 
-    export async function register(text: string, recipeID: string, ingredientsID: string[], quantity: number, order: number, cookingTime: number | null) : Promise<any> {
+    export async function register(text: string, recipeID: string, ingredientsID: string[], quantity: number[], order: number, cookingTime: number | null) : Promise<any> {
         const instruction = new Instruction({
             text: text,
             recipeID: recipeID,

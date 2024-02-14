@@ -21,7 +21,7 @@ export namespace instructionController {
       req.body.cookingTime ?? undefined
     )
     .then((result: any) => {
-      handleComposition.createComposition(req.body.recipeID)
+      handleComposition.editComposition(req.body.recipeID)
       .then((result: IUpdateOne	) => {
         res.status(200).json({ message: result.modifiedCount ? "OK" : "NOK" });
       })
@@ -39,7 +39,7 @@ export namespace instructionController {
   }
   export async function writeInstructionByIngredientName(req: Request, res: Response){
     const ingredientsName : string[] = req.body.ingredients.map((e: any) => e.ingredientName);
-    const ingredientsQuantity : number = req.body.ingredients.map((e: any) => e.quantity);
+    const ingredientsQuantity : number[] = req.body.ingredients.map((e: any) => e.quantity);
 
     const ingredientsID: string[] = await baseIngredient.getIngredientsIDByName(ingredientsName);
 
@@ -53,7 +53,7 @@ export namespace instructionController {
         req.body.cookingTime ?? undefined
       )
       .then((result: any) => {
-        handleComposition.createComposition(req.body.recipeID)
+        handleComposition.editComposition(req.body.recipeID)
         .then((result: IUpdateOne	) => {
           res.status(200).json({ message: result.modifiedCount ? "OK" : "NOK" });
         })
@@ -138,7 +138,7 @@ export namespace instructionController {
   //PUT
   export async function updateInstruction(req: Request, res: Response){
     const ingredientsName : string[] = req.body.ingredients.map((e: any) => e.ingredientName);
-    const ingredientsQuantity : number = req.body.ingredients.map((e: any) => e.quantity);
+    const ingredientsQuantity : number[] = req.body.ingredients.map((e: any) => e.quantity);
 
     const ingredientsID : string[] = await baseIngredient.getIngredientsIDByName(ingredientsName);
     const recipeId : string = await baseInstruction.getRecipeId(req.params.id);
@@ -154,7 +154,7 @@ export namespace instructionController {
     )
     .then((result: IUpdateOne) => {
       if (result.modifiedCount > 0) {
-        handleComposition.createComposition(recipeId)
+        handleComposition.editComposition(recipeId)
         .then((result: IUpdateOne	) => {
           res.status(200).json({ message: result.modifiedCount ? "OK" : "NOK" });
         })
@@ -181,7 +181,7 @@ export namespace instructionController {
     baseInstruction.deleteOne(req.params.id)
     .then((result: any) => {
       if (result.deletedCount > 0) {
-        handleComposition.createComposition(recipeId)
+        handleComposition.editComposition(recipeId)
         .then((result: IUpdateOne	) => {
           res.status(200).json({ message: result.modifiedCount ? "OK" : "NOK" });
         })

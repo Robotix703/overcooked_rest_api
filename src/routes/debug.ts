@@ -109,7 +109,7 @@ debugRoutes.get("/computeAllComposition", async (req, res) => {
 
     for(let recipe of allRecipes){
         console.log(current + "/" + totalLength + " : " + recipe.title);
-        await handleComposition.createComposition(recipe._id);
+        await handleComposition.editComposition(recipe._id);
         current++;
     }
     res.json(totalLength);

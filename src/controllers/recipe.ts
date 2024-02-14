@@ -7,8 +7,8 @@ import { IDeleteOne, IUpdateOne } from "../models/mongoose";
 
 import { baseRecipe } from "../compute/base/recipe";
 import { baseMeal } from "../compute/base/meal";
-import { baseInstruction } from "../compute/base/instruction";
 import { handleRecipe, IIngredientWithQuantity, IPrettyInstruction, IPrettyRecipe } from "../compute/handleRecipe";
+import { handleInstruction } from "../compute/handleInstructions";
 import { computeComposition, handleComposition } from "../compute/handleComposition";
 import { handleRecipeImage } from "../modules/file";
 
@@ -53,7 +53,7 @@ export namespace recipeController {
       return;
     }
 
-    return handleComposition.createComposition(req.body.recipeId as string)
+    return handleComposition.editComposition(req.body.recipeId as string)
     .then((result: IUpdateOne	) => {
       res.status(200).json({ message: result.modifiedCount ? "OK" : "NOK" });
     })
@@ -366,28 +366,19 @@ export namespace recipeController {
 
     let instructions : IPrettyInstruction[] = JSON.parse(req.body.instructions);
 
-    for(let instruction of instructions){
-      if(!instruction._id || !instruction.text || !instruction.order){
-        res.status(400).json({message: "Instruction incomplète"});
-        return;
+    handleInstruction.updateInstructions(instructions)
+    .then((result: boolean) => {
+      if (result) {
+        res.status(200).json({message: "OK"});
+      } else {
+        res.status(500);
       }
-
-      await baseInstruction.updateInstruction(instruction._id, instruction.text, req.params.id, undefined, undefined, instruction.order, undefined)
-      .then((result: IUpdateOne) => {
-        if (result.modifiedCount > 0) {
-          console.log("Modification OK");
-        } else {
-          console.log("No Modification");
-        }
+    })
+    .catch((error: Error) => {
+      res.status(500).json({
+        errorMessage: error
       })
-      .catch((error: Error) => {
-        res.status(500).json({
-          errorMessage: error
-        })
-      });
-    }
-
-    res.status(200).json({ status: "OK" });
+    });
   }
 
   //DELETE

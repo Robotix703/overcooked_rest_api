@@ -3,6 +3,7 @@ import { IInstruction } from "../models/instruction";
 import { baseIngredient } from "./base/ingredient";
 import { baseInstruction } from "./base/instruction";
 import { IPrettyInstruction } from "./handleRecipe";
+import { handleComposition } from "./handleComposition";
 
 export namespace handleInstruction {
     export async function getInstructionCountForRecipe(recipeID : string) : Promise<Number> {
@@ -34,5 +35,27 @@ export namespace handleInstruction {
         }
 
         return prettyInstruction;
+    }
+
+    export async function updateInstructions(instructions : IPrettyInstruction[]) : Promise<boolean | Error>{
+        
+        let isUpdateCompositionNeeded = false;
+
+        for(let instruction of instructions){
+            let ingredientsName = instruction.composition.map((e) => e.name);
+            let ingredientsID = await baseIngredient.getIngredientsIDByName(ingredientsName);
+            let ingredientsQuantity = instruction.composition.map((e) => e.quantity);
+
+            let updateResult = await baseInstruction.updateInstruction(instruction._id, instruction.text, instruction.recipeID, ingredientsID, ingredientsQuantity, instruction.order, instruction.cookingTime);
+            if(updateResult.modifiedCount > 0){
+                isUpdateCompositionNeeded = true;
+            }
+        }
+
+        if(isUpdateCompositionNeeded){
+            handleComposition.editComposition(instructions[0].recipeID);
+        }
+        
+        return true;
     }
 }
