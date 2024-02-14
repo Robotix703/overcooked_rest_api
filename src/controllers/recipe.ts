@@ -340,7 +340,6 @@ export namespace recipeController {
       req.body.imagePath,
       req.body.category,
       req.body.duration,
-      req.body.numberOfTimeCooked,
       req.body.composition,
       (req.body.tags)? JSON.parse(req.body.tags) : undefined
     )

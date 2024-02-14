@@ -27,7 +27,7 @@ export namespace tagController {
     export async function getTags(req: any, res: any){
         await baseTag.getTags()
         .then((result: ITag[]) => {
-            res.status(201).json(result);
+            res.status(200).json(result);
         })
         .catch((error: Error) => {
             res.status(500).json(error);

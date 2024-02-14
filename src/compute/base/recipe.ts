@@ -68,7 +68,6 @@ export namespace baseRecipe {
         imagePath : string, 
         category : string, 
         duration : number, 
-        numberOfTimeCooked : any, 
         composition: string,
         tags: string[]) : Promise<IUpdateOne> {
         let elementToUpdate : any = { _id: _id };
@@ -78,7 +77,6 @@ export namespace baseRecipe {
         if(imagePath) elementToUpdate.imagePath = imagePath;
         if(category) elementToUpdate.category = category;
         if(duration) elementToUpdate.duration = duration;
-        if(numberOfTimeCooked) elementToUpdate.numberOfTimeCooked = numberOfTimeCooked;
         if(composition) elementToUpdate.composition = composition;
         if(tags) elementToUpdate.tags = tags;
 
