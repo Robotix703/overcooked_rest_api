@@ -38,7 +38,6 @@ export namespace handleInstruction {
     }
 
     export async function updateInstructions(instructions : IPrettyInstruction[]) : Promise<boolean | Error>{
-        
         let isUpdateCompositionNeeded = false;
 
         for(let instruction of instructions){
@@ -46,6 +45,13 @@ export namespace handleInstruction {
             let ingredientsID = await baseIngredient.getIngredientsIDByName(ingredientsName);
             let ingredientsQuantity = instruction.composition.map((e) => e.quantity);
 
+            //Create new instructions
+            if(instruction._id === "NEW"){
+                await baseInstruction.register(instruction.text, instruction.recipeID, ingredientsID, ingredientsQuantity, instruction.order, instruction.cookingTime);
+                isUpdateCompositionNeeded = true;
+            }
+
+            //Update existing
             let updateResult = await baseInstruction.updateInstruction(instruction._id, instruction.text, instruction.recipeID, ingredientsID, ingredientsQuantity, instruction.order, instruction.cookingTime);
             if(updateResult.modifiedCount > 0){
                 isUpdateCompositionNeeded = true;
