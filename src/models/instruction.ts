@@ -5,7 +5,6 @@ export interface IInstruction {
   ingredientsID: string[] | null
   quantity: number[] | null
   order: number
-  cookingTime: number | null
 }
 
 const mongoose = require('mongoose');
@@ -15,8 +14,7 @@ export const instructionSchema = mongoose.Schema({
   recipeID: { type: String, required: true },
   ingredientsID: { type: [String] },
   quantity: { type: [Number] },
-  order: { type: Number, required: true },
-  cookingTime: { type: Number }
+  order: { type: Number, required: true }
 });
 
 const Instruction = mongoose.model('Instruction', instructionSchema);

@@ -21,8 +21,7 @@ export namespace handleInstruction {
             text: instruction.text,
             composition: [],
             recipeID: instruction.recipeID,
-            order: instruction.order,
-            cookingTime: instruction.cookingTime
+            order: instruction.order
         }
 
         for(let i = 0; i < ingredients.length; i++){
@@ -47,12 +46,12 @@ export namespace handleInstruction {
 
             //Create new instructions
             if(instruction._id === "NEW"){
-                await baseInstruction.register(instruction.text, instruction.recipeID, ingredientsID, ingredientsQuantity, instruction.order, instruction.cookingTime);
+                await baseInstruction.register(instruction.text, instruction.recipeID, ingredientsID, ingredientsQuantity, instruction.order);
                 isUpdateCompositionNeeded = true;
             }
 
             //Update existing
-            let updateResult = await baseInstruction.updateInstruction(instruction._id, instruction.text, instruction.recipeID, ingredientsID, ingredientsQuantity, instruction.order, instruction.cookingTime);
+            let updateResult = await baseInstruction.updateInstruction(instruction._id, instruction.text, instruction.recipeID, ingredientsID, ingredientsQuantity, instruction.order);
             if(updateResult.modifiedCount > 0){
                 isUpdateCompositionNeeded = true;
             }

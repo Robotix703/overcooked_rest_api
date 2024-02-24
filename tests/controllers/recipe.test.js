@@ -27,8 +27,7 @@ let prettyInstruction = {
     text: "text",
     recipeID: "recipeID",
     composition: [prettyIngredient],
-    order: 10,
-    cookingTime: 6
+    order: 10
 }
 
 let prettyRecipe = {

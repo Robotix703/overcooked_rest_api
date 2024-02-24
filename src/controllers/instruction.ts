@@ -17,8 +17,7 @@ export namespace instructionController {
       req.body.recipeID,
       req.body.ingredients,
       req.body.quantity,
-      req.body.order,
-      req.body.cookingTime ?? undefined
+      req.body.order
     )
     .then((result: any) => {
       handleComposition.editComposition(req.body.recipeID)
@@ -49,8 +48,7 @@ export namespace instructionController {
         req.body.recipeID,
         ingredientsID,
         ingredientsQuantity,
-        req.body.order,
-        req.body.cookingTime ?? undefined
+        req.body.order
       )
       .then((result: any) => {
         handleComposition.editComposition(req.body.recipeID)
@@ -149,8 +147,7 @@ export namespace instructionController {
       undefined,
       ingredientsID,
       ingredientsQuantity,
-      req.body.order,
-      req.body.cookingTime
+      req.body.order
     )
     .then((result: IUpdateOne) => {
       if (result.modifiedCount > 0) {

@@ -8,8 +8,7 @@ let instruction = {
     recipeID: "recipeID",
     ingredientsID: ["toto", "tata"],
     quantity: [2, 3],
-    order: 5,
-    cookingTime: 6
+    order: 5
 }
 let instruction2 = {
     _id: "string2",
@@ -17,8 +16,7 @@ let instruction2 = {
     recipeID: "recipeID2",
     ingredientsID: ["toto2", "tata2"],
     quantity: [4, 6],
-    order: 10,
-    cookingTime: 12
+    order: 10
 }
 
 let ingredient = {
@@ -77,8 +75,7 @@ test('getPrettyInstructionByID', async () => {
                     unitOfMeasure: ingredient2.unitOfMeasure
                 }
             ],
-            order: instruction.order,
-            cookingTime: instruction.cookingTime
+            order: instruction.order
         }
     );
     expect(spyInstruction).toHaveBeenCalledWith(instruction._id);

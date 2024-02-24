@@ -29,8 +29,7 @@ export interface IPrettyInstruction {
     text: string,
     recipeID: string,
     composition: IPrettyIngredient[],
-    order: number,
-    cookingTime: number | null
+    order: number
 }
 
 export interface IPrettyIngredient {
@@ -125,8 +124,7 @@ export namespace handleRecipe {
                 text: instruction.text,
                 recipeID: instruction.recipeID,
                 composition: composition,
-                order: instruction.order,
-                cookingTime: instruction.cookingTime
+                order: instruction.order
             });
         }
         return newInstruction;

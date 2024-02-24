@@ -11,7 +11,7 @@ export namespace baseInstruction {
         return Instruction.find({ 'recipeID': recipeID });
     }
 
-    export async function updateInstruction(_id : string, text : string, recipeID : string, ingredientsID : string[], quantity : number[], order : number, cookingTime : number) : Promise<IUpdateOne>{
+    export async function updateInstruction(_id : string, text : string, recipeID : string, ingredientsID : string[], quantity : number[], order : number) : Promise<IUpdateOne>{
         let elementToUpdate : any = { _id: _id };
 
         if(text) elementToUpdate.text = text;
@@ -19,19 +19,17 @@ export namespace baseInstruction {
         if(ingredientsID) elementToUpdate.ingredientsID = ingredientsID;
         if(quantity) elementToUpdate.quantity = quantity;
         if(order) elementToUpdate.order = order;
-        if(cookingTime) elementToUpdate.cookingTime = cookingTime;
 
         return Instruction.updateOne({ _id: _id }, elementToUpdate);
     }
 
-    export async function register(text: string, recipeID: string, ingredientsID: string[], quantity: number[], order: number, cookingTime: number | null) : Promise<any> {
+    export async function register(text: string, recipeID: string, ingredientsID: string[], quantity: number[], order: number) : Promise<any> {
         const instruction = new Instruction({
             text: text,
             recipeID: recipeID,
             ingredientsID: ingredientsID,
             quantity: quantity,
-            order: order,
-            cookingTime: cookingTime ?? undefined
+            order: order
         });
 
         return instruction.save()

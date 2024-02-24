@@ -15,8 +15,7 @@ let instruction = {
     recipeID: "recipeID",
     ingredientsID: ["62b8872d377c98a5a09cc6ee", "62b8872d377c98a5a09cc6ef"],
     quantity: [3, 4],
-    order: 1,
-    cookingTime: 10
+    order: 1
 }
 let instruction2 = {
     _id: "string2",
@@ -24,8 +23,7 @@ let instruction2 = {
     recipeID: "recipeID2",
     ingredientsID: ["4", "5"],
     quantity: [3, 4],
-    order: 2,
-    cookingTime: 17
+    order: 2
 }
 
 let ingredientWithQuantity = {
@@ -215,8 +213,7 @@ test('getInstructionsByRecipeID', async () => {
                 quantity: instruction.quantity[0],
                 unitOfMeasure: ingredient1.unitOfMeasure
             }],
-            order: instruction.order,
-            cookingTime: instruction.cookingTime
+            order: instruction.order
         }
     ]);
 });
@@ -259,8 +256,7 @@ test('getPrettyRecipe', async () => {
                     quantity: instruction.quantity[0],
                     unitOfMeasure: ingredient1.unitOfMeasure
                 }],
-                order: instruction.order,
-                cookingTime: instruction.cookingTime
+                order: instruction.order
             }
         ]
     });

@@ -9,8 +9,7 @@ const instruction = {
     recipeID: "recipeID",
     ingredientsID: ["ingredientsID"],
     quantity: [10],
-    order: 12,
-    cookingTime: 3
+    order: 12
 }
 
 test('getInstructionByID', async () => {
@@ -41,8 +40,7 @@ test('updateInstruction', async () => {
         instruction.recipeID,
         instruction.ingredientsID,
         instruction.quantity,
-        instruction.order,
-        instruction.cookingTime);
+        instruction.order);
 
     expect(JSON.parse(JSON.stringify(result))).toBe("OK");
 });
@@ -56,8 +54,7 @@ test('register', async () => {
         instruction.recipeID,
         instruction.ingredientsID,
         instruction.quantity,
-        instruction.order,
-        instruction.cookingTime);
+        instruction.order);
 
     let prettyResult = JSON.parse(JSON.stringify(result));
     expect(prettyResult.id.length).toBeGreaterThanOrEqual(10);
