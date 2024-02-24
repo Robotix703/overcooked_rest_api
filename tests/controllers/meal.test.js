@@ -108,7 +108,7 @@ test('writeMeal', async () => {
     expect(responseBody).toBe("OK");
     expect(reponseStatus).toBe(201);
     expect(spy4).toHaveBeenCalledWith(mockRequest.body.recipeID);
-    expect(spy3).toHaveBeenCalledWith([ingredientWithQuantityConsumable], recipe.title);
+    expect(spy3).toHaveBeenCalledWith([ingredientWithQuantityConsumable], recipe.title, undefined);
 
     spy.mockRestore();
     spy2.mockRestore();

@@ -23,10 +23,11 @@ export namespace handleTodoItem {
                 todoItem._id,
                 todoItem.todoID,
                 updatedText,
+                parsedItem.quantity,
                 todoItem.ingredientName,
                 todoItem.consumable,
-                todoItem.underline,
-                todoItem.priority
+                todoItem.mealID,
+                todoItem.underline
             );
         }else{
             return {

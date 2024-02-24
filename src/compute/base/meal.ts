@@ -19,7 +19,7 @@ export namespace baseMeal {
         return Meal.deleteOne({ _id: mealID });
     }
 
-    export async function register(recipeID: string) : Promise<any | Error> {
+    export async function register(recipeID: string) : Promise<{id: string, meal: IMeal} | Error> {
         const meal = new Meal({
             recipeID: recipeID
         });

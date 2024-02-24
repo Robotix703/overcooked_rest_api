@@ -8,7 +8,6 @@ export const todoItemRoutes = express.Router();
 todoItemRoutes.get("/", todoItemController.readTodoItems);
 
 //POST
-todoItemRoutes.post("/", todoItemController.writeTodoItem);
 todoItemRoutes.post("/updateQuantity/:id", todoItemController.updateQuantity);
 
 //PUT

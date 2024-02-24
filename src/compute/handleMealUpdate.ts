@@ -13,41 +13,21 @@ import { handleComposition } from "./handleComposition";
 export namespace handleMealUpdate {
     export async function deleteMeal(mealID: string) : Promise<IDeleteOne>{
         //Meal
-        let mealToDelete : IMeal | void = await baseMeal.getMealByID(mealID);
+        const mealToDelete : IMeal | void = await baseMeal.getMealByID(mealID);
         if(!mealToDelete) throw new Error("Meal not found");
         
         //Ingredient list
         const ingredientsNeeded : IIngredientWithQuantity[] = await handleComposition.readComposition(mealToDelete.recipeID);
 
-        //Update TodoList ans TodoItem
+        //Update TodoList and TodoItem
         for(let ingredientWithQuantity of ingredientsNeeded){
-            await deleteIngredientsOnTodo.deleteIngredient(ingredientWithQuantity)
+            await deleteIngredientsOnTodo.deleteIngredient(ingredientWithQuantity, mealToDelete._id)
             .catch((error : Error) => {
-                //Do nothing
+                console.log(error);
             });
         }
 
         //Delete meal
         return baseMeal.deleteMeal(mealID);
-    }
-
-    export async function setHighPrio(mealID: string) : Promise<any> {
-        //Meal
-        let mealToUpdate : IMeal | void = await baseMeal.getMealByID(mealID);
-        if(!mealToUpdate) throw new Error("Meal not found");
-        
-        //Ingredient list
-        const ingredientsNeeded : IIngredientWithQuantity[] = await handleComposition.readComposition(mealToUpdate.recipeID);
-
-        //Update TodoList ans TodoItem
-        for(let ingredientWithQuantity of ingredientsNeeded){
-            await updateIngredientsOnTodo.setHighPrioIngredientWithQuantity(ingredientWithQuantity)
-            .catch((error : Error) => {
-                //Do nothing
-            });
-        }
-
-        //Update meal
-        return baseMeal.update(mealID, mealToUpdate.recipeID);
     }
 }
