@@ -13,7 +13,6 @@ mealRoutes.get("/byRecipeId", mealController.getByRecipeId);
 //POST
 mealRoutes.post("/", mealController.writeMeal);
 mealRoutes.post("/consume", mealController.consumeMeal);
-mealRoutes.post("/setHighPrio", mealController.setHighPrio);
 
 //PUT
 mealRoutes.put("/:id", mealController.updateMeal);

@@ -9,8 +9,7 @@ let todoItem = {
     text: "pomme - 2 pc",
     ingredientName: "ingredientName",
     consumable: true,
-    underline: "underline",
-    priority: 3
+    underline: "underline"
 }
 
 let updated = {
@@ -46,7 +45,7 @@ test('updateQuantity', async () => {
         return updated;
     });
     
-    let result = await handleTodoItem.updateQuantity(todoItem._id, "10");
+    let result = await handleTodoItem.updateQuantity(todoItem._id, 10);
 
     expect(getTodoItemByIDSpy).toHaveBeenCalledWith(todoItem._id);
     expect(updateItemSpy).toHaveBeenCalledWith(todoItem.todoID, "pomme - 10 pc");
@@ -54,10 +53,11 @@ test('updateQuantity', async () => {
         todoItem._id,
         todoItem.todoID,
         "pomme - 10 pc",
+        10,
         todoItem.ingredientName,
         todoItem.consumable,
-        todoItem.underline,
-        todoItem.priority
+        undefined,
+        todoItem.underline
     );
     expect(JSON.parse(JSON.stringify(result))).toMatchObject(updated);
 });

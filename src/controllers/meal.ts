@@ -18,25 +18,34 @@ import { handleComposition } from "../compute/handleComposition";
 export namespace mealController{
   //POST
   export async function writeMeal(req : Request, res : Response) {
+    if (!req.body.recipeID) {
+      res.status(400).json({ errorMessage: "No recipeID provided"});
+      return;
+    }
     const registerResult = await baseMeal.register(req.body.recipeID)
     .catch((error : Error) => {
       res.status(500).json({
         errorMessage: error
       })
     });
+    if (!registerResult || registerResult instanceof Error) {
+      throw new Error("Recipe not created");
+    }
 
-    const recipe : IRecipe | void = await baseRecipe.getRecipeByID(req.body.recipeID);
-    if(!recipe) throw new Error("Recipe not found");
-    
-    const ingredientsNeeded : IIngredientWithQuantity[] = await handleComposition.readComposition(req.body.recipeID);
-    
-    await registerIngredientsOnTodo.registerIngredients(ingredientsNeeded, recipe.title)
-    .then(() => {
-      res.status(201).json(registerResult);
-    })
-    .catch((error: Error) => {
-      res.status(500).json(error);
-    })
+    const recipe: IRecipe | void = await baseRecipe.getRecipeByID(req.body.recipeID);
+    if (!recipe) {
+      throw new Error("Recipe not found");
+    }
+
+    const ingredientsNeeded: IIngredientWithQuantity[] = await handleComposition.readComposition(req.body.recipeID);
+
+    await registerIngredientsOnTodo.registerIngredients(ingredientsNeeded, recipe.title, registerResult.meal?._id)
+      .then(() => {
+        res.status(201).json(registerResult);
+      })
+      .catch((error: Error) => {
+        res.status(500).json(error);
+      })
   }
   export async function consumeMeal(req : Request, res : Response) {
     let mealId: string;
@@ -70,27 +79,6 @@ export namespace mealController{
       res.status(200).json({ status: "ok" });
     } else {
       res.status(404).json({ errorMessage: "Wrong ID"});
-    }
-  }
-  export async function setHighPrio(req : Request, res : Response) {
-    if (req.body.mealID) {
-      handleMealUpdate.setHighPrio(req.body.mealID)
-      .then((result : IUpdateOne) => {
-        if (result.modifiedCount > 0) {
-          res.status(200).json(result);
-        } else {
-          res.status(401).json({ errorMessage: "Pas de modification" });
-        }
-      })
-      .catch((error : Error) => {
-        res.status(500).json({
-          errorMessage: error
-        })
-      });
-    }
-    else
-    {
-      res.status(400).json({ errorMessage: "No mealID provided"});
     }
   }
 

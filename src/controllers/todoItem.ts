@@ -6,7 +6,6 @@ import { BackendError, errorTypes, IBackendError } from "../error/backendError";
 import { baseTodoItem } from "../compute/base/todoItem";
 import { Todoist } from "../modules/todoist";
 
-import { registerIngredientsOnTodo } from "../worker/registerIngredientsOnTodo";
 import { handleTodoItem } from "../compute/handleTodoItem";
 
 export namespace todoItemController {
@@ -34,21 +33,6 @@ export namespace todoItemController {
     res.status(200).json(data);
   }
 
-  export async function writeTodoItem(req: Request, res: Response) {
-    registerIngredientsOnTodo.registerIngredient(
-      req.body.ingredientID,
-      req.body.name,
-      req.body.quantity,
-      "Extra")
-      .then(() => {
-        res.status(201).json({ message: "Registered !" });
-      })
-      .catch((error: Error) => {
-        res.status(500).json({
-          errorMessage: error
-        })
-      });
-  }
   export async function updateQuantity(req: Request, res: Response) {
     if (req.params.id) {
       if (req.body.quantity) {
@@ -69,10 +53,11 @@ export namespace todoItemController {
       req.params.id,
       req.body.todoID,
       req.body.text,
+      req.body.quantity,
       req.body.ingredientName,
       req.body.consumable,
-      req.body.underline,
-      req.body.priority
+      req.body.mealID,
+      req.body.underline
     )
       .catch((error: Error) => {
         res.status(500).json({

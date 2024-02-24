@@ -11,8 +11,7 @@ let todoItem = {
     text: "pommes - 10 pc",
     ingredientName: "ingredientName",
     consumable: true,
-    underline: "underline",
-    priority: 3
+    underline: "underline"
 }
 
 let update = {
@@ -69,42 +68,6 @@ test('readTodoItems', async () => {
     spy2.mockRestore();
 });
 
-test('writeTodoItem', async () => {
-    let mockStatusCode = jest.fn();
-    let mockResponse = {
-        status : mockStatusCode.mockReturnValue({json: jest.fn()})
-    }
-
-    let mockRequest = {
-        body: {
-            ingredientID: "ingredientID",
-            name: "name",
-            quantity: "quantity",
-            unitOfMeasure: "unitOfMeasure"
-        }
-    }
-
-    let spy = jest.spyOn(registerIngredient, "registerIngredient").mockResolvedValue(
-        "OK"
-    );
-    
-    await todoItemController.writeTodoItem(mockRequest, mockResponse);
-
-    let responseBody = mockResponse.status().json.mock.calls[0][0];
-    let reponseStatus = mockStatusCode.mock.calls[0][0];
-
-    expect(responseBody).toMatchObject({message: "Registered !"});
-    expect(reponseStatus).toBe(201);
-    expect(spy).toHaveBeenCalledWith(
-        mockRequest.body.ingredientID,
-        mockRequest.body.name,
-        mockRequest.body.quantity,
-        "Extra"
-    )
-
-    spy.mockRestore();
-});
-
 test('updateTodoItem', async () => {
     let mockStatusCode = jest.fn();
     let mockResponse = {
@@ -120,8 +83,7 @@ test('updateTodoItem', async () => {
             text: todoItem.text,
             ingredientName: todoItem.ingredientName,
             consumable: todoItem.consumable,
-            underline: todoItem.underline,
-            priority: todoItem.priority
+            underline: todoItem.underline
         }
     }
 
@@ -143,10 +105,11 @@ test('updateTodoItem', async () => {
         todoItem._id,
         todoItem.todoID,
         todoItem.text,
+        todoItem.quantity,
         todoItem.ingredientName,
         todoItem.consumable,
-        todoItem.underline,
-        todoItem.priority
+        undefined,
+        todoItem.underline
     )
 
     spy.mockRestore();

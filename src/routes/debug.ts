@@ -33,7 +33,7 @@ debugRoutes.get("/checkTodoList", (req, res) => {
 
 //RegisterIngredientsOnTodo
 debugRoutes.get("/registerIngredient", (req, res) => {
-    registerIngredientsOnTodo.registerIngredient(req.query.ingredientID as string, req.query.ingredientName as string, parseInt(req.query.quantity as string), req.query.recipeName as string);
+    registerIngredientsOnTodo.registerIngredient(req.query.ingredientID as string, req.query.ingredientName as string, parseInt(req.query.quantity as string), req.query.recipeName as string, req.query.mealID as string);
 
     res.send("OK");
 });

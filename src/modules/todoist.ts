@@ -3,13 +3,6 @@ import { AddTaskArgs, GetTasksArgs, Project, Task, TodoistApi, UpdateTaskArgs } 
 
 const api = new TodoistApi(process.env.TODOIST_API_KEY)
 
-export const TodoistPriority = {
-    VeryHigh: 4,
-    High: 3,
-    Medium: 2,
-    Normal: 1
-}
-
 export namespace Todoist {
     export async function getProjectID(name: string): Promise<string | void> {
         return api.getProjects()
@@ -39,7 +32,7 @@ export namespace Todoist {
         });
     }
     
-    export async function addItemsInProjectByName(projectName: string, itemText: string, description?: string, priority?: number): Promise<Task>{
+    export async function addItemsInProjectByName(projectName: string, itemText: string, description?: string): Promise<Task>{
         let projectID = await getProjectID(projectName)
         .catch(error => {
             throw error;
@@ -52,7 +45,6 @@ export namespace Todoist {
             dueLang: 'fr'
         };
         if(description) args.description = description;
-        if(priority) args.priority = priority;
     
         return api.addTask(args)
         .catch((error : Error) => {
@@ -60,12 +52,11 @@ export namespace Todoist {
         });
     }
     
-    export async function updateItem(itemID: string, content?: string, description?: string, priority?: number): Promise<boolean>{
+    export async function updateItem(itemID: string, content?: string, description?: string): Promise<boolean>{
         let updateArgs : UpdateTaskArgs = { };
 
         if(content) updateArgs.content = content;
         if(description) updateArgs.description = description;
-        if(priority) updateArgs.priority = priority;
 
         return api.updateTask(itemID, updateArgs)
         .then(result => {

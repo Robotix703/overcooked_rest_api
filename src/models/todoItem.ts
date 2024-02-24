@@ -2,10 +2,11 @@ export interface ITodoItem {
   _id: string
   todoID: string
   text: string
+  quantity: number
   ingredientName: string
   consumable: boolean
   underline: string
-  priority: number
+  mealID: string[]
 }
 export interface ITodoistText {
   ingredientName: string,
@@ -31,10 +32,11 @@ const mongoose = require('mongoose');
 export const todoItemSchema = mongoose.Schema({
   todoID: { type: Number, required: true },
   text: { type: String, required: true },
+  quantity: { type: Number, required: true },
   ingredientName: { type: String, required: true },
   consumable: { type: Boolean, required: true },
   underline: { type: String, required: false },
-  priority: { type: Number, required: false }
+  mealID: { type: [String], required: true }
 });
 
 const TodoItem = mongoose.model('TodoItem', todoItemSchema);

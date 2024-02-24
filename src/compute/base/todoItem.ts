@@ -10,22 +10,24 @@ export namespace baseTodoItem {
     export async function updateTodoItem(
         todoItemID : string, 
         todoID : string, 
-        text : string, 
+        text : string,
+        quantity : number,
         ingredientName : string, 
         consumable: boolean,
-        underline?: string,
-        priority?: number
+        mealID: string[],
+        underline?: string
         ) : Promise<IUpdateOne>
         {
         let todoItem = new TodoItem({
             _id: todoItemID,
             todoID: todoID,
             text: text,
+            quantity: quantity,
             ingredientName: ingredientName,
-            consumable: consumable
+            consumable: consumable,
+            mealID: mealID
         });
         if(underline) todoItem.underline = underline;
-        if(priority) todoItem.priority = priority;
 
         return TodoItem.updateOne({_id: todoItem._id}, todoItem);
     }
@@ -47,19 +49,21 @@ export namespace baseTodoItem {
 
     export async function registerTodoItem(
         itemID : string, 
-        itemText : string, 
+        itemText : string,
+        quantity : number,
         name : string, 
         consumable : boolean,
-        underline?: string,
-        priority?: number) : Promise<any> {
+        mealID: string[],
+        underline?: string) : Promise<any> {
         const todoItem = new TodoItem({
             todoID: itemID,
             text: itemText,
+            quantity: quantity,
             ingredientName: name,
-            consumable: consumable
+            consumable: consumable,
+            mealID: mealID
         });
         if(underline) todoItem.underline = underline;
-        if(priority) todoItem.priority = priority;
     
         return todoItem.save();
     }
