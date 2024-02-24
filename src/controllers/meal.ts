@@ -66,7 +66,7 @@ export namespace mealController{
       return;
     }
 
-    let error = await updatePantryWhenMealIsDone.updatePantryWhenMealsIsDone(mealId);
+    const error = await updatePantryWhenMealIsDone.updatePantryWhenMealsIsDone(mealId);
     if(error)
     {
       res.status(500).json({ errorMessage: error });

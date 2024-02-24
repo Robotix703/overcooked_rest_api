@@ -18,6 +18,8 @@ export async function consumeIngredientFromPantry(ingredientID : string, quantit
     let quantityToConsume : number = quantity;
     let allPantry : IPantry[] = await basePantry.getAllPantryByIngredientID(ingredientID);
 
+    if(allPantry.length <= 0) return;
+
     while(quantityToConsume > 0){
         if(allPantry[0].quantity > quantityToConsume){
             //Update pantry
