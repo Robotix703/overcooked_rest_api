@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import moment from 'moment';
 
 import { IRecipe } from "../models/recipe";
 import { IMeal } from "../models/meal";
@@ -40,6 +39,64 @@ export namespace recipeController {
     .then(async (result: any) => {
       await handleRecipeImage(imageUrl, imagePath);
       res.status(201).json(result);
+    })
+    .catch((error: Error) => {
+      res.status(500).json({
+        errorMessage: error
+      })
+    });
+  }
+  export async function completeRecipe(req: any, res: Response){
+    if(!req.body.title 
+      || !req.body.numberOfLunch 
+      || isNaN(req.body.numberOfLunch)
+      || !req.body.imageUrl 
+      || !req.body.category
+      || !req.body.duration 
+      || isNaN(req.body.duration)
+      || !req.body.instructions) return res.status(400).json({errorMessage: "Missing somthing in the request : " + JSON.stringify(req.body)});
+
+    const url = protocol + '://' + req.get("host");
+    const imagePath = "images/" + req.body.title + '-' + Date.now() + '.png';
+    const imageUrl = req.body.imageUrl;
+
+    baseRecipe.register(
+      req.body.title,
+      req.body.numberOfLunch,
+      url + "/" + imagePath,
+      req.body.category,
+      req.body.duration,
+      0,
+      req.body.tags ? JSON.parse(req.body.tags) : undefined
+    )
+    .then(async (result: { id: string, recipe: IRecipe }) => {
+      await handleRecipeImage(imageUrl, imagePath);
+
+      let instructions : IPrettyInstruction[] = [];
+      try {
+        instructions = JSON.parse(req.body.instructions);
+        instructions.forEach((instruction: IPrettyInstruction) => {
+          instruction.recipeID = result.id;
+        });
+      } catch (error) {
+        res.status(500).json({
+          errorMessage: error
+        });
+      }
+
+      handleInstruction.createInstructions(instructions)
+      .then((result: boolean) => {
+        if (result) {
+          res.status(201).json({message: "OK"});
+        } else {
+          res.status(500);
+        }
+      })
+      .catch((error: Error) => {
+        res.status(500).json({
+          errorMessage: error
+        })
+      });
     })
     .catch((error: Error) => {
       res.status(500).json({

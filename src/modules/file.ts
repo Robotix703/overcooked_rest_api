@@ -19,7 +19,7 @@ export async function handleIngredientImage(url: string, path: string) : Promise
 export async function handleRecipeImage(url: string, path: string) : Promise<string | Error> {
     //Download image
     await donwloadFile(url, path, async (err: Error) => {
-        if(err) throw new Error(err.message);
+        if(err) throw new Error("Error on image donwload : " + err.message);
 
         //Resize image
         await resizeImageFromPath(path);

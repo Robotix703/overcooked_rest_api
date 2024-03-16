@@ -20,6 +20,7 @@ recipeRoutes.post("/", recipeController.createRecipeWithImageUrl);
 recipeRoutes.post("/createComposition", recipeController.createComposition);
 recipeRoutes.post("/addTag", recipeController.addTag);
 recipeRoutes.post("/removeTag", recipeController.removeTag);
+recipeRoutes.post("/completeRecipe", recipeController.completeRecipe);
 
 //PUT
 recipeRoutes.put("/:id", recipeController.updateRecipe);

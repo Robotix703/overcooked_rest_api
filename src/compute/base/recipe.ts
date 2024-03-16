@@ -89,8 +89,8 @@ export namespace baseRecipe {
         imagePath : string,
         category : string,
         duration : number,
-        numberOfTimeCooked : any | undefined,
-        tags: string[]) : Promise<any> {
+        numberOfTimeCooked : number,
+        tags: string[]) : Promise<{ id: string, recipe: IRecipe }> {
             const recipe = new Recipe({
                 title: title,
                 numberOfLunch: numberOfLunch,

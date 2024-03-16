@@ -63,4 +63,17 @@ export namespace handleInstruction {
         
         return true;
     }
+
+    export async function createInstructions(instructions : IPrettyInstruction[]) : Promise<boolean | Error>{
+        for(let instruction of instructions){
+            let ingredientsName = instruction.composition.map((e) => e.name);
+            let ingredientsID = await baseIngredient.getIngredientsIDByName(ingredientsName);
+            let ingredientsQuantity = instruction.composition.map((e) => e.quantity);
+
+            await baseInstruction.register(instruction.text, instruction.recipeID, ingredientsID, ingredientsQuantity, instruction.order);
+        }
+
+        await handleComposition.editComposition(instructions[0].recipeID);
+        return true;
+    }
 }
