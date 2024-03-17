@@ -85,9 +85,9 @@ export namespace recipeController {
       }
 
       handleInstruction.createInstructions(instructions)
-      .then((result: boolean) => {
-        if (result) {
-          res.status(201).json({message: "OK"});
+      .then((done: boolean) => {
+        if (done) {
+          res.status(201).json({id: result.id, recipe: result.recipe});
         } else {
           res.status(500);
         }
