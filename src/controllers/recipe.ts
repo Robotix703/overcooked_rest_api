@@ -437,6 +437,58 @@ export namespace recipeController {
     });
   }
 
+  export async function updateCompleteRecipe(req: Request, res: Response){
+    if(!req.params.id){
+      res.status(400).json({message: "Pas d'Id de recette"});
+      return;
+    }
+
+    //Recipe
+    await baseRecipe.updateRecipe(
+      req.params.id,
+      req.body.title,
+      req.body.numberOfLunch,
+      req.body.imagePath,
+      req.body.category,
+      req.body.duration,
+      undefined,
+      (req.body.tags)? JSON.parse(req.body.tags) : undefined
+    )
+    .catch((error: Error) => {
+      res.status(500).json({
+        errorMessage: error
+      })
+    });
+
+    //Instructions
+    let instructions : IPrettyInstruction[] = [];
+    try {
+      instructions = JSON.parse(req.body.instructions);
+    }
+    catch (error) {
+      res.status(500).json({
+        errorMessage: error
+      });
+    }
+
+    await handleInstruction.updateInstructions(instructions)
+    .catch((error: Error) => {
+      res.status(500).json({
+        errorMessage: error
+      })
+    });
+
+    //Composition
+    await handleComposition.editComposition(req.params.id)
+    .catch((error: Error) => {
+      res.status(500).json({
+        errorMessage: error
+      })
+    });
+
+    res.status(200).json({message: "OK"});
+  }
+
   //DELETE
   export function deleteRecipe(req: Request, res: Response){
     baseRecipe.deleteOne(req.params.id)

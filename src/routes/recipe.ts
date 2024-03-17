@@ -25,6 +25,7 @@ recipeRoutes.post("/completeRecipe", recipeController.completeRecipe);
 //PUT
 recipeRoutes.put("/:id", recipeController.updateRecipe);
 recipeRoutes.put("/updateInstructions/:id", recipeController.updateInstructions);
+recipeRoutes.put("/updateComplete/:id", recipeController.updateCompleteRecipe);
 
 //DELETE
 recipeRoutes.delete("/:id", recipeController.deleteRecipe);
