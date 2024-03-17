@@ -40,14 +40,14 @@ export namespace baseRecipe {
     export async function filterRecipe(
         category: string | undefined, 
         name: string | undefined, 
-        tags: string[] | undefined,
+        tagsId: string[] | undefined,
         sort: string | undefined,
         order: Number | undefined
         ) : Promise<IRecipe[]> {
         let filters : any = {};
         if (category) filters.category = category;
         if (name) filters.title = { "$regex": name, "$options": "i" };
-        if (tags && tags.length > 0) filters.tags = { $all: tags };
+        if (tagsId && tagsId.length > 0) filters.tagsId = { $all: tagsId };
 
         switch(sort){
             case "numberOfTimeCooked":
