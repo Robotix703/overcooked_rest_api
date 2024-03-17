@@ -142,7 +142,7 @@ export namespace handleRecipe {
             numberOfLunch: recipeData.numberOfLunch,
             category: recipeData.category,
             duration: recipeData.duration,
-            tagsId: recipeData.tagsId,
+            tagsId: recipeData.tags,
             instructions: instructions
         };
     }

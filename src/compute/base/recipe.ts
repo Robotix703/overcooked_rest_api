@@ -23,7 +23,7 @@ export namespace baseRecipe {
             throw new Error("Recipe not found");
         }
 
-        recipeData.tagsId.push(tagId);
+        recipeData.tags.push(tagId);
         return Recipe.updateOne({ _id: recipeId }, recipeData);
     }
 
@@ -33,7 +33,7 @@ export namespace baseRecipe {
             throw new Error("Recipe not found");
         }
 
-        recipeData.tagsId = recipeData.tagsId.filter(e => e !== tagId);
+        recipeData.tags = recipeData.tags.filter(e => e !== tagId);
         return Recipe.updateOne({ _id: recipeId }, recipeData);
     }
 
@@ -78,7 +78,7 @@ export namespace baseRecipe {
         if(category) elementToUpdate.category = category;
         if(duration) elementToUpdate.duration = duration;
         if(composition) elementToUpdate.composition = composition;
-        if(tagsId) elementToUpdate.tagsId = tagsId;
+        if(tagsId) elementToUpdate.tags = tagsId;
 
         return Recipe.updateOne({ _id: _id }, elementToUpdate);
     }
