@@ -23,7 +23,7 @@ export namespace baseRecipe {
             throw new Error("Recipe not found");
         }
 
-        recipeData.tags.push(tagId);
+        recipeData.tagsId.push(tagId);
         return Recipe.updateOne({ _id: recipeId }, recipeData);
     }
 
@@ -33,7 +33,7 @@ export namespace baseRecipe {
             throw new Error("Recipe not found");
         }
 
-        recipeData.tags = recipeData.tags.filter(e => e !== tagId);
+        recipeData.tagsId = recipeData.tagsId.filter(e => e !== tagId);
         return Recipe.updateOne({ _id: recipeId }, recipeData);
     }
 
@@ -69,7 +69,7 @@ export namespace baseRecipe {
         category : string, 
         duration : number, 
         composition: string,
-        tags: string[]) : Promise<IUpdateOne> {
+        tagsId: string[]) : Promise<IUpdateOne> {
         let elementToUpdate : any = { _id: _id };
 
         if(title) elementToUpdate.title = title;
@@ -78,7 +78,7 @@ export namespace baseRecipe {
         if(category) elementToUpdate.category = category;
         if(duration) elementToUpdate.duration = duration;
         if(composition) elementToUpdate.composition = composition;
-        if(tags) elementToUpdate.tags = tags;
+        if(tagsId) elementToUpdate.tagsId = tagsId;
 
         return Recipe.updateOne({ _id: _id }, elementToUpdate);
     }
@@ -90,7 +90,7 @@ export namespace baseRecipe {
         category : string,
         duration : number,
         numberOfTimeCooked : number,
-        tags: string[]) : Promise<{ id: string, recipe: IRecipe }> {
+        tagsId: string[]) : Promise<{ id: string, recipe: IRecipe }> {
             const recipe = new Recipe({
                 title: title,
                 numberOfLunch: numberOfLunch,
@@ -98,7 +98,7 @@ export namespace baseRecipe {
                 category: category,
                 duration: duration,
                 numberOfTimeCooked: numberOfTimeCooked,
-                tags: tags
+                tagsId: tagsId
             });
 
             return recipe.save()

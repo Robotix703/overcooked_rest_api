@@ -21,6 +21,7 @@ export interface IPrettyRecipe {
     numberOfLunch: number,
     category: string,
     duration: number,
+    tagsId: string[],
     instructions: IPrettyInstruction[]
 }
 
@@ -141,6 +142,7 @@ export namespace handleRecipe {
             numberOfLunch: recipeData.numberOfLunch,
             category: recipeData.category,
             duration: recipeData.duration,
+            tagsId: recipeData.tagsId,
             instructions: instructions
         };
     }

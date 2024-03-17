@@ -67,7 +67,7 @@ export namespace recipeController {
       req.body.category,
       req.body.duration,
       0,
-      req.body.tags ? JSON.parse(req.body.tags) : undefined
+      req.body.tagsId ? JSON.parse(req.body.tagsId) : undefined
     )
     .then(async (result: { id: string, recipe: IRecipe }) => {
       await handleRecipeImage(imageUrl, imagePath);
@@ -241,6 +241,7 @@ export namespace recipeController {
     res.status(200).json(data);
   }
   export async function getPrettyRecipe(req: Request, res: Response){
+    //Get Recipe ID
     let recipeID: string | void;
     if (req.query.recipeID) {
       recipeID = req.query.recipeID as string;
@@ -261,6 +262,7 @@ export namespace recipeController {
       }
     }
 
+    //Get Pretty Recipe
     if(recipeID)
     {
       handleRecipe.getPrettyRecipe(recipeID)
@@ -452,7 +454,7 @@ export namespace recipeController {
       req.body.category,
       req.body.duration,
       undefined,
-      (req.body.tags)? JSON.parse(req.body.tags) : undefined
+      req.body.tagsId ? JSON.parse(req.body.tagsId) : undefined
     )
     .catch((error: Error) => {
       res.status(500).json({

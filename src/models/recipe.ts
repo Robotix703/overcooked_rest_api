@@ -7,7 +7,7 @@ export interface IRecipe{
   duration: number
   numberOfTimeCooked: number
   composition: string | null
-  tags: string[]
+  tagsId: string[]
 }
 
 const mongoose = require('mongoose');
@@ -20,7 +20,7 @@ export const recipeSchema = mongoose.Schema({
   duration: { type: Number, required: true },
   numberOfTimeCooked: { type: Number, required: false },
   composition: { type: String, required: false },
-  tags: { type: [String], required: false }
+  tagsId: { type: [String], required: false }
 });
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
